@@ -51,3 +51,6 @@ VideoDemo/VideoDemo/models/
 #debug
 *.ilk
 *.pdb
+
+# largefile
+*.largefile
