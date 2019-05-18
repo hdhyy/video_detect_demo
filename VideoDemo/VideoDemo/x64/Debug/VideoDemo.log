@@ -1,0 +1,67 @@
+﻿  stdafx.cpp
+  CvvImage.cpp
+  DealWithTensorFlow.cpp
+e:\work\video_detect_demo\videodemo\videodemo\dealwithtensorflow.cpp(71): warning C4267: “参数”: 从“size_t”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+e:\work\video_detect_demo\videodemo\videodemo\dealwithtensorflow.cpp(85): warning C4305: “初始化”: 从“double”到“float”截断
+  Detection.cpp
+e:\work\video_detect_demo\videodemo\videodemo\detection.cpp(57): warning C4101: “std”: 未引用的局部变量
+  ImageUtils.cpp
+e:\work\video_detect_demo\videodemo\videodemo\msrcr.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(54): warning C4244: “参数”: 从“double”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(160): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(186): warning C4244: “=”: 从“double”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=float
+          ]
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(238): warning C4244: “=”: 从“double”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=float
+          ]
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(239): warning C4244: “=”: 从“double”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=float
+          ]
+e:\work\video_detect_demo\videodemo\videodemo\imageutils.cpp(240): warning C4244: “=”: 从“double”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=float
+          ]
+  MSRCR.cpp
+e:\work\video_detect_demo\videodemo\videodemo\msrcr.cpp(1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\work\video_detect_demo\videodemo\videodemo\msrcr.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\work\video_detect_demo\videodemo\videodemo\msrcr.cpp(446): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\msrcr.cpp(560): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  PretrainDetector.cpp
+  ROIDialog.cpp
+e:\work\video_detect_demo\videodemo\videodemo\roidialog.cpp(64): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  ROIThread.cpp
+  VideoDemo.cpp
+  VideoDemoDlg.cpp
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(287): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(288): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(411): warning C4244: “初始化”: 从“INT_PTR”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(412): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(413): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(433): warning C4101: “queue_size”: 未引用的局部变量
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(503): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(648): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(649): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(661): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
+  VideoPlay.cpp
+e:\work\video_detect_demo\videodemo\videodemo\videoplay.cpp(70): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  正在生成代码...
+e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(298): warning C4172: 返回局部变量或临时变量的地址: para
+e:\work\video_detect_demo\videodemo\videodemo\dealwithtensorflow.cpp(119): warning C4172: 返回局部变量或临时变量的地址: img
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe
