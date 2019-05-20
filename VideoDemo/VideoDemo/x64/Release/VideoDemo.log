@@ -9,6 +9,9 @@ e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(504): warning C42
 e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(649): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
 e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(650): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
 e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(662): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
+  正在生成代码
 e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(298): warning C4172: 返回局部变量或临时变量的地址: para
-LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
-  VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe
+e:\work\video_detect_demo\videodemo\videodemo\dealwithtensorflow.cpp(119): warning C4172: 返回局部变量或临时变量的地址: img
+  All 1662 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Release\VideoDemo.exe

@@ -402,11 +402,12 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 			{
 				CStringArray m_strArray[5];
 				TCHAR seps[] = _T(",");
-				TCHAR* token = _tcstok((LPTSTR)(LPCTSTR)strLine, seps);
+				TCHAR *next_token = NULL;
+				TCHAR* token = _tcstok_s((LPTSTR)(LPCTSTR)strLine, seps, &next_token);
 				while (token != NULL)
 				{
 					m_strArray[0].Add(token);
-					token = _tcstok(NULL, seps);
+					token = _tcstok_s(NULL, seps, &next_token);
 				}
 				int count = m_strArray[0].GetSize();
 				x = _tstof(m_strArray[0].GetAt(0)) * width_zoom_factor;
@@ -669,6 +670,8 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		g_matSourceFrame = pMat;
 		ResizeImage(pFrame);
 		ShowImage(TheImage, IDC_VIDEOSHOW);
+		//recover the program path
+		SetCurrentDirectory(path);
 		ButtomControl(true, true, false, false);
 
 		DisableAllDetectButton(true);
@@ -691,7 +694,6 @@ void CVideoDemoDlg::OnBnClickedVideoStartButton()
 	hThreadSend = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PlayVideo, (LPVOID)this, 0, &ThreadSendID);
 	CloseHandle(hThreadSend);
 	ButtomControl(false, false, true, true);
-	SetCurrentDirectory(path);
 
 	//挂起检测线程
 	m_threadVideoDect = AfxBeginThread(ThreadDect, this, 0, 0, CREATE_SUSPENDED, NULL);
