@@ -708,19 +708,23 @@ void CVideoDemoDlg::OnBnClickedVideoStopButton()
 
 	if (buttonText.Compare(_T("暂停")) == 0)
 	{
-		g_bPlay = false;
+		g_bPause = true;
 		start_event.ResetEvent();
 		StopButton.SetWindowTextW(_T("继续"));
 		try 
 		{
-			cvCopy(TheImage, StopImage);
-			ShowImage(StopImage, IDC_IMAGESHOW);
+			//cvCopy(TheImage, StopImage);
+			//ShowImage(StopImage, IDC_IMAGESHOW);
 		}
 		catch (Exception e) {}
 	}
 	else
 	{
-		g_bPlay = true;
+		g_bPause = false;
+		//if (g_iDectType != -1)
+		//{
+		//	m_threadVideoDect->ResumeThread();
+		//}
 		start_event.SetEvent();
 		StopButton.SetWindowText(_T("暂停"));
 	}
