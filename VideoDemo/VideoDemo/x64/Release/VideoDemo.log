@@ -1,17 +1,9 @@
-﻿  VideoDemoDlg.cpp
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(287): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(288): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(412): warning C4244: “初始化”: 从“INT_PTR”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(413): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(414): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(434): warning C4101: “queue_size”: 未引用的局部变量
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(504): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(649): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(650): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(662): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
+﻿  Detection.cpp
+e:\work\video_detect_demo\videodemo\videodemo\detection.cpp(57): warning C4101: “std”: 未引用的局部变量
+e:\work\video_detect_demo\videodemo\videodemo\detection.cpp(132): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
   正在生成代码
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(298): warning C4172: 返回局部变量或临时变量的地址: para
-e:\work\video_detect_demo\videodemo\videodemo\dealwithtensorflow.cpp(119): warning C4172: 返回局部变量或临时变量的地址: img
-  All 1662 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 1675 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Release\VideoDemo.exe
