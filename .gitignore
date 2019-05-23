@@ -52,6 +52,10 @@ VideoDemo/VideoDemo/models/
 *.ilk
 *.pdb
 
+#release
+*.ipdb
+*.iobj
+
 # largefile
 *.largefile
 
