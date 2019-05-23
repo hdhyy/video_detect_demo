@@ -11,6 +11,7 @@ static ROIDialog* g_cDlg = NULL;
 static bool g_bDisplay = true;
 static Mat g_matFrameROI;
 CString g_cstrROIFile = _T("./roi.ini");
+CWinThread *getROI_thread;
 
 // ROIDialog 对话框
 
@@ -35,6 +36,8 @@ void ROIDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ROIDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_SAVE_ROI_BUTTON, &ROIDialog::OnBnClickedSaveRoiButton)
 	ON_BN_CLICKED(IDC_CLEAR_BUTTON, &ROIDialog::OnBnClickedClearButton)
+	ON_BN_CLICKED(IDOK, &ROIDialog::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &ROIDialog::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 static vector<vector<Point>>g_vecTotalPoints;
@@ -166,7 +169,23 @@ BOOL ROIDialog::OnInitDialog()
 	//开启标定线程
 	g_vecTotalPoints.clear();
 	g_vecPoints.clear();
-	CWinThread *getROI_thread = AfxBeginThread(ThreadGetROI, this);
+	getROI_thread = AfxBeginThread(ThreadGetROI, this);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void ROIDialog::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	getROI_thread->SuspendThread();
+	CDialogEx::OnOK();
+}
+
+
+void ROIDialog::OnBnClickedCancel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	getROI_thread->SuspendThread();
+	CDialogEx::OnCancel();
 }

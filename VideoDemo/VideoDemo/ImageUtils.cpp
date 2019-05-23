@@ -351,7 +351,7 @@ void ImageUtils::showMsrcrVideo()
     }
 }
 
-Mat* ImageUtils::main_msrcr()
+Mat ImageUtils::main_msrcr()
 {
 	///图像预处理
 	///图像处理部分
@@ -362,5 +362,5 @@ Mat* ImageUtils::main_msrcr()
 	Msrcr msrcr;
 	msrcr.MultiScaleRetinexCR(src, dst, weight, sigema, 100, 100);
 	imwrite("img/dst.jpg", dst);
-	return &dst;
+	return dst;
 }

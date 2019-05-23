@@ -7,6 +7,7 @@
 #include "ImageUtils.h"
 #include "afxdialogex.h"
 #include "DealWithTensorFlow.h"
+#include "Detection.h"
 
 // VideoPlay 对话框
 
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_TRACK_BUTTON, &VideoPlay::OnBnClickedTrackButton)
 	ON_BN_CLICKED(IDC_MSRCR_BUTTON, &VideoPlay::OnBnClickedMsrcrButton)
 	ON_BN_CLICKED(IDC_ROI_BUTTON, &VideoPlay::OnBnClickedRoiButton)
+	ON_BN_CLICKED(IDC_SMOKE_TEST_BUTTON, &VideoPlay::OnBnClickedSmokeTestButton)
 END_MESSAGE_MAP()
 
 
@@ -251,7 +253,7 @@ void VideoPlay::OnBnClickedMsrcrButton()
 
 	Mat image = cv::imread(picpath);
 	ImageUtils iu(&image);
-	frame = *iu.main_msrcr();
+	frame = iu.main_msrcr();
 	showImage();
 }
 
@@ -269,4 +271,12 @@ void VideoPlay::OnBnClickedRoiButton()
 	cvResetImageROI(img);
 	imshow("view2", cvarrToMat(img));
 	
+}
+
+
+void VideoPlay::OnBnClickedSmokeTestButton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Detector *detector = new Detector();
+	detector->smoke_detect();
 }

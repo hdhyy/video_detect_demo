@@ -17,6 +17,8 @@ public:
 	Mat GetCornerImg(Mat img);
 
 	Mat GetHelmetImg(Mat img);
+
+	void smoke_detect();
 private:
 	int m_iCornerThresh = 30;
 };
