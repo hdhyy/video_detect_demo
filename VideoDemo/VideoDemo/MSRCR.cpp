@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MSRCR.h"
 
 /*===========================================================
@@ -443,7 +443,7 @@ void Msrcr::MultiScaleRetinex(IplImage *img, vector<double> weights, vector<doub
 {
 	int i;
 	double weight;
-	int scales = sigmas.size();
+	int scales = (int)sigmas.size();
 	IplImage *A, *fA, *fB, *fC;
 
 	// Initialize temp images
@@ -557,7 +557,7 @@ void Msrcr::MultiScaleRetinexCR(IplImage *img, vector<double> weights, vector<do
 {
 	int i;
 	double weight;
-	int scales = sigmas.size();
+	int scales = (int)sigmas.size();
 	IplImage *A, *B, *C, *fA, *fB, *fC, *fsA, *fsB, *fsC, *fsD, *fsE, *fsF;
 
 	// Initialize temp images

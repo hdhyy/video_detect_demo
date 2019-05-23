@@ -69,7 +69,7 @@ void VideoPlay::OnBnClickedPlayVideoButton()
 	vcp.open("video/demo.mp4");
 	bool f = pCapture == NULL;
 	bool f2 = !vcp.isOpened();
-	int fps = vcp.get(CV_CAP_PROP_FPS);
+	double fps = vcp.get(CV_CAP_PROP_FPS);
 	int nFrames = (int)(vcp.get(CV_CAP_PROP_FRAME_COUNT));
 	//int spf = (int)(1000 / fps);
 	int u = 1;
