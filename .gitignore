@@ -54,3 +54,6 @@ VideoDemo/VideoDemo/models/
 
 # largefile
 *.largefile
+
+# SetUpfiles
+*.msi
