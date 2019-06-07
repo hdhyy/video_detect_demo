@@ -74,6 +74,7 @@ void MyRegion::merge(const MyRegion& r)
 
 TargetExtractor::TargetExtractor()
 {
+	mMOG = createBackgroundSubtractorMOG2(100, 25, false);
 	mMOG->setDetectShadows(false);
 }
 
@@ -114,7 +115,7 @@ void TargetExtractor::colorDetect2(int threshold)
 	}
 }
 
-void TargetExtractor::MyRegionGrow2(int areaThreshold, int diffThreshold)
+void TargetExtractor::regionGrow2(int areaThreshold, int diffThreshold)
 {
 	Mat gray;
 	cvtColor(mFrame, gray, CV_BGR2GRAY);

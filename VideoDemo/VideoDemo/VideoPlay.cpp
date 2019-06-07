@@ -8,6 +8,8 @@
 #include "afxdialogex.h"
 #include "DealWithTensorFlow.h"
 #include "Detection.h"
+#include "PublicHeader.h"
+#include "VideoHandler.h"
 
 // VideoPlay 对话框
 
@@ -282,10 +284,29 @@ void VideoPlay::OnBnClickedSmokeTestButton()
 	detector->smoke_detect();
 }
 
-
+#ifdef TRAIN_MODE
+bool trainComplete = false;
+#endif
+MyVideoHandler* videoHandler = NULL;
 void VideoPlay::OnBnClickedFlameTestButton()
 {
 	// TODO:火苗检测的测试代码
+	MyVideoHandler handler("video/flame.avi");
+	videoHandler = &handler;
 
+	int ret = handler.handle();
 
+	switch (ret) {
+	case MyVideoHandler::STATUS_FLAME_DETECTED:
+		cout << "Flame detected." << endl;
+		break;
+	case MyVideoHandler::STATUS_OPEN_CAP_FAILED:
+		cout << "Open capture failed." << endl;
+		break;
+	case MyVideoHandler::STATUS_NO_FLAME_DETECTED:
+		cout << "No flame detected." << endl;
+		break;
+	default:
+		break;
+	}
 }
