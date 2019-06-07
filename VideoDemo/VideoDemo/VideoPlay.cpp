@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_MSRCR_BUTTON, &VideoPlay::OnBnClickedMsrcrButton)
 	ON_BN_CLICKED(IDC_ROI_BUTTON, &VideoPlay::OnBnClickedRoiButton)
 	ON_BN_CLICKED(IDC_SMOKE_TEST_BUTTON, &VideoPlay::OnBnClickedSmokeTestButton)
+	ON_BN_CLICKED(IDC_FLAME_TEST_BUTTON, &VideoPlay::OnBnClickedFlameTestButton)
 END_MESSAGE_MAP()
 
 
@@ -279,4 +280,12 @@ void VideoPlay::OnBnClickedSmokeTestButton()
 	// TODO: 在此添加控件通知处理程序代码
 	Detector *detector = new Detector();
 	detector->smoke_detect();
+}
+
+
+void VideoPlay::OnBnClickedFlameTestButton()
+{
+	// TODO:火苗检测的测试代码
+
+
 }

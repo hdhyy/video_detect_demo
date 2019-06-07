@@ -1,13 +1,21 @@
-﻿  VideoDemoDlg.cpp
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(291): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(292): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(416): warning C4244: “初始化”: 从“INT_PTR”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(417): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(418): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(438): warning C4101: “queue_size”: 未引用的局部变量
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(517): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(658): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(659): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(671): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(302): warning C4172: 返回局部变量或临时变量的地址: para
-  VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe
+﻿  stdafx.cpp
+  CvvImage.cpp
+  DealWithTensorFlow.cpp
+  Detection.cpp
+  FeatureAnalyzer.cpp
+  FlameDecider.cpp
+  FlameDetector.cpp
+  ImageUtils.cpp
+  MSRCR.cpp
+  PretrainDetector.cpp
+  ROIDialog.cpp
+  ROIThread.cpp
+  TargetExtractor.cpp
+  Utils.cpp
+  VideoDemo.cpp
+  VideoDemoDlg.cpp
+  VideoHandler.cpp
+  VideoPlay.cpp
+  正在生成代码...
+FeatureAnalyzer.obj : error LNK2001: 无法解析的外部符号 "class MyVideoHandler * videoHandler" (?videoHandler@@3PEAVMyVideoHandler@@EA)
+E:\work\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe : fatal error LNK1120: 1 个无法解析的外部命令

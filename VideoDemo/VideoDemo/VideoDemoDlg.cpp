@@ -28,6 +28,7 @@ int terminate_flag;
 #define NIGHTENHANCE 3
 #define HUMANTRACE 4
 #define SMOKING 5
+#define FLAME 6
 
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
@@ -895,16 +896,15 @@ void CVideoDemoDlg::OnBnClickedTextureButton()
 void CVideoDemoDlg::CloseVideo()
 {
 	g_bPlay = false;
-	Sleep(10);
 	try 
 	{
 		//TerminateThread(m_threadVideoCap->m_hThread, 0);
 		Sleep(10);
-		TerminateThread(m_threadVideoDect->m_hThread, 0);
+		m_threadVideoDect->SuspendThread();
 		Sleep(10);
+		m_detect_type = "当前无检测";
 	}
 	catch (Exception e){}
-
 
 	if (g_bSelectROI) {
 		g_bSelectROI = false;
@@ -923,6 +923,8 @@ void CVideoDemoDlg::CloseVideo()
 	vCap->release();
 
 	g_dectDector.video_terminate();
+
+	UpdateData(false);
 }
 
 
