@@ -1,14 +1,2 @@
-﻿  VideoDemoDlg.cpp
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(287): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(288): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(412): warning C4244: “初始化”: 从“INT_PTR”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(413): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(414): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(434): warning C4101: “queue_size”: 未引用的局部变量
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(504): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(649): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(650): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(662): warning C4244: “参数”: 从“double”转换到“__time64_t”，可能丢失数据
-e:\work\video_detect_demo\videodemo\videodemo\videodemodlg.cpp(298): warning C4172: 返回局部变量或临时变量的地址: para
-LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+﻿  FlameDecider.cpp
   VideoDemo.vcxproj -> E:\work\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe

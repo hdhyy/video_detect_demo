@@ -38,4 +38,6 @@ protected:
 	cv::Mat frame;
 public:
 	afx_msg void OnBnClickedRoiButton();
+	afx_msg void OnBnClickedSmokeTestButton();
+	afx_msg void OnBnClickedFlameTestButton();
 };

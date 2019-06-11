@@ -1,19 +1,33 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "afxstr.h"
+
 #include <vector>
 #include <queue>
 
-#include"CvvImage.h"
-#include<opencv2/core/core.hpp>
-#include<opencv2/imgproc.hpp>
-#include<opencv2/highgui.hpp>
+#include "CvvImage.h"
+#include <cxcore.hpp>
+#include <cvaux.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/ml/ml.hpp>
 
 using namespace std;
 using namespace cv;
+using namespace cv::ml;
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
 #define WM_UPDARA_CONFIG (WM_USER+300)
+//#define OLD_ALGO
+//#define TRAIN_MODE
+//#define DEBUG_OUTPUT
+
+#ifdef TRAIN_MODE
+extern bool trainComplete;
+#endif
 
 constexpr auto IMAGE_HEIGHT = 600;
 constexpr auto  IMAGE_WIDTH = 900;

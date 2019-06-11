@@ -13,7 +13,7 @@ public:
 	void displayCam();
 	void highlightMask();
 	void showMsrcrVideo();
-	cv::Mat* main_msrcr();
+	cv::Mat main_msrcr();
 protected:
 	cv::Mat src;
 	cv::Mat dst;

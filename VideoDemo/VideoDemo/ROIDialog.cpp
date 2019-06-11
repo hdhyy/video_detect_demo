@@ -11,6 +11,7 @@ static ROIDialog* g_cDlg = NULL;
 static bool g_bDisplay = true;
 static Mat g_matFrameROI;
 CString g_cstrROIFile = _T("./roi.ini");
+CWinThread *getROI_thread;
 
 // ROIDialog 对话框
 
@@ -35,6 +36,8 @@ void ROIDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ROIDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_SAVE_ROI_BUTTON, &ROIDialog::OnBnClickedSaveRoiButton)
 	ON_BN_CLICKED(IDC_CLEAR_BUTTON, &ROIDialog::OnBnClickedClearButton)
+	ON_BN_CLICKED(IDOK, &ROIDialog::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &ROIDialog::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 static vector<vector<Point>>g_vecTotalPoints;
@@ -61,7 +64,7 @@ void PiexLocation_Mouse(int EVENT, int x, int y, int flags, void* userdata) {
 		if (abs(g_ptCur.x - g_ptStart.x) < 5 && abs(g_ptCur.y - g_ptStart.y) < 5) {
 			line(img, g_ptStart, g_ptCur, Scalar(0, 255, 0, 0), 1, 8, 0);
 			const Point * ppt[1] = { &g_vecPoints[0] };//取数组的首地址
-			int len = g_vecPoints.size();
+			int len = (int)g_vecPoints.size();
 			int npt[] = { len };
 			g_vecTotalPoints.push_back(g_vecPoints);//存入该组
 			fillPoly(img, ppt, npt, 1, cv::Scalar(0, 255, 255, 255));
@@ -166,7 +169,23 @@ BOOL ROIDialog::OnInitDialog()
 	//开启标定线程
 	g_vecTotalPoints.clear();
 	g_vecPoints.clear();
-	CWinThread *getROI_thread = AfxBeginThread(ThreadGetROI, this);
+	getROI_thread = AfxBeginThread(ThreadGetROI, this);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void ROIDialog::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	getROI_thread->SuspendThread();
+	CDialogEx::OnOK();
+}
+
+
+void ROIDialog::OnBnClickedCancel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	getROI_thread->SuspendThread();
+	CDialogEx::OnCancel();
 }

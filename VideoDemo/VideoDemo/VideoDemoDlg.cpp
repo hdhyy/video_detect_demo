@@ -25,6 +25,11 @@ int terminate_flag;
 #define TEXTURE 0
 #define ANGPOINT 1
 #define HELMAT 2
+#define NIGHTENHANCE 3
+#define HUMANTRACE 4
+#define SMOKING 5
+#define FLAME 6
+
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
 
@@ -282,10 +287,12 @@ void CVideoDemoDlg::ShowImage(IplImage* image, UINT ID)
 	ReleaseDC(pDC);
 }
 
-int *Common_Resize(IplImage* img)
+int para[4] = { 0, 0, 0, 0 };
+
+void Common_Resize(IplImage* img)
 {
-	float w = img->width;
-	float h = img->height;
+	float w = (float)img->width;
+	float h = (float)img->height;
 
 	float scalew = w / IMAGE_WIDTH;
 	float scaleh = h / IMAGE_HEIGHT;
@@ -293,14 +300,12 @@ int *Common_Resize(IplImage* img)
 	int nw = (int)(w / scale), nh = (int)(h / scale);
 	int tlx = (nw == IMAGE_WIDTH) ? 0 : (int)(IMAGE_WIDTH - nw) / 2;
 	int tly = (nh == IMAGE_HEIGHT) ? 0 : (int)(IMAGE_HEIGHT - nh) / 2;
-	int para[4] = {tlx, tly, nw, nh};
-
-	return para;
+	para[0] = tlx; para[1] = tly; para[2] = nw; para[3] = nh;
 }
 
 void CVideoDemoDlg::ResizeImage(IplImage* img)
 {
-	int *para = Common_Resize(img);
+	Common_Resize(img);
 	try
 	{
 		cvSetImageROI(TheImage, cvRect(*para, *(para+1), *(para + 2), *(para + 3)));
@@ -313,7 +318,7 @@ void CVideoDemoDlg::ResizeImage(IplImage* img)
 
 void CVideoDemoDlg::ResizeImage(IplImage* img, IplImage* to_img)
 {
-	int *para = Common_Resize(img);
+	Common_Resize(img);
 	try
 	{
 		cvSetImageROI(to_img, cvRect(*para, *(para + 1), *(para + 2), *(para + 3)));
@@ -385,7 +390,7 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 	CString strLine, strTemp, result;
 	int row = 0;
 	double width_zoom_factor, hight_zoom_factor;
-	int x, y;
+	double x, y;
 
 	CStdioFile file(cstrFileName, CFile::modeRead);
 	while (file.ReadString(strLine))
@@ -409,10 +414,10 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 					m_strArray[0].Add(token);
 					token = _tcstok_s(NULL, seps, &next_token);
 				}
-				int count = m_strArray[0].GetSize();
+				int count = (int)m_strArray[0].GetSize();
 				x = _tstof(m_strArray[0].GetAt(0)) * width_zoom_factor;
 				y = _tstof(m_strArray[0].GetAt(1)) * hight_zoom_factor;
-				points_vec.push_back(Point(x, y));
+				points_vec.push_back(Point((int)x, (int)y));
 			}
 			else if (strLine == "--") {
 				g_vecROIlPoints.push_back(points_vec);
@@ -431,7 +436,7 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 UINT ThreadDect(LPVOID pParm) {
 	CVideoDemoDlg* pThis = (CVideoDemoDlg*)pParm;
 	InitializeCriticalSection(&g_critResultFrame);
-	int queue_size;
+	//int queue_size;
 	Mat dect_frame, res_frame, mask;
 	while (g_bPlay) {
 		if (g_bPause) {
@@ -453,6 +458,7 @@ UINT ThreadDect(LPVOID pParm) {
 			bitwise_and(dect_frame, g_matROIMask, dect_frame);
 		}
 		//resize(dect_frame, dect_frame, Size(704, 576));
+		ImageUtils iu(&dect_frame);
 		Sleep(10);
 		switch (g_iDectType) {
 		case TEXTURE://纹理检测
@@ -467,10 +473,17 @@ UINT ThreadDect(LPVOID pParm) {
 			res_frame = g_dectDector.GetHelmetImg(dect_frame);
 			Sleep(10);
 			break;
+		case NIGHTENHANCE:
+			res_frame = iu.main_msrcr();
+			Sleep(10);
+			break;
+		case SMOKING:
+			res_frame = g_dectDector.GetSmokeImg(dect_frame);
+			Sleep(10);
+			break;
 		default:
 			res_frame = dect_frame;
 		}
-
 		EnterCriticalSection(&g_critResultFrame);
 		while (!g_queueResultFrame.empty()) {
 			g_queueResultFrame.pop();
@@ -501,7 +514,7 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 		//更新视频时间
 		if (pThis->current_pos % (pThis->fps) == 0)
 		{
-			CTimeSpan ccts((double)pThis->current_pos / pThis->fps);
+			CTimeSpan ccts((__time64_t)pThis->current_pos / pThis->fps);
 			video_ctimes.Format(_T("%d:%d:%d /"), ccts.GetHours(), ccts.GetMinutes(), ccts.GetSeconds());
 			pThis->m_video_time_static.SetWindowTextW(video_ctimes + pThis->video_times);
 		}
@@ -604,14 +617,10 @@ void CVideoDemoDlg::On32774()
 void CVideoDemoDlg::OnBnClickedNightEnhanceButton()
 {
 	// TODO:夜晚图像增强代码
-	IplImage *real = cvCreateImage(cv::Size(RealImage->width, RealImage->height), IPL_DEPTH_8U, IMAGE_CHANNELS);
-	cvCopy(RealImage, real);
-	Mat im = cvarrToMat(real);
-	ImageUtils iu(&im);
-	Mat *r = iu.main_msrcr();
-	IplImage result = IplImage(*r);
-	ResizeImage(&result, StopImage);
-	ShowImage(StopImage, IDC_IMAGESHOW);
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = NIGHTENHANCE;
+	m_detect_type = "暗图像增强";
+	UpdateData(FALSE);
 }
 
 void CVideoDemoDlg::Canny()
@@ -646,8 +655,8 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		{
 			return;
 		}
-		fps = vCap->get(CV_CAP_PROP_FPS);
-		frames = vCap->get(CV_CAP_PROP_FRAME_COUNT);
+		fps = (int)vCap->get(CV_CAP_PROP_FPS);
+		frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
 
 		if (frames < 0)
 		{
@@ -659,7 +668,7 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		{
 			m_video_slider.SetRange(1, frames);
 			m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-			CTimeSpan cts((double)frames / fps);
+			CTimeSpan cts((__time64_t)frames / fps);
 			video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
 		}
 		Mat pMat;
@@ -708,19 +717,23 @@ void CVideoDemoDlg::OnBnClickedVideoStopButton()
 
 	if (buttonText.Compare(_T("暂停")) == 0)
 	{
-		g_bPlay = false;
+		g_bPause = true;
 		start_event.ResetEvent();
 		StopButton.SetWindowTextW(_T("继续"));
 		try 
 		{
-			cvCopy(TheImage, StopImage);
-			ShowImage(StopImage, IDC_IMAGESHOW);
+			//cvCopy(TheImage, StopImage);
+			//ShowImage(StopImage, IDC_IMAGESHOW);
 		}
 		catch (Exception e) {}
 	}
 	else
 	{
-		g_bPlay = true;
+		g_bPause = false;
+		//if (g_iDectType != -1)
+		//{
+		//	m_threadVideoDect->ResumeThread();
+		//}
 		start_event.SetEvent();
 		StopButton.SetWindowText(_T("暂停"));
 	}
@@ -749,13 +762,11 @@ void CVideoDemoDlg::OnBnClickedSafehatDetectButton()
 
 void CVideoDemoDlg::OnBnClickedSmokingDetectButton()
 {
-	// TODO: 安全帽检测的代码
-	DealWithTensorFlow dwtl(StopImage);
-	IplImage* f = dwtl.execute();
-	cv::Mat frame = cv::cvarrToMat(f);
-	cv::imshow("result", frame);
-	//ResizeImage(f);
-	//ShowImage(TheImage, IDC_IMAGESHOW);
+	// TODO: 抽烟检测的代码
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = SMOKING;
+	m_detect_type = "抽烟检测";
+	UpdateData(FALSE);
 }
 
 
@@ -885,16 +896,15 @@ void CVideoDemoDlg::OnBnClickedTextureButton()
 void CVideoDemoDlg::CloseVideo()
 {
 	g_bPlay = false;
-	Sleep(10);
 	try 
 	{
 		//TerminateThread(m_threadVideoCap->m_hThread, 0);
 		Sleep(10);
-		TerminateThread(m_threadVideoDect->m_hThread, 0);
+		m_threadVideoDect->SuspendThread();
 		Sleep(10);
+		m_detect_type = "当前无检测";
 	}
 	catch (Exception e){}
-
 
 	if (g_bSelectROI) {
 		g_bSelectROI = false;
@@ -911,6 +921,9 @@ void CVideoDemoDlg::CloseVideo()
 	ButtomControl(true, false, false, false);
 	cvReleaseCapture(&pCapture);//释放CvCapture结构
 	vCap->release();
+
+	g_dectDector.video_terminate();
+
 }
 
 

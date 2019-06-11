@@ -30,6 +30,7 @@
 #define IDC_SAFEHAT_DETECT_BUTTON       1005
 #define IDC_BUTTON5                     1009
 #define IDC_SMOKING_DETECT_BUTTON       1009
+#define IDC_FLAME_TEST_BUTTON           1009
 #define IDC_EDIT1                       1010
 #define IDC_DETECT_TYPE_EDIT            1010
 #define IDC_VIDEOSHOW                   1011
@@ -57,6 +58,7 @@
 #define IDC_SET_ROI_BUTTON              1033
 #define IDC_TEXTURE_BUTTON              1034
 #define IDC_CORNER_BUTTON               1035
+#define IDC_SMOKE_TEST_BUTTON           1036
 #define ID_32771                        32771
 #define ID_Menu                         32772
 #define ID_32773                        32773
@@ -68,7 +70,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_CONTROL_VALUE         1037
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

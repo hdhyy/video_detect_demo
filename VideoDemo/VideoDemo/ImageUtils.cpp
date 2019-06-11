@@ -51,8 +51,9 @@ void process_video()
 
 	VideoCapture cap;
 	cap.open("test.h264");
-	Size size0 = Size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT));
-	cout << size0 << endl;
+	
+	Size size0 = Size((int)cap.get(CV_CAP_PROP_FRAME_WIDTH), (int)cap.get(CV_CAP_PROP_FRAME_HEIGHT));
+
 	auto fourcc = CV_FOURCC('D', 'I', 'V', 'X');
 	VideoWriter writer("video/out.avi", fourcc, cap.get(CV_CAP_PROP_FPS), size0, true);
 
@@ -114,7 +115,7 @@ void Main_Inpaint()
 	//dialte a bit the selection
 	Morphology(mask, mask, MORPH_DILATE, dilateSize);
 	//INPAINTING
-	float radius = 5.0;
+	double radius = 5.0;
 	inpaint(src, mask, dst, radius, INPAINT_NS);
 	imshow("Navier-Stokes based method", dst);
 
@@ -146,7 +147,7 @@ void homomorphic(int pos, void* userdata)
 		int m = frame_log.rows;
 		int n = frame_log.cols;
 		copyMakeBorder(frame_log, padded, 0, m - frame_log.rows, 0, n - frame_log.cols, BORDER_CONSTANT, Scalar::all(0));
-		Mat image_planes[] = { Mat_<float>(padded), Mat::zeros(padded.size(), CV_32F) };
+		Mat image_planes[] = { Mat_<double>(padded), Mat::zeros(padded.size(), CV_32F) };
 		cv::merge(image_planes, 2, fourier_src);
 		dft(fourier_src, fourier_src);
 
@@ -155,11 +156,11 @@ void homomorphic(int pos, void* userdata)
 		Point center = Point(hu.rows / 2, hu.cols / 2);
 		for (int i = 0; i < hu.rows; i++)
 		{
-			float* data = hu.ptr<float>(i);
+			double* data = hu.ptr<double>(i);
 			for (int j = 0; j < hu.cols; j++)
-				data[j] = (double)1 / (1 + pow(sqrt(pow(center.x - i, 2) + pow((center.y - j), 2)), -t2));
+				data[j] = 1 / (1 + pow(sqrt(pow(center.x - i, 2) + pow((center.y - j), 2)), -t2));
 		}
-		Mat butterworth_channels[] = { Mat_<float>(hu), Mat::zeros(hu.size(), CV_32F) };
+		Mat butterworth_channels[] = { Mat_<double>(hu), Mat::zeros(hu.size(), CV_32F) };
 		cv::merge(butterworth_channels, 2, hu);
 
 		//进行频域卷积操作，得到强化过后的频域图，将其转回空域
@@ -183,7 +184,7 @@ void homomorphic(int pos, void* userdata)
 		minmax = max - min;
 		for (int i = 0; i < planes[0].rows; i++)
 			for (int j = 0; j < planes[0].cols; j++)
-				reinforce_src.at<float>(i, j) = 255 * (reinforce_src.at<float>(i, j) - min) / minmax;
+				reinforce_src.at<double>(i, j) = 255 * (reinforce_src.at<double>(i, j) - (double)min) / minmax;
 		reinforce_src.convertTo(reinforce_src, CV_8UC1);
 		rgb_split[i] = reinforce_src.clone();
 
@@ -235,9 +236,10 @@ int ImageUtils::laplacian_change()
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			imageLog.at<Vec3f>(i, j)[0] = log(1 + image.at<Vec3b>(i, j)[0]);
-			imageLog.at<Vec3f>(i, j)[1] = log(1 + image.at<Vec3b>(i, j)[1]);
-			imageLog.at<Vec3f>(i, j)[2] = log(1 + image.at<Vec3b>(i, j)[2]);
+			auto ptr = image.at<Vec3b>(i, j);
+			imageLog.at<Vec3f>(i, j)[0] = (float)log(1 + ptr[0]);
+			imageLog.at<Vec3f>(i, j)[1] = (float)log(1 + ptr[1]);
+			imageLog.at<Vec3f>(i, j)[2] = (float)log(1 + ptr[2]);
 		}
 	}
 	//归一化到0~255  
@@ -311,7 +313,7 @@ void ImageUtils::displayCam()
 	{
 		cap >> image;
 		image.convertTo(X, CV_32FC1); //转换格式
-		float gamma = 4;
+		double gamma = 4;
 		pow(X, gamma, I);
 
 		imshow("Original Image", image);
@@ -322,7 +324,7 @@ void ImageUtils::displayCam()
 	}
 	///gamma矫正
 	image.convertTo(X, CV_32FC1); //转换格式
-	float gamma = 4;
+	double gamma = 4;
 	pow(X, gamma, I);
 	imshow("Gamma correction image 2", norm(I));
 }
@@ -351,7 +353,7 @@ void ImageUtils::showMsrcrVideo()
     }
 }
 
-Mat* ImageUtils::main_msrcr()
+Mat ImageUtils::main_msrcr()
 {
 	///图像预处理
 	///图像处理部分
@@ -362,5 +364,5 @@ Mat* ImageUtils::main_msrcr()
 	Msrcr msrcr;
 	msrcr.MultiScaleRetinexCR(src, dst, weight, sigema, 100, 100);
 	imwrite("img/dst.jpg", dst);
-	return &dst;
+	return dst;
 }
