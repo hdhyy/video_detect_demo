@@ -924,7 +924,6 @@ void CVideoDemoDlg::CloseVideo()
 
 	g_dectDector.video_terminate();
 
-	UpdateData(false);
 }
 
 

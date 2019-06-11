@@ -21,6 +21,13 @@ using namespace cv::ml;
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
 #define WM_UPDARA_CONFIG (WM_USER+300)
+//#define OLD_ALGO
+//#define TRAIN_MODE
+//#define DEBUG_OUTPUT
+
+#ifdef TRAIN_MODE
+extern bool trainComplete;
+#endif
 
 constexpr auto IMAGE_HEIGHT = 600;
 constexpr auto  IMAGE_WIDTH = 900;

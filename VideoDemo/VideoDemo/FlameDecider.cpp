@@ -14,7 +14,7 @@
 const string FlameDecider::SVM_DATA_FILE("svmdata.xml");
 
 #ifdef TRAIN_MODE
-const string FlameDecider::SAMPLE_FILE("sample.txt");
+const string FlameDecider::SAMPLE_FILE("sample/sample6.txt");
 #endif
 
 #ifdef TRAIN_MODE
@@ -48,7 +48,7 @@ FlameDecider::FlameDecider()
 #else
 FlameDecider::FlameDecider()
 {
-	mSVM->load(SVM_DATA_FILE.c_str());
+	mSVM = Algorithm::load<SVM>(SVM_DATA_FILE.c_str());
 }
 #endif
 
@@ -62,7 +62,7 @@ void FlameDecider::userInput(const map<int, Target>& targets)
 		}
 
 		const Feature& feature = it->second.feature;
-		const Rectangle& rect = it->second.region.rect;
+		const MyRectangle& rect = it->second.region.rect;
 
 		Mat temp;
 		mFrame.copyTo(temp);
@@ -127,20 +127,20 @@ void FlameDecider::svmStudy()
 
 	int size = int(mFeatureVec.size());
 	Mat data(size, Feature::LEN, CV_32FC1);
-	Mat label(size, 1, CV_32FC1);
+	Mat label(size, 1, CV_32S);
 
 	for (int i = 0; i < size; i++) {
 		Mat(mFeatureVec[i]).copyTo(data.row(i));
-		label.at<float>(i, 0) = mResultVec[i] ? 1.0 : 0.0;
+		label.at<int>(i, 0) = mResultVec[i] ? 1 : 0;
 	}
 
-	CvSVMParams params;
-	params.svm_type = CvSVM::C_SVC;
-	params.kernel_type = CvSVM::LINEAR;
-	params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6);
-
-	mSVM.train(data, label, Mat(), Mat(), params);
-	mSVM.save(SVM_DATA_FILE.c_str());
+	mSVM = SVM::create();
+	mSVM->setType(SVM::C_SVC);
+	mSVM->setKernel(SVM::LINEAR);
+	mSVM->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6));
+	Ptr<ml::TrainData> tData = ml::TrainData::create(data, ml::SampleTypes::ROW_SAMPLE, label);
+	mSVM->train(tData);
+	mSVM->save(SVM_DATA_FILE.c_str());
 }
 
 void FlameDecider::train(const map<int, Target>& targets)
@@ -158,7 +158,8 @@ void FlameDecider::train(const map<int, Target>& targets)
 #else
 inline bool FlameDecider::svmPredict(const Feature& feature)
 {
-	float result = mSVM->predict(Mat(feature));
+	Mat sampleMat = Mat(feature);
+	float result = mSVM->predict(sampleMat);
 	cout << "result: " << result << endl;
 	return result == 1.0;
 }

@@ -284,6 +284,8 @@ void VideoPlay::OnBnClickedSmokeTestButton()
 	detector->smoke_detect();
 }
 
+#define TRAIN_MODE
+
 #ifdef TRAIN_MODE
 bool trainComplete = false;
 #endif
