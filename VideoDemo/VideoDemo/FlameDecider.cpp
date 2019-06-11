@@ -48,6 +48,8 @@ FlameDecider::FlameDecider()
 #else
 FlameDecider::FlameDecider()
 {
+	//mSVM = SVM::create();
+	//mSVM = mSVM->load(SVM_DATA_FILE.c_str());
 	mSVM = Algorithm::load<SVM>(SVM_DATA_FILE.c_str());
 }
 #endif
