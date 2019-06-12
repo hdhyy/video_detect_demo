@@ -64,7 +64,7 @@ void PiexLocation_Mouse(int EVENT, int x, int y, int flags, void* userdata) {
 		if (abs(g_ptCur.x - g_ptStart.x) < 5 && abs(g_ptCur.y - g_ptStart.y) < 5) {
 			line(img, g_ptStart, g_ptCur, Scalar(0, 255, 0, 0), 1, 8, 0);
 			const Point * ppt[1] = { &g_vecPoints[0] };//取数组的首地址
-			int len = g_vecPoints.size();
+			int len = (int)g_vecPoints.size();
 			int npt[] = { len };
 			g_vecTotalPoints.push_back(g_vecPoints);//存入该组
 			fillPoly(img, ppt, npt, 1, cv::Scalar(0, 255, 255, 255));

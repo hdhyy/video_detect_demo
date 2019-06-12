@@ -119,7 +119,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -195,6 +195,9 @@
     <ClInclude Include="DealWithTensorFlow.h" />
     <ClInclude Include="Detection.h" />
     <ClInclude Include="dirent.h" />
+    <ClInclude Include="FeatureAnalyzer.h" />
+    <ClInclude Include="FlameDecider.h" />
+    <ClInclude Include="FlameDetector.h" />
     <ClInclude Include="ImageUtils.h" />
     <ClInclude Include="MSRCR.h" />
     <ClInclude Include="PretrainDetector.h" />
@@ -203,15 +206,21 @@
     <ClInclude Include="ROIDialog.h" />
     <ClInclude Include="ROIThread.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TargetExtractor.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="VideoDemo.h" />
     <ClInclude Include="VideoDemoDlg.h" />
+    <ClInclude Include="VideoHandler.h" />
     <ClInclude Include="VideoPlay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="DealWithTensorFlow.cpp" />
     <ClCompile Include="Detection.cpp" />
+    <ClCompile Include="FeatureAnalyzer.cpp" />
+    <ClCompile Include="FlameDecider.cpp" />
+    <ClCompile Include="FlameDetector.cpp" />
     <ClCompile Include="ImageUtils.cpp" />
     <ClCompile Include="MSRCR.cpp" />
     <ClCompile Include="PretrainDetector.cpp" />
@@ -223,8 +232,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TargetExtractor.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VideoDemo.cpp" />
     <ClCompile Include="VideoDemoDlg.cpp" />
+    <ClCompile Include="VideoHandler.cpp" />
     <ClCompile Include="VideoPlay.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,8 @@
 #include "afxdialogex.h"
 #include "DealWithTensorFlow.h"
 #include "Detection.h"
+#include "PublicHeader.h"
+#include "VideoHandler.h"
 
 // VideoPlay 对话框
 
@@ -40,6 +42,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_MSRCR_BUTTON, &VideoPlay::OnBnClickedMsrcrButton)
 	ON_BN_CLICKED(IDC_ROI_BUTTON, &VideoPlay::OnBnClickedRoiButton)
 	ON_BN_CLICKED(IDC_SMOKE_TEST_BUTTON, &VideoPlay::OnBnClickedSmokeTestButton)
+	ON_BN_CLICKED(IDC_FLAME_TEST_BUTTON, &VideoPlay::OnBnClickedFlameTestButton)
 END_MESSAGE_MAP()
 
 
@@ -69,7 +72,7 @@ void VideoPlay::OnBnClickedPlayVideoButton()
 	vcp.open("video/demo.mp4");
 	bool f = pCapture == NULL;
 	bool f2 = !vcp.isOpened();
-	int fps = vcp.get(CV_CAP_PROP_FPS);
+	double fps = vcp.get(CV_CAP_PROP_FPS);
 	int nFrames = (int)(vcp.get(CV_CAP_PROP_FRAME_COUNT));
 	//int spf = (int)(1000 / fps);
 	int u = 1;
@@ -279,4 +282,33 @@ void VideoPlay::OnBnClickedSmokeTestButton()
 	// TODO: 在此添加控件通知处理程序代码
 	Detector *detector = new Detector();
 	detector->smoke_detect();
+}
+
+#define TRAIN_MODE
+
+#ifdef TRAIN_MODE
+bool trainComplete = false;
+#endif
+MyVideoHandler* videoHandler = NULL;
+void VideoPlay::OnBnClickedFlameTestButton()
+{
+	// TODO:火苗检测的测试代码
+	MyVideoHandler handler("video/flame.avi");
+	videoHandler = &handler;
+
+	int ret = handler.handle();
+
+	switch (ret) {
+	case MyVideoHandler::STATUS_FLAME_DETECTED:
+		cout << "Flame detected." << endl;
+		break;
+	case MyVideoHandler::STATUS_OPEN_CAP_FAILED:
+		cout << "Open capture failed." << endl;
+		break;
+	case MyVideoHandler::STATUS_NO_FLAME_DETECTED:
+		cout << "No flame detected." << endl;
+		break;
+	default:
+		break;
+	}
 }
