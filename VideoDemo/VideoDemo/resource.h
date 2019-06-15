@@ -30,6 +30,7 @@
 #define IDC_SAFEHAT_DETECT_BUTTON       1005
 #define IDC_BUTTON5                     1009
 #define IDC_SMOKING_DETECT_BUTTON       1009
+#define IDC_FLAME_TEST_BUTTON           1009
 #define IDC_EDIT1                       1010
 #define IDC_DETECT_TYPE_EDIT            1010
 #define IDC_VIDEOSHOW                   1011
@@ -57,7 +58,6 @@
 #define IDC_SET_ROI_BUTTON              1033
 #define IDC_TEXTURE_BUTTON              1034
 #define IDC_CORNER_BUTTON               1035
-#define IDC_BUTTON2                     1036
 #define IDC_SMOKE_TEST_BUTTON           1036
 #define ID_32771                        32771
 #define ID_Menu                         32772

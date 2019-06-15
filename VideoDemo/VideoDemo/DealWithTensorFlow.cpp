@@ -9,7 +9,7 @@ DealWithTensorFlow::DealWithTensorFlow()
 }
 
 
-DealWithTensorFlow::DealWithTensorFlow(size_t height, size_t width)
+DealWithTensorFlow::DealWithTensorFlow(int height, int width)
 {
 	inHeight = height;
 	inWidth = width;
@@ -79,10 +79,10 @@ void DealWithTensorFlow::Prepare4Train()
 	frame = frame(crop);
 }
 
-IplImage* DealWithTensorFlow::Train()
+IplImage DealWithTensorFlow::Train()
 {
 	const char* classNames[100] = { "background","face" };//这个需要根据训练的类别定义
-	float confidenceThreshold = 0.20;
+	double confidenceThreshold = 0.20;
 	for (int i = 0; i < (*detectionMat).rows; i++)
 	{
 		float confidence = (*detectionMat).at<float>(i, 2);
@@ -116,12 +116,15 @@ IplImage* DealWithTensorFlow::Train()
 		}
 	}
 	IplImage img = IplImage(frame);
-	return &img;
+	return img;
 }
+
+IplImage result_tf;
 
 IplImage* DealWithTensorFlow::execute()
 {
 	SetCropSize();
 	Prepare4Train();
-	return Train();
+	result_tf = Train();
+	return &result_tf;
 }

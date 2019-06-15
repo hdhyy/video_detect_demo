@@ -6,7 +6,7 @@ class DealWithTensorFlow
 {
 public:
 	DealWithTensorFlow();
-	DealWithTensorFlow(size_t height, size_t width);
+	DealWithTensorFlow(int height, int width);
 	DealWithTensorFlow(CString path);
 	DealWithTensorFlow(IplImage *img);
 	IplImage* execute();
@@ -14,8 +14,8 @@ public:
 
 protected:
 	void init();
-	size_t inWidth;
-	size_t inHeight;
+	int inWidth;
+	int inHeight;
 	float WHRatio;
 	cv::Mat frame;
 	cv::Size frame_size;
@@ -26,7 +26,7 @@ protected:
 	cv::Mat *detectionMat;
 	void SetCropSize();
 	void Prepare4Train();
-	IplImage* Train();
+	IplImage Train();
 
 };
 

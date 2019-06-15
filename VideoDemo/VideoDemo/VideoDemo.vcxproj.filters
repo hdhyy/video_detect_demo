@@ -63,6 +63,24 @@
     <ClInclude Include="PublicHeader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FlameDecider.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureAnalyzer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FlameDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetExtractor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VideoDemo.cpp">
@@ -99,6 +117,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ROIDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FlameDecider.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureAnalyzer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FlameDetector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetExtractor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

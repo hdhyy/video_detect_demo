@@ -18,7 +18,10 @@ public:
 
 	Mat GetHelmetImg(Mat img);
 
+	Mat GetSmokeImg(Mat img);
+
 	void smoke_detect();
+	void video_terminate();
 private:
 	int m_iCornerThresh = 30;
 };

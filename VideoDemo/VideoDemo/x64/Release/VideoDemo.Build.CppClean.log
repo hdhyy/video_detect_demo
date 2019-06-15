@@ -2,6 +2,7 @@ e:\work\video_detect_demo\videodemo\videodemo\x64\release\videodemo.pch
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\vc141.pdb
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\stdafx.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\videoplay.obj
+e:\work\video_detect_demo\videodemo\videodemo\x64\release\videodemodlg.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\videodemo.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\roithread.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\roidialog.obj
@@ -11,7 +12,6 @@ e:\work\video_detect_demo\videodemo\videodemo\x64\release\imageutils.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\detection.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\dealwithtensorflow.obj
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\cvvimage.obj
-e:\work\video_detect_demo\videodemo\videodemo\x64\release\videodemodlg.obj
 e:\work\video_detect_demo\videodemo\x64\release\videodemo.exe
 e:\work\video_detect_demo\videodemo\x64\release\videodemo.pdb
 e:\work\video_detect_demo\videodemo\videodemo\x64\release\videodemo.res

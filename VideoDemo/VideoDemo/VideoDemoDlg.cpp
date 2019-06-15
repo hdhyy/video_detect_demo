@@ -28,6 +28,7 @@ int terminate_flag;
 #define NIGHTENHANCE 3
 #define HUMANTRACE 4
 #define SMOKING 5
+#define FLAME 6
 
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
@@ -286,10 +287,12 @@ void CVideoDemoDlg::ShowImage(IplImage* image, UINT ID)
 	ReleaseDC(pDC);
 }
 
-int *Common_Resize(IplImage* img)
+int para[4] = { 0, 0, 0, 0 };
+
+void Common_Resize(IplImage* img)
 {
-	float w = img->width;
-	float h = img->height;
+	float w = (float)img->width;
+	float h = (float)img->height;
 
 	float scalew = w / IMAGE_WIDTH;
 	float scaleh = h / IMAGE_HEIGHT;
@@ -297,14 +300,12 @@ int *Common_Resize(IplImage* img)
 	int nw = (int)(w / scale), nh = (int)(h / scale);
 	int tlx = (nw == IMAGE_WIDTH) ? 0 : (int)(IMAGE_WIDTH - nw) / 2;
 	int tly = (nh == IMAGE_HEIGHT) ? 0 : (int)(IMAGE_HEIGHT - nh) / 2;
-	int para[4] = {tlx, tly, nw, nh};
-
-	return para;
+	para[0] = tlx; para[1] = tly; para[2] = nw; para[3] = nh;
 }
 
 void CVideoDemoDlg::ResizeImage(IplImage* img)
 {
-	int *para = Common_Resize(img);
+	Common_Resize(img);
 	try
 	{
 		cvSetImageROI(TheImage, cvRect(*para, *(para+1), *(para + 2), *(para + 3)));
@@ -317,7 +318,7 @@ void CVideoDemoDlg::ResizeImage(IplImage* img)
 
 void CVideoDemoDlg::ResizeImage(IplImage* img, IplImage* to_img)
 {
-	int *para = Common_Resize(img);
+	Common_Resize(img);
 	try
 	{
 		cvSetImageROI(to_img, cvRect(*para, *(para + 1), *(para + 2), *(para + 3)));
@@ -389,7 +390,7 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 	CString strLine, strTemp, result;
 	int row = 0;
 	double width_zoom_factor, hight_zoom_factor;
-	int x, y;
+	double x, y;
 
 	CStdioFile file(cstrFileName, CFile::modeRead);
 	while (file.ReadString(strLine))
@@ -413,10 +414,10 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 					m_strArray[0].Add(token);
 					token = _tcstok_s(NULL, seps, &next_token);
 				}
-				int count = m_strArray[0].GetSize();
+				int count = (int)m_strArray[0].GetSize();
 				x = _tstof(m_strArray[0].GetAt(0)) * width_zoom_factor;
 				y = _tstof(m_strArray[0].GetAt(1)) * hight_zoom_factor;
-				points_vec.push_back(Point(x, y));
+				points_vec.push_back(Point((int)x, (int)y));
 			}
 			else if (strLine == "--") {
 				g_vecROIlPoints.push_back(points_vec);
@@ -435,7 +436,7 @@ bool CVideoDemoDlg::ReadROIFile(CString cstrFileName) {
 UINT ThreadDect(LPVOID pParm) {
 	CVideoDemoDlg* pThis = (CVideoDemoDlg*)pParm;
 	InitializeCriticalSection(&g_critResultFrame);
-	int queue_size;
+	//int queue_size;
 	Mat dect_frame, res_frame, mask;
 	while (g_bPlay) {
 		if (g_bPause) {
@@ -477,7 +478,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case SMOKING:
-			
+			res_frame = g_dectDector.GetSmokeImg(dect_frame);
 			Sleep(10);
 			break;
 		default:
@@ -513,7 +514,7 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 		//更新视频时间
 		if (pThis->current_pos % (pThis->fps) == 0)
 		{
-			CTimeSpan ccts((double)pThis->current_pos / pThis->fps);
+			CTimeSpan ccts((__time64_t)pThis->current_pos / pThis->fps);
 			video_ctimes.Format(_T("%d:%d:%d /"), ccts.GetHours(), ccts.GetMinutes(), ccts.GetSeconds());
 			pThis->m_video_time_static.SetWindowTextW(video_ctimes + pThis->video_times);
 		}
@@ -654,8 +655,8 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		{
 			return;
 		}
-		fps = vCap->get(CV_CAP_PROP_FPS);
-		frames = vCap->get(CV_CAP_PROP_FRAME_COUNT);
+		fps = (int)vCap->get(CV_CAP_PROP_FPS);
+		frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
 
 		if (frames < 0)
 		{
@@ -667,7 +668,7 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		{
 			m_video_slider.SetRange(1, frames);
 			m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-			CTimeSpan cts((double)frames / fps);
+			CTimeSpan cts((__time64_t)frames / fps);
 			video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
 		}
 		Mat pMat;
@@ -895,16 +896,15 @@ void CVideoDemoDlg::OnBnClickedTextureButton()
 void CVideoDemoDlg::CloseVideo()
 {
 	g_bPlay = false;
-	Sleep(10);
 	try 
 	{
 		//TerminateThread(m_threadVideoCap->m_hThread, 0);
 		Sleep(10);
-		TerminateThread(m_threadVideoDect->m_hThread, 0);
+		m_threadVideoDect->SuspendThread();
 		Sleep(10);
+		m_detect_type = "当前无检测";
 	}
 	catch (Exception e){}
-
 
 	if (g_bSelectROI) {
 		g_bSelectROI = false;
@@ -921,6 +921,9 @@ void CVideoDemoDlg::CloseVideo()
 	ButtomControl(true, false, false, false);
 	cvReleaseCapture(&pCapture);//释放CvCapture结构
 	vCap->release();
+
+	g_dectDector.video_terminate();
+
 }
 
 
