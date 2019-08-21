@@ -473,8 +473,8 @@ UINT ThreadDect(LPVOID pParm) {
 			res_frame = g_dectDector.GetHelmetImg(dect_frame);
 			Sleep(10);
 			break;
-		case NIGHTENHANCE:
-			res_frame = iu.main_msrcr();
+		case NIGHTENHANCE://MSRCR增强
+			res_frame = iu.main_msrcr_ex();
 			Sleep(10);
 			break;
 		case SMOKING:

@@ -81,6 +81,15 @@
     <ClInclude Include="VideoHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HazeRemoval.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GuideFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkChannel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VideoDemo.cpp">
@@ -135,6 +144,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VideoHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HazeRemoval.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GuideFilter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkChannel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

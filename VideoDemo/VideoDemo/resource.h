@@ -59,6 +59,11 @@
 #define IDC_TEXTURE_BUTTON              1034
 #define IDC_CORNER_BUTTON               1035
 #define IDC_SMOKE_TEST_BUTTON           1036
+#define IDC_GRAYWORLD_BUTTON            1037
+#define IDC_LU_SHADOW_BUTTON            1038
+#define IDC_MSR_BUTTON                  1039
+#define IDC_BUTTON6                     1040
+#define IDC_DEHAZE_BUTTON               1040
 #define ID_32771                        32771
 #define ID_Menu                         32772
 #define ID_32773                        32773
@@ -70,7 +75,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1037
+#define _APS_NEXT_CONTROL_VALUE         1041
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

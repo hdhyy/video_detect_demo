@@ -23,20 +23,20 @@
     <ProjectGuid>{E8D4FEC9-9C8A-4A3D-8F84-E111AFC7E3B3}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>VideoDemo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -44,14 +44,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -79,16 +79,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\work\opencv346\build\install\include\opencv;E:\work\opencv346\build\install\include\opencv2;E:\work\opencv346\build\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\work\opencv346\build\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\install\include\opencv;E:\install\include\opencv2;E:\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>E:\work\opencv346\build\install\include\opencv2;E:\work\opencv346\build\install\include\opencv;E:\work\opencv346\build\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\work\opencv346\build\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\install\include\opencv2;E:\install\include\opencv;E:\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -192,12 +192,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CvvImage.h" />
+    <ClInclude Include="DarkChannel.h" />
     <ClInclude Include="DealWithTensorFlow.h" />
     <ClInclude Include="Detection.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="FeatureAnalyzer.h" />
     <ClInclude Include="FlameDecider.h" />
     <ClInclude Include="FlameDetector.h" />
+    <ClInclude Include="GuideFilter.h" />
+    <ClInclude Include="HazeRemoval.h" />
     <ClInclude Include="ImageUtils.h" />
     <ClInclude Include="MSRCR.h" />
     <ClInclude Include="PretrainDetector.h" />
@@ -216,11 +219,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CvvImage.cpp" />
+    <ClCompile Include="DarkChannel.cpp" />
     <ClCompile Include="DealWithTensorFlow.cpp" />
     <ClCompile Include="Detection.cpp" />
     <ClCompile Include="FeatureAnalyzer.cpp" />
     <ClCompile Include="FlameDecider.cpp" />
     <ClCompile Include="FlameDetector.cpp" />
+    <ClCompile Include="GuideFilter.cpp" />
+    <ClCompile Include="HazeRemoval.cpp" />
     <ClCompile Include="ImageUtils.cpp" />
     <ClCompile Include="MSRCR.cpp" />
     <ClCompile Include="PretrainDetector.cpp" />

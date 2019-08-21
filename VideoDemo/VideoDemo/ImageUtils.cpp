@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ImageUtils.h"
 #include "MSRCR.h"
+#include "HazeRemoval.h"
+
 using namespace std;
 using namespace cv;
 
@@ -36,6 +38,35 @@ Mat norm(const Mat& src) {
 		break;
 	}
 	return dst;
+}
+
+
+void ImageUtils::gray_world(Mat src, Mat &dst)
+{
+	vector<Mat> imageRGB;
+
+	//RGB三通道分离
+	split(src, imageRGB);
+
+	//求原始图像的RGB分量的均值
+	double R, G, B;
+	B = mean(imageRGB[0])[0];
+	G = mean(imageRGB[1])[0];
+	R = mean(imageRGB[2])[0];
+
+	//需要调整的RGB分量的增益
+	double KR, KG, KB;
+	KB = (R + G + B) / (3 * B);
+	KG = (R + G + B) / (3 * G);
+	KR = (R + G + B) / (3 * R);
+
+	//调整RGB三个通道各自的值
+	imageRGB[0] = imageRGB[0] * KB;
+	imageRGB[1] = imageRGB[1] * KG;
+	imageRGB[2] = imageRGB[2] * KR;
+
+	//RGB三通道图像合并
+	merge(imageRGB, src);
 }
 
 void process_video()
@@ -353,16 +384,258 @@ void ImageUtils::showMsrcrVideo()
     }
 }
 
+void CLAHE_test()
+{
+	// READ RGB color image and convert it to Lab
+	cv::Mat bgr_image = cv::imread("img/image.jpg");
+	cv::Mat lab_image;
+	cv::cvtColor(bgr_image, lab_image, CV_BGR2Lab);
+
+	// Extract the L channel
+	std::vector<cv::Mat> lab_planes(3);
+	cv::split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
+
+	// apply the CLAHE algorithm to the L channel
+	cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+	clahe->setClipLimit(4);
+	cv::Mat dst;
+	clahe->apply(lab_planes[0], dst);
+
+	// Merge the the color planes back into an Lab image
+	dst.copyTo(lab_planes[0]);
+	cv::merge(lab_planes, lab_image);
+
+	// convert back to RGB
+	cv::Mat image_clahe;
+	cv::cvtColor(lab_image, image_clahe, CV_Lab2BGR);
+
+	// display the results  (you might also want to see lab_planes[0] before and after).
+	cv::imshow("image original", bgr_image);
+	cv::imshow("image CLAHE", image_clahe);
+	cv::waitKey();
+}
+
 Mat ImageUtils::main_msrcr()
 {
-	///图像预处理
-	///图像处理部分
-	Mat imageConvert;
-	src.convertTo(imageConvert, src.type(), 1, 75);
-	imwrite("img/imageConvert.jpg", imageConvert);
-	//imshow("imageConvert", imageConvert);
 	Msrcr msrcr;
+	//clock_t start, end;
+	//start = clock();
 	msrcr.MultiScaleRetinexCR(src, dst, weight, sigema, 100, 100);
+	//end = clock();		//程序结束用时
+	//double endtime = (double)(end - start) / CLOCKS_PER_SEC;
+	//string t_s = to_string(endtime);
+	//putText(dst, t_s,Point(50, 50), cv::FONT_HERSHEY_PLAIN, 2, Scalar(255,0,0));
+	//imshow("in", dst);
+	gray_world(dst, dst);
 	imwrite("img/dst.jpg", dst);
 	return dst;
+}
+
+Mat ImageUtils::main_msrcr_ex()
+{
+	///图像预处理
+	//Mat imageConvert;
+	//src.convertTo(imageConvert, src.type(), 1, 75);
+	//imwrite("img/imageConvert.jpg", imageConvert);
+	//imshow("imageConvert", imageConvert);
+	Mat src_hsv;
+	src.copyTo(src_hsv);
+	cv::cvtColor(src_hsv, src_hsv, COLOR_BGR2HSV);
+
+	vector<Mat> src_imageHSV;
+	split(src_hsv, src_imageHSV);
+
+	//Mat image_ostu;
+	//cv::threshold(src_imageHSV[2], image_ostu, 200, 255, CV_THRESH_BINARY);
+	int nr = src.rows, nc = src.cols;
+	Mat mask = src_imageHSV[2] > 200;
+	cv::add(src_imageHSV[0], src_imageHSV[1], src_imageHSV[2], mask);
+
+	merge(src_imageHSV, src_hsv);
+	cvtColor(src_hsv, src_hsv, COLOR_HSV2BGR);
+
+	Mat src_yuv;
+	src.copyTo(src_yuv);
+	///图像处理部分
+	vector<Mat> src_imageYUV;
+	vector<Mat> dst_imageYUV;
+	//对原图做MSRCR
+	Msrcr msrcr;
+	msrcr.MultiScaleRetinexCR(src, dst, weight, sigema, 100, 100);
+	//原图和结果图都转换到YUV空间
+	cv::cvtColor(src_yuv, src_yuv, COLOR_BGR2YCrCb);
+	cv::cvtColor(dst, dst, COLOR_BGR2YCrCb);
+	//分割3通道
+	split(src_yuv, src_imageYUV);
+	split(dst, dst_imageYUV);
+
+	//使用结果的Y代替原图
+	src_imageYUV[0] = dst_imageYUV[0];
+	src_imageYUV[1] = (src_imageYUV[1] + dst_imageYUV[1]) / 2;
+	src_imageYUV[2] = (src_imageYUV[2] + dst_imageYUV[2]) / 2;
+	//src_imageYUV[1] += dst_imageYUV[0]*0.3;
+	//src_imageYUV[2] += dst_imageYUV[0]*0.3;
+	//src_imageYUV[2] *= 1.1;
+	//cv::equalizeHist(src_imageYUV[0], src_imageYUV[0]);
+	//合并3通道
+	merge(src_imageYUV, dst);
+	//将结果图转换为BGR空间
+	cv::cvtColor(dst, dst, COLOR_YCrCb2BGR);
+	//灰度世界白平衡
+	gray_world(dst, dst);
+	//imwrite("img/dst.jpg", dst);
+	return dst;
+}
+
+Mat ImageUtils::main_msr()
+{
+	///图像预处理
+	pyrDown(src, src, Size(src.cols / 2, src.rows / 2));
+	///图像处理部分
+	Msrcr msrcr;
+	msrcr.MultiScaleRetinex(src, dst, weight, sigema, 100, 100);
+
+	//色彩重建部分采用gimp的contrast-retinex
+	Mat src_yuv;
+	src.copyTo(src_yuv);
+	cvtColor(src_yuv, src_yuv, COLOR_BGR2YCrCb);
+	cvtColor(dst, dst, COLOR_BGR2YCrCb);
+	vector<Mat> src_imageYUV;
+	vector<Mat> dst_imageYUV;
+	split(src_yuv, src_imageYUV);
+	split(dst, dst_imageYUV);
+	src_imageYUV[0] = dst_imageYUV[0];
+	//dst_imageYUV[1] = (src_imageYUV[1]*3 + dst_imageYUV[1]) / 4;
+	//dst_imageYUV[2] = (src_imageYUV[2]*3 + dst_imageYUV[2]) / 4;
+
+	merge(src_imageYUV, dst);
+	cvtColor(dst, dst, COLOR_YCrCb2BGR);
+	pyrUp(dst, dst, Size(dst.cols * 2, dst.rows * 2));
+	gray_world(dst, dst);
+	return dst;
+}
+
+Mat ImageUtils::deHaze()
+{
+	//clock_t start, end;
+	//start = clock();
+	HazeRemoval(src, dst);
+	//end = clock();		//程序结束用时
+	//double endtime = (double)(end - start) / CLOCKS_PER_SEC;
+	return dst;
+}
+
+
+/*检测模糊度
+ 返回值为模糊度，值越大越模糊，越小越清晰，范围在0到几十，10以下相对较清晰，一般为5。
+ 调用时可在外部设定一个阀值，具体阈值根据实际情况决定，返回值超过阀值当作是模糊图片。
+ 算法所耗时间在1毫秒内
+*/
+int ImageUtils::video_blur_detect(const cv::Mat& srcimg)
+{
+	cv::Mat img;
+	cv::cvtColor(srcimg, img, CV_BGR2GRAY); // 将输入的图片转为灰度图，使用灰度图检测模糊度
+
+	//图片每行字节数及高  
+	int width = img.cols;
+	int height = img.rows;
+	ushort* sobelTable = new ushort[width * height];
+	memset(sobelTable, 0, width * height * sizeof(ushort));
+
+	int i, j, mul;
+	//指向图像首地址  
+	uchar* udata = img.data;
+	for (i = 1, mul = i * width; i < height - 1; i++, mul += width)
+		for (j = 1; j < width - 1; j++)
+
+			sobelTable[mul + j] = abs(udata[mul + j - width - 1] + 2 * udata[mul + j - 1] + udata[mul + j - 1 + width] - \
+				udata[mul + j + 1 - width] - 2 * udata[mul + j + 1] - udata[mul + j + width + 1]);
+
+	for (i = 1, mul = i * width; i < height - 1; i++, mul += width)
+		for (j = 1; j < width - 1; j++)
+			if (sobelTable[mul + j] < 50 || sobelTable[mul + j] <= sobelTable[mul + j - 1] || \
+				sobelTable[mul + j] <= sobelTable[mul + j + 1]) sobelTable[mul + j] = 0;
+
+	int totLen = 0;
+	int totCount = 1;
+
+	uchar suddenThre = 50;
+	uchar sameThre = 3;
+	//遍历图片  
+	for (i = 1, mul = i * width; i < height - 1; i++, mul += width)
+	{
+		for (j = 1; j < width - 1; j++)
+		{
+			if (sobelTable[mul + j])
+			{
+				int   count = 0;
+				uchar tmpThre = 5;
+				uchar max = udata[mul + j] > udata[mul + j - 1] ? 0 : 1;
+
+				for (int t = j; t > 0; t--)
+				{
+					count++;
+					if (abs(udata[mul + t] - udata[mul + t - 1]) > suddenThre)
+						break;
+
+					if (max && udata[mul + t] > udata[mul + t - 1])
+						break;
+
+					if (!max && udata[mul + t] < udata[mul + t - 1])
+						break;
+
+					int tmp = 0;
+					for (int s = t; s > 0; s--)
+					{
+						if (abs(udata[mul + t] - udata[mul + s]) < sameThre)
+						{
+							tmp++;
+							if (tmp > tmpThre) break;
+						}
+						else break;
+					}
+
+					if (tmp > tmpThre) break;
+				}
+
+				max = udata[mul + j] > udata[mul + j + 1] ? 0 : 1;
+
+				for (int t = j; t < width; t++)
+				{
+					count++;
+					if (abs(udata[mul + t] - udata[mul + t + 1]) > suddenThre)
+						break;
+
+					if (max && udata[mul + t] > udata[mul + t + 1])
+						break;
+
+					if (!max && udata[mul + t] < udata[mul + t + 1])
+						break;
+
+					int tmp = 0;
+					for (int s = t; s < width; s++)
+					{
+						if (abs(udata[mul + t] - udata[mul + s]) < sameThre)
+						{
+							tmp++;
+							if (tmp > tmpThre) break;
+						}
+						else break;
+					}
+
+					if (tmp > tmpThre) break;
+				}
+				count--;
+
+				totCount++;
+				totLen += count;
+			}
+		}
+	}
+	//模糊度
+	float result = (float)totLen / totCount;
+	delete[] sobelTable;
+	sobelTable = NULL;
+
+	return result;
 }

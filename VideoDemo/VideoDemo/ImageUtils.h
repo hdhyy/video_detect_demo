@@ -13,7 +13,12 @@ public:
 	void displayCam();
 	void highlightMask();
 	void showMsrcrVideo();
+	void gray_world(cv::Mat src, cv::Mat &dst);
 	cv::Mat main_msrcr();
+	cv::Mat main_msr();
+	cv::Mat main_msrcr_ex();
+	cv::Mat deHaze();
+	int ImageUtils::video_blur_detect(const cv::Mat& srcimg);
 protected:
 	cv::Mat src;
 	cv::Mat dst;

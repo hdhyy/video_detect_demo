@@ -6,6 +6,7 @@
 
 DealWithTensorFlow::DealWithTensorFlow()
 {
+	detectionMat = nullptr;
 }
 
 
@@ -13,6 +14,7 @@ DealWithTensorFlow::DealWithTensorFlow(int height, int width)
 {
 	inHeight = height;
 	inWidth = width;
+	detectionMat = nullptr;
 	WHRatio = inWidth / (float)inHeight;
 }
 

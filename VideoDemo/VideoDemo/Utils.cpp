@@ -8,12 +8,14 @@
 #include "stdafx.h"
 #include "Utils.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
 void getCurTime(string& curTime)
 {
 	time_t rawtime;
-	struct tm* timeinfo;
+	struct tm* timeinfo{};
 	time(&rawtime);
-	timeinfo = localtime(&rawtime);
+	localtime_s(timeinfo , &rawtime);
 
 	char buffer[128];
 	strftime(buffer, 128, "%m-%d_%H-%M-%S", timeinfo);

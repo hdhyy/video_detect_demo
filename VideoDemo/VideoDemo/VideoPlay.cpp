@@ -43,12 +43,14 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_ROI_BUTTON, &VideoPlay::OnBnClickedRoiButton)
 	ON_BN_CLICKED(IDC_SMOKE_TEST_BUTTON, &VideoPlay::OnBnClickedSmokeTestButton)
 	ON_BN_CLICKED(IDC_FLAME_TEST_BUTTON, &VideoPlay::OnBnClickedFlameTestButton)
+	ON_BN_CLICKED(IDC_GRAYWORLD_BUTTON, &VideoPlay::OnBnClickedGrayworldButton)
+	ON_BN_CLICKED(IDC_LU_SHADOW_BUTTON, &VideoPlay::OnBnClickedLuShadowButton)
+	ON_BN_CLICKED(IDC_MSR_BUTTON, &VideoPlay::OnBnClickedMsrButton)
+	ON_BN_CLICKED(IDC_DEHAZE_BUTTON, &VideoPlay::OnBnClickedDehazeButton)
 END_MESSAGE_MAP()
 
 
 // VideoPlay 消息处理程序
-
-
 void VideoPlay::OnBnClickedCamButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -311,4 +313,110 @@ void VideoPlay::OnBnClickedFlameTestButton()
 	default:
 		break;
 	}
+}
+
+
+void VideoPlay::OnBnClickedGrayworldButton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Mat src = imread("img/grayworld_src.jpg");
+	ImageUtils iu(&src);
+	iu.gray_world(src, src);
+
+	cvtColor(src, src, COLOR_BGR2YUV);
+
+	vector<Mat> src_imageYUV;
+	split(src, src_imageYUV);
+
+	merge(src_imageYUV, src);
+	
+	cvtColor(src, src, COLOR_YUV2BGR);
+	imshow("result", src);
+	waitKey(0);
+}
+
+
+void VideoPlay::OnBnClickedLuShadowButton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Mat src = imread("img/grayworld_src.jpg");
+
+	vector<Mat> bgr;
+	split(src, bgr);
+
+	Mat img_lu;
+	cvtColor(src, img_lu, COLOR_BGR2YCrCb);
+	vector<Mat> img_YCRCB;
+	split(img_lu, img_YCRCB);
+
+	
+
+	// we have to find luminance of the pixel
+	// here 0.0 <= source.r/source.g/source.b <= 1.0 
+	// and 0.0 <= luminance <= 1.0
+	Mat src_d;
+	src.convertTo(src_d, CV_32F);
+	src_d /= 255;
+	imshow("0~1", src_d);
+	Mat lum = img_YCRCB[0];
+	
+	Mat lum_d;
+	lum.convertTo(lum_d, CV_32F);
+	lum_d /= 255;
+	imshow("0~1", lum_d);
+	//double luminance = cv::sqrt(lumR * cv::pow(source.r, 2.0) + lumG * pow(source.g, 2.0) + lumB * pow(source.b, 2.0));
+
+	// here highlights and and shadows are our desired filter amounts
+	// highlights/shadows should be <= -1.0 and <= +1.0
+	// highlights = shadows = 0.0 by default
+	// you can change 0.05 and 8.0 according to your needs but okay for me
+	//double highlights = 1.0, shadows = 1.0;
+	//Mat h = highlights * 0.05 * (pow(8.0, lum_d) - 1.0);
+	//Mat s = shadows * 0.05 * (pow(8.0, 1.0 - lum_d) - 1.0);
+
+	//output.r = source.r + h + s;
+	//output.g = source.g + h + s;
+	//output.b = source.b + h + s;
+}
+
+
+void VideoPlay::OnBnClickedMsrButton()
+{
+	CString picPath;   //定义图片路径变量
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT,
+		NULL, this);   //选择文件对话框
+	if (dlg.DoModal() != IDOK)
+	{
+		return;
+	}
+	picPath = dlg.GetPathName();  //获取图片路径
+	//CString to string  使用这个方法记得字符集选用“使用多字节字符”，不然会报错
+	string picpath = CT2A(picPath.GetBuffer());
+
+	Mat image = cv::imread(picpath);
+
+	ImageUtils iu(&image);
+	frame = iu.main_msr();
+	showImage();
+}
+
+
+void VideoPlay::OnBnClickedDehazeButton()
+{
+	CString picPath;   //定义图片路径变量
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT,
+		NULL, this);   //选择文件对话框
+	if (dlg.DoModal() != IDOK)
+	{
+		return;
+	}
+	picPath = dlg.GetPathName();  //获取图片路径
+	//CString to string  使用这个方法记得字符集选用“使用多字节字符”，不然会报错
+	string picpath = CT2A(picPath.GetBuffer());
+
+	Mat image = cv::imread(picpath);
+
+	ImageUtils iu(&image);
+	frame = iu.deHaze();
+	showImage();
 }

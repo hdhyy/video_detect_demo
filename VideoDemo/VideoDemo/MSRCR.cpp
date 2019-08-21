@@ -704,5 +704,6 @@ void Msrcr::MultiScaleRetinexCR(Mat src, Mat &dst, vector<double> weights, vecto
 	IplImage tmp_ipl;
 	tmp_ipl = IplImage(src);
 	MultiScaleRetinexCR(&tmp_ipl, weights, sigmas, gain, offset, restoration_factor, color_gain);
+	
 	dst = cvarrToMat(&tmp_ipl);
 }

@@ -40,4 +40,8 @@ public:
 	afx_msg void OnBnClickedRoiButton();
 	afx_msg void OnBnClickedSmokeTestButton();
 	afx_msg void OnBnClickedFlameTestButton();
+	afx_msg void OnBnClickedGrayworldButton();
+	afx_msg void OnBnClickedLuShadowButton();
+	afx_msg void OnBnClickedMsrButton();
+	afx_msg void OnBnClickedDehazeButton();
 };

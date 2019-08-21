@@ -7,6 +7,12 @@
 #include <vector>
 #include <queue>
 
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
+
 #include "CvvImage.h"
 #include <cxcore.hpp>
 #include <cvaux.hpp>
