@@ -4,6 +4,7 @@
 class ImageUtils
 {
 public:
+	ImageUtils();
 	ImageUtils(cv::Mat *src_p);
 	virtual ~ImageUtils();
 	void homo();
@@ -18,7 +19,9 @@ public:
 	cv::Mat main_msr();
 	cv::Mat main_msrcr_ex();
 	cv::Mat deHaze();
-	int ImageUtils::video_blur_detect(const cv::Mat& srcimg);
+	cv::Mat ImageUtils::video_blur_detect();
+	cv::Mat insect_detect();
+	void set_src(cv::Mat& src);
 protected:
 	cv::Mat src;
 	cv::Mat dst;
@@ -29,5 +32,8 @@ protected:
 	int m_spatialRad = 10;
 	int m_colorRad = 20;
 	int m_maxPryLevel = 1;
+	int frame_count;
+	cv::Ptr<cv::SimpleBlobDetector> detector;
+	cv::Ptr<cv::BackgroundSubtractorMOG2> bgSubtractor;
 };
 

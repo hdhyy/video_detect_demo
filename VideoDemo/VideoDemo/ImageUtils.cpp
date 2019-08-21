@@ -6,6 +6,11 @@
 using namespace std;
 using namespace cv;
 
+
+ImageUtils::ImageUtils()
+{
+
+}
 ImageUtils::ImageUtils(Mat *src_p)
 {
 	for (int i = 0; i < 3; i++)
@@ -15,6 +20,35 @@ ImageUtils::ImageUtils(Mat *src_p)
 	sigema.push_back(150);
 	sigema.push_back(300);
 	src = *src_p;
+
+	//昆虫检测的初始化代码
+	Mat frame, mask;
+	bgSubtractor = createBackgroundSubtractorMOG2(1000, 160, false);
+
+	frame_count = 1;
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+
+	SimpleBlobDetector::Params params;
+	//阈值控制
+	params.minThreshold = 80;
+	params.maxThreshold = 120;
+	//像素面积大小控制
+	params.filterByArea = true;
+	params.minArea = 9;
+	params.maxArea = 400;
+	//形状（凸）
+	params.filterByCircularity = false;
+	params.minCircularity = 0.7;
+	//形状（凹）
+	params.filterByConvexity = false;
+	params.minConvexity = 0.9;
+	//形状（圆）
+	params.filterByInertia = false;
+	params.minInertiaRatio = 0.5;
+	params.filterByColor = true;
+	params.blobColor = 255;
+	detector = cv::SimpleBlobDetector::create(params);
 }
 
 
@@ -22,6 +56,11 @@ ImageUtils::~ImageUtils()
 {
 }
 
+
+void ImageUtils::set_src(cv::Mat& src)
+{
+	this->src = src;
+}
 // Normalizes a given image into a value range between 0 and 255.  
 Mat norm(const Mat& src) {
 	// Create and return normalized image:  
@@ -525,16 +564,68 @@ Mat ImageUtils::deHaze()
 	return dst;
 }
 
+int filter_contour_area(vector<vector<Point>> contours, int area = 5)
+{
+	int count = 0;
+	for (int i = 0; i < contours.size(); i++)
+	{
+		if ((contourArea(contours[i], false)) > area)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+cv::Mat ImageUtils::insect_detect()
+{
+	++frame_count;
+	Mat mask;
+	Mat &frame = src;
+	bgSubtractor->apply(frame, mask, 0.001);
+	Mat element1 = getStructuringElement(MORPH_RECT, Size(3, 3));
+	Mat element2 = getStructuringElement(MORPH_RECT, Size(11, 11));
+	Mat mask_tmp = mask.clone();
+	morphologyEx(mask_tmp, mask_tmp, MORPH_OPEN, element1);
+	morphologyEx(mask_tmp, mask_tmp, MORPH_CLOSE, element2);
+	morphologyEx(mask_tmp, mask_tmp, MORPH_CLOSE, element2);
+	morphologyEx(mask_tmp, mask_tmp, MORPH_CLOSE, element2);
+	//dilate(mask_tmp, mask_tmp, element1);
+	/*Mat mask_tmp = mask.clone();
+	findContours(mask_tmp, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);*/
+	vector<KeyPoint> keypoints;
+	detector->detect(mask_tmp, keypoints);
+	if (frame_count < 400)
+	{
+		string temp = "Gaussian Mixture Modeling. Progress: " + to_string(frame_count / 4) + "\%";
+		putText(frame, temp, cvPoint(30, 30),
+			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
+	}
+	else
+	{
+		putText(frame, "Detected active insect number: " + to_string(keypoints.size()), cvPoint(30, 30),
+			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
+
+		drawKeypoints(frame, keypoints, frame, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+	}
+
+	//count = filter_contour_area(contours, 5);
+	/*if (frame_count > 400)
+		cout << "insect number: " << count << endl;*/
+
+	return frame;
+}
 
 /*检测模糊度
  返回值为模糊度，值越大越模糊，越小越清晰，范围在0到几十，10以下相对较清晰，一般为5。
  调用时可在外部设定一个阀值，具体阈值根据实际情况决定，返回值超过阀值当作是模糊图片。
  算法所耗时间在1毫秒内
 */
-int ImageUtils::video_blur_detect(const cv::Mat& srcimg)
+Mat ImageUtils::video_blur_detect()
 {
 	cv::Mat img;
-	cv::cvtColor(srcimg, img, CV_BGR2GRAY); // 将输入的图片转为灰度图，使用灰度图检测模糊度
+	cv::cvtColor(src, img, CV_BGR2GRAY); // 将输入的图片转为灰度图，使用灰度图检测模糊度
 
 	//图片每行字节数及高  
 	int width = img.cols;
@@ -637,5 +728,9 @@ int ImageUtils::video_blur_detect(const cv::Mat& srcimg)
 	delete[] sobelTable;
 	sobelTable = NULL;
 
-	return result;
+	string temp = "Gaussian Mixture Modeling. Progress: " + to_string(result) + "\%";
+	putText(src, temp, cvPoint(30, 30),
+		FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
+
+	return src;
 }

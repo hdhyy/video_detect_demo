@@ -44,4 +44,6 @@ public:
 	afx_msg void OnBnClickedLuShadowButton();
 	afx_msg void OnBnClickedMsrButton();
 	afx_msg void OnBnClickedDehazeButton();
+	afx_msg void OnBnClickedInsectDetectButton();
+	afx_msg void OnBnClickedBlurButton();
 };

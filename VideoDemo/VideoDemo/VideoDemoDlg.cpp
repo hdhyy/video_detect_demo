@@ -29,6 +29,8 @@ int terminate_flag;
 #define HUMANTRACE 4
 #define SMOKING 5
 #define FLAME 6
+#define INSECT_DETECT 7
+#define BLUR_DETECT 8
 
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
@@ -154,6 +156,8 @@ BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
 	//ON_MESSAGE(WM_HDHYY, &CVideoDemoDlg::OnHdhyy)
 	ON_BN_CLICKED(IDC_TEXTURE_BUTTON, &CVideoDemoDlg::OnBnClickedTextureButton)
 	ON_BN_CLICKED(IDC_CORNER_BUTTON, &CVideoDemoDlg::OnBnClickedCornerButton)
+	ON_BN_CLICKED(IDC_INSECT_BUTTON, &CVideoDemoDlg::OnBnClickedInsectButton)
+	ON_BN_CLICKED(IDC_BLUR_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedBlurDetectButton)
 END_MESSAGE_MAP()
 
 
@@ -438,6 +442,7 @@ UINT ThreadDect(LPVOID pParm) {
 	InitializeCriticalSection(&g_critResultFrame);
 	//int queue_size;
 	Mat dect_frame, res_frame, mask;
+	ImageUtils iu(&dect_frame);
 	while (g_bPlay) {
 		if (g_bPause) {
 			continue;
@@ -458,7 +463,7 @@ UINT ThreadDect(LPVOID pParm) {
 			bitwise_and(dect_frame, g_matROIMask, dect_frame);
 		}
 		//resize(dect_frame, dect_frame, Size(704, 576));
-		ImageUtils iu(&dect_frame);
+		iu.set_src(dect_frame);
 		Sleep(10);
 		switch (g_iDectType) {
 		case TEXTURE://纹理检测
@@ -479,6 +484,14 @@ UINT ThreadDect(LPVOID pParm) {
 			break;
 		case SMOKING:
 			res_frame = g_dectDector.GetSmokeImg(dect_frame);
+			Sleep(10);
+			break;
+		case INSECT_DETECT:
+			res_frame = iu.insect_detect();
+			Sleep(10);
+			break;
+		case BLUR_DETECT:
+			res_frame = iu.video_blur_detect();
 			Sleep(10);
 			break;
 		default:
@@ -933,5 +946,24 @@ void CVideoDemoDlg::OnBnClickedCornerButton()
 	m_threadVideoDect->ResumeThread();
 	g_iDectType = ANGPOINT;
 	m_detect_type = "角点检测";
+	UpdateData(FALSE);
+}
+
+
+void CVideoDemoDlg::OnBnClickedInsectButton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = INSECT_DETECT;
+	m_detect_type = "虫子检测";
+	UpdateData(FALSE);
+}
+
+
+void CVideoDemoDlg::OnBnClickedBlurDetectButton()
+{
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = BLUR_DETECT;
+	m_detect_type = "套袋检测";
 	UpdateData(FALSE);
 }

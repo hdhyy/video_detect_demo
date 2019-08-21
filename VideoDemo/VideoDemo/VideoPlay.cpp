@@ -47,6 +47,8 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_LU_SHADOW_BUTTON, &VideoPlay::OnBnClickedLuShadowButton)
 	ON_BN_CLICKED(IDC_MSR_BUTTON, &VideoPlay::OnBnClickedMsrButton)
 	ON_BN_CLICKED(IDC_DEHAZE_BUTTON, &VideoPlay::OnBnClickedDehazeButton)
+	ON_BN_CLICKED(IDC_INSECT_DETECT_BUTTON, &VideoPlay::OnBnClickedInsectDetectButton)
+	ON_BN_CLICKED(IDC_BLUR_BUTTON, &VideoPlay::OnBnClickedBlurButton)
 END_MESSAGE_MAP()
 
 
@@ -419,4 +421,17 @@ void VideoPlay::OnBnClickedDehazeButton()
 	ImageUtils iu(&image);
 	frame = iu.deHaze();
 	showImage();
+}
+
+
+void VideoPlay::OnBnClickedInsectDetectButton()
+{
+	// TODO:image util已修改，需要增加单帧检测方法
+
+}
+
+
+void VideoPlay::OnBnClickedBlurButton()
+{
+	// TODO: 模糊度检测测试代码,需要修改
 }

@@ -113,4 +113,6 @@ public:
 	CButton SmokingButton;
 	CButton ROISetButton;
 	CButton ShowROIButton;
+	afx_msg void OnBnClickedInsectButton();
+	afx_msg void OnBnClickedBlurDetectButton();
 };
