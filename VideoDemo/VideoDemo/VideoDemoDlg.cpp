@@ -38,6 +38,7 @@ int terminate_flag;
 //全局变量
 static bool g_bPlay = false;
 static bool g_bPause = false;
+static bool g_bSelectROI = false;
 static int g_iDectType = -1;
 double scale;
 Mat g_matSourceFrame;
@@ -45,7 +46,6 @@ int real_width;
 int real_height;
 static vector<vector<Point>>g_vecROIlPoints;
 static Mat g_matROIMask;
-static bool g_bSelectROI = false;
 static UINT32 g_iTotalFrameNum;
 static UINT32 g_iCurFrameIdx;
 //检测器
@@ -548,8 +548,11 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 		Sleep(1000/ pThis->fps);//间隔33毫秒
 		if (!pThis->scrolling)
 		{
-			(*pThis->vCap) >> pMat;
-			
+			try
+			{
+				(*pThis->vCap) >> pMat;
+			}
+			catch (Exception e) {}
 			if (g_bSelectROI) {//画出ROI区域
 				for (int i = 0; i < g_vecROIlPoints.size(); i++) {
 					drawContours(pMat, g_vecROIlPoints, i, Scalar(0, 0, 255), 3);
@@ -714,11 +717,11 @@ void CVideoDemoDlg::OnBnClickedVideoStartButton()
 	start_event.SetEvent();
 
 	hThreadSend = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PlayVideo, (LPVOID)this, 0, &ThreadSendID);
-	CloseHandle(hThreadSend);
 	ButtomControl(false, false, true, true);
 
 	//挂起检测线程
 	m_threadVideoDect = AfxBeginThread(ThreadDect, this, 0, 0, CREATE_SUSPENDED, NULL);
+	CloseHandle(hThreadSend);
 }
 
 
@@ -933,10 +936,10 @@ void CVideoDemoDlg::CloseVideo()
 
 	ButtomControl(true, false, false, false);
 	cvReleaseCapture(&pCapture);//释放CvCapture结构
-	vCap->release();
 
 	g_dectDector.video_terminate();
-
+	Sleep(100);
+	vCap->release();
 }
 
 
