@@ -39,6 +39,9 @@ VideoDemo/VideoDemo/models/
 *.db
 *.ipch
 
+#naive model
+*.dat
+
 # CaffeModel
 *.prototxt
 *.caffemodel
