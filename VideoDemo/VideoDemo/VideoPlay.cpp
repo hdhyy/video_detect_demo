@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_DEHAZE_BUTTON, &VideoPlay::OnBnClickedDehazeButton)
 	ON_BN_CLICKED(IDC_INSECT_DETECT_BUTTON, &VideoPlay::OnBnClickedInsectDetectButton)
 	ON_BN_CLICKED(IDC_BLUR_BUTTON, &VideoPlay::OnBnClickedBlurButton)
+	ON_BN_CLICKED(IDC_SETTA_BUTTON, &VideoPlay::OnBnClickedSettaButton)
 END_MESSAGE_MAP()
 
 
@@ -434,4 +435,12 @@ void VideoPlay::OnBnClickedInsectDetectButton()
 void VideoPlay::OnBnClickedBlurButton()
 {
 	// TODO: 模糊度检测测试代码,需要修改
+}
+
+
+void VideoPlay::OnBnClickedSettaButton()
+{
+	Mat image = cv::imread("1.jpg");
+	ImageUtils iu(&image);
+	iu.face_dr();
 }

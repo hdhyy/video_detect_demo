@@ -79,16 +79,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\install\include\opencv;E:\install\include\opencv2;E:\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\settaface2\include;E:\install\include\opencv;E:\install\include\opencv2;E:\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\settaface2\lib;E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>E:\install\include\opencv2;E:\install\include\opencv;E:\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\settaface2\include;E:\install\include\opencv2;E:\install\include\opencv;E:\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\settaface2\lib;E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -123,7 +123,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>opencv_world346d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world346d.lib;SeetaFaceDetector-d.lib;SeetaFaceLandmarker-d.lib;SeetaFaceRecognizer-d.lib;SeetaNet-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -177,7 +177,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opencv_world346.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world346.lib;SeetaFaceDetector.lib;SeetaFaceLandmarker.lib;SeetaFaceRecognizer.lib;SeetaNet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -196,6 +196,7 @@
     <ClInclude Include="DealWithTensorFlow.h" />
     <ClInclude Include="Detection.h" />
     <ClInclude Include="dirent.h" />
+    <ClInclude Include="FaceFactory.h" />
     <ClInclude Include="FeatureAnalyzer.h" />
     <ClInclude Include="FlameDecider.h" />
     <ClInclude Include="FlameDetector.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="DarkChannel.cpp" />
     <ClCompile Include="DealWithTensorFlow.cpp" />
     <ClCompile Include="Detection.cpp" />
+    <ClCompile Include="FaceFactory.cpp" />
     <ClCompile Include="FeatureAnalyzer.cpp" />
     <ClCompile Include="FlameDecider.cpp" />
     <ClCompile Include="FlameDetector.cpp" />

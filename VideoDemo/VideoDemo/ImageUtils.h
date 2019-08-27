@@ -1,5 +1,15 @@
 #pragma once
 #include <opencv2\opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <array>
+#include <map>
+#include <iostream>
+
+#include <io.h>  
+#include <fcntl.h>
+
+#include "FaceFactory.h"
 
 class ImageUtils
 {
@@ -21,10 +31,13 @@ public:
 	cv::Mat deHaze();
 	cv::Mat ImageUtils::video_blur_detect();
 	cv::Mat insect_detect();
+	cv::Mat face_detect();
 	void set_src(cv::Mat& src);
+	void face_dr();
 protected:
 	cv::Mat src;
 	cv::Mat dst;
+	FaceFactory fft;
 	IplImage* src_m;  //source image
 	IplImage* dst_m;  //the dst image after meanshift
 	std::vector<double> sigema;

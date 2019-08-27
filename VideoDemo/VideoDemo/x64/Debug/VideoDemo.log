@@ -1,4 +1,6 @@
 ﻿  ImageUtils.cpp
-  VideoDemoDlg.cpp
-  正在生成代码...
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(41,29): warning C4305:  “=”: 从“double”到“float”截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(44,27): warning C4305:  “=”: 从“double”到“float”截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(599,88): warning C4129:  “%”: 不可识别的字符转义序列
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(730,78): warning C4129:  “%”: 不可识别的字符转义序列
   VideoDemo.vcxproj -> D:\github\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe

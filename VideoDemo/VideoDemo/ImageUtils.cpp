@@ -9,7 +9,6 @@ using namespace cv;
 
 ImageUtils::ImageUtils()
 {
-
 }
 ImageUtils::ImageUtils(Mat *src_p)
 {
@@ -734,3 +733,25 @@ Mat ImageUtils::video_blur_detect()
 
 	return src;
 }
+
+void InitConsole()
+{
+	int nRet = 0;
+	FILE* fp;
+	AllocConsole();
+	nRet = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+	fp = _fdopen(nRet, "w");
+	*stdout = *fp;
+	setvbuf(stdout, NULL, _IONBF, 0);
+}
+
+Mat ImageUtils::face_detect()
+{
+	return fft.get_detect_result(SEETAFACE2, &src);
+}
+
+void ImageUtils::face_dr()
+{
+	fft.play_demo();
+}
+

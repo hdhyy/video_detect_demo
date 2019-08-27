@@ -31,6 +31,8 @@ int terminate_flag;
 #define FLAME 6
 #define INSECT_DETECT 7
 #define BLUR_DETECT 8
+#define FACE_DETECT 9
+#define FACE_DETECT_RECOG 10
 
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
@@ -158,6 +160,7 @@ BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CORNER_BUTTON, &CVideoDemoDlg::OnBnClickedCornerButton)
 	ON_BN_CLICKED(IDC_INSECT_BUTTON, &CVideoDemoDlg::OnBnClickedInsectButton)
 	ON_BN_CLICKED(IDC_BLUR_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedBlurDetectButton)
+	ON_BN_CLICKED(IDC_FACE_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedFaceDetectButton)
 END_MESSAGE_MAP()
 
 
@@ -492,6 +495,10 @@ UINT ThreadDect(LPVOID pParm) {
 			break;
 		case BLUR_DETECT:
 			res_frame = iu.video_blur_detect();
+			Sleep(10);
+			break;
+		case FACE_DETECT:
+			res_frame = iu.face_detect();
 			Sleep(10);
 			break;
 		default:
@@ -968,5 +975,14 @@ void CVideoDemoDlg::OnBnClickedBlurDetectButton()
 	m_threadVideoDect->ResumeThread();
 	g_iDectType = BLUR_DETECT;
 	m_detect_type = "套袋检测";
+	UpdateData(FALSE);
+}
+
+
+void CVideoDemoDlg::OnBnClickedFaceDetectButton()
+{
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = FACE_DETECT;
+	m_detect_type = "人脸检测";
 	UpdateData(FALSE);
 }

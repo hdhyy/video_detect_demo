@@ -90,6 +90,9 @@
     <ClInclude Include="DarkChannel.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FaceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VideoDemo.cpp">
@@ -153,6 +156,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DarkChannel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

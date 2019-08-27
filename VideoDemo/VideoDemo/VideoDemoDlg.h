@@ -115,4 +115,5 @@ public:
 	CButton ShowROIButton;
 	afx_msg void OnBnClickedInsectButton();
 	afx_msg void OnBnClickedBlurDetectButton();
+	afx_msg void OnBnClickedFaceDetectButton();
 };

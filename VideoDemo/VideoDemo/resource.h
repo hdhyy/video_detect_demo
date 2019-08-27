@@ -66,8 +66,10 @@
 #define IDC_INSECT_DETECT_BUTTON        1041
 #define IDC_INSECT_BUTTON               1042
 #define IDC_BLUR_BUTTON                 1043
-#define IDC_BUTTON6                     1045
 #define IDC_BLUR_DETECT_BUTTON          1045
+#define IDC_SETTA_BUTTON                1046
+#define IDC_BUTTON2                     1047
+#define IDC_FACE_DETECT_BUTTON          1047
 #define ID_32771                        32771
 #define ID_Menu                         32772
 #define ID_32773                        32773
@@ -79,7 +81,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1046
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
