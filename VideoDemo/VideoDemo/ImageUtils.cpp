@@ -755,3 +755,8 @@ void ImageUtils::face_dr()
 	fft.play_demo();
 }
 
+void ImageUtils::otk_dr()
+{
+	otk.play_demo();
+}
+

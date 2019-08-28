@@ -2,16 +2,16 @@
 #include "Detection.h"
 
 
-Detector::Detector()
+My_Detector::My_Detector()
 {
 }
 
 
-Detector::~Detector()
+My_Detector::~My_Detector()
 {
 }
 
-Mat Detector::GetCannyImg(Mat img) {
+Mat My_Detector::GetCannyImg(Mat img) {
 	Mat dst_img, edge, gray_img;
 
 	dst_img.create(img.size(), img.type());
@@ -24,7 +24,7 @@ Mat Detector::GetCannyImg(Mat img) {
 	return edge;
 }
 
-Mat Detector::GetCannyImg(IplImage *img)
+Mat My_Detector::GetCannyImg(IplImage *img)
 {
 	//Canny±ßÔµ¼ì²âËã×Ó
 	IplImage *gray = 0, *edge = 0;
@@ -38,7 +38,7 @@ Mat Detector::GetCannyImg(IplImage *img)
 	return cvarrToMat(img);
 }
 
-Mat Detector::GetCornerImg(Mat img) {
+Mat My_Detector::GetCornerImg(Mat img) {
 	Mat dst_img, norm_img, scaled_img, img1, gray_img;
 	img1 = img.clone();
 	dst_img = Mat::zeros(img.size(), CV_32FC1);
@@ -69,7 +69,7 @@ Mat Detector::GetCornerImg(Mat img) {
 	return img1;
 }
 
-Mat Detector::GetHelmetImg(Mat img)
+Mat My_Detector::GetHelmetImg(Mat img)
 {
 	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
 	string prototxt = "models/pelee/deploy_inference.prototxt";
@@ -98,7 +98,7 @@ CvMat* pFrameMat = NULL;
 CvMat* pFrMat = NULL;
 CvMat* pBkMat = NULL;
 
-void Detector::video_terminate()
+void My_Detector::video_terminate()
 {
 	nFrmNum = 0;
 	cvReleaseImage(&pFrImg);
@@ -205,13 +205,13 @@ Mat smoke_process(IplImage *pFrame)
 	return cvarrToMat(pFrame);
 }
 
-Mat Detector::GetSmokeImg(Mat img)
+Mat My_Detector::GetSmokeImg(Mat img)
 {
 	IplImage *smoke_img = &(IplImage)img;
 	return smoke_process(smoke_img);
 }
 
-void Detector::smoke_detect()
+void My_Detector::smoke_detect()
 {
 	const auto T1 = 40;  //15-55   
 	const auto T2 = 210;  //190-245   

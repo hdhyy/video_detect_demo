@@ -5,11 +5,11 @@
 
 using namespace cv;
 
-class Detector
+class My_Detector
 {
 public:
-	Detector();
-	virtual ~Detector();
+	My_Detector();
+	virtual ~My_Detector();
 
 public:
 	Mat GetCannyImg(Mat img);

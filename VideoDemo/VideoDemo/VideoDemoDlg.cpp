@@ -51,7 +51,7 @@ static Mat g_matROIMask;
 static UINT32 g_iTotalFrameNum;
 static UINT32 g_iCurFrameIdx;
 //检测器
-static Detector g_dectDector;
+static My_Detector g_dectDector;
 //线程锁和缓冲队列
 static CRITICAL_SECTION g_critSourceFrame;
 static queue<Mat> g_queueSourceFrame;

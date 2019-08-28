@@ -47,4 +47,5 @@ public:
 	afx_msg void OnBnClickedInsectDetectButton();
 	afx_msg void OnBnClickedBlurButton();
 	afx_msg void OnBnClickedSettaButton();
+	afx_msg void OnBnClickedOtkButton();
 };

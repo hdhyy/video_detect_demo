@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_INSECT_DETECT_BUTTON, &VideoPlay::OnBnClickedInsectDetectButton)
 	ON_BN_CLICKED(IDC_BLUR_BUTTON, &VideoPlay::OnBnClickedBlurButton)
 	ON_BN_CLICKED(IDC_SETTA_BUTTON, &VideoPlay::OnBnClickedSettaButton)
+	ON_BN_CLICKED(IDC_OTK_BUTTON, &VideoPlay::OnBnClickedOtkButton)
 END_MESSAGE_MAP()
 
 
@@ -285,7 +286,7 @@ void VideoPlay::OnBnClickedRoiButton()
 void VideoPlay::OnBnClickedSmokeTestButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	Detector *detector = new Detector();
+	My_Detector *detector = new My_Detector();
 	detector->smoke_detect();
 }
 
@@ -443,4 +444,12 @@ void VideoPlay::OnBnClickedSettaButton()
 	Mat image = cv::imread("1.jpg");
 	ImageUtils iu(&image);
 	iu.face_dr();
+}
+
+
+void VideoPlay::OnBnClickedOtkButton()
+{
+	Mat image = cv::imread("1.jpg");
+	ImageUtils iu(&image);
+	iu.otk_dr();
 }

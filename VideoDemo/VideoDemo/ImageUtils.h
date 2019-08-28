@@ -10,6 +10,7 @@
 #include <fcntl.h>
 
 #include "FaceFactory.h"
+#include "ObjectTracking.h"
 
 class ImageUtils
 {
@@ -23,21 +24,24 @@ public:
 	void eHist();
 	void displayCam();
 	void highlightMask();
+
 	void showMsrcrVideo();
 	void gray_world(cv::Mat src, cv::Mat &dst);
 	cv::Mat main_msrcr();
 	cv::Mat main_msr();
 	cv::Mat main_msrcr_ex();
 	cv::Mat deHaze();
-	cv::Mat ImageUtils::video_blur_detect();
+	cv::Mat video_blur_detect();
 	cv::Mat insect_detect();
 	cv::Mat face_detect();
 	void set_src(cv::Mat& src);
 	void face_dr();
+	void otk_dr();
 protected:
 	cv::Mat src;
 	cv::Mat dst;
 	FaceFactory fft;
+	ObjectTracking otk;
 	IplImage* src_m;  //source image
 	IplImage* dst_m;  //the dst image after meanshift
 	std::vector<double> sigema;

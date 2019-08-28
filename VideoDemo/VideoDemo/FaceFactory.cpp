@@ -3,9 +3,9 @@
 
 FaceFactory::FaceFactory()
 {
-	FD_model = new seeta::ModelSetting("model/seetaface/fd_2_00.dat", device, id);
-	PD_model = new seeta::ModelSetting("model/seetaface/pd_2_00_pts5.dat", device, id);
-	FR_model = new seeta::ModelSetting("model/seetaface/fr_2_10.dat", device, id);
+	FD_model = new seeta::ModelSetting("models/seetaface/fd_2_00.dat", device, id);
+	PD_model = new seeta::ModelSetting("models/seetaface/pd_2_00_pts5.dat", device, id);
+	FR_model = new seeta::ModelSetting("models/seetaface/fr_2_10.dat", device, id);
 
 	engine = new seeta::FaceEngine(*FD_model, *PD_model, *FR_model, 2, 16);
 	//set face detector's min face size
