@@ -116,4 +116,6 @@ public:
 	afx_msg void OnBnClickedInsectButton();
 	afx_msg void OnBnClickedBlurDetectButton();
 	afx_msg void OnBnClickedFaceDetectButton();
+	afx_msg void OnBnClickedHumanTrackButton();
+	afx_msg void OnBnClickedDustButton();
 };

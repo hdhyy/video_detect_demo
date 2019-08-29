@@ -23,7 +23,7 @@ public:
 
 	// recognization threshold
 	float threshold = 0.6f;
-	std::vector<std::string> GalleryImageFilename = { "1.jpg" };
+	std::vector<std::string> GalleryImageFilename = { "img/facelib/alice.jpg", "img/facelib/aric.jpg", "img/facelib/willan.jpg" };
 	std::vector<int64_t> *GalleryIndex;
 
 public:

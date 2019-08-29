@@ -33,6 +33,7 @@ int terminate_flag;
 #define BLUR_DETECT 8
 #define FACE_DETECT 9
 #define FACE_DETECT_RECOG 10
+#define DUST_REMOVAL 11
 
 
 #define WM_UPDATE_MESSAGE (WM_USER+200)
@@ -161,6 +162,8 @@ BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_INSECT_BUTTON, &CVideoDemoDlg::OnBnClickedInsectButton)
 	ON_BN_CLICKED(IDC_BLUR_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedBlurDetectButton)
 	ON_BN_CLICKED(IDC_FACE_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedFaceDetectButton)
+	ON_BN_CLICKED(IDC_HUMAN_TRACK_BUTTON, &CVideoDemoDlg::OnBnClickedHumanTrackButton)
+	ON_BN_CLICKED(IDC_DUST_BUTTON, &CVideoDemoDlg::OnBnClickedDustButton)
 END_MESSAGE_MAP()
 
 
@@ -467,7 +470,9 @@ UINT ThreadDect(LPVOID pParm) {
 		}
 		//resize(dect_frame, dect_frame, Size(704, 576));
 		iu.set_src(dect_frame);
+
 		Sleep(10);
+
 		switch (g_iDectType) {
 		case TEXTURE://纹理检测
 			res_frame = g_dectDector.GetCannyImg(dect_frame);
@@ -481,8 +486,19 @@ UINT ThreadDect(LPVOID pParm) {
 			res_frame = g_dectDector.GetHelmetImg(dect_frame);
 			Sleep(10);
 			break;
-		case NIGHTENHANCE://MSRCR增强
+		case NIGHTENHANCE:
+			//MSRCR增强
 			res_frame = iu.main_msrcr_ex();
+			//直方图匹配
+			//res_frame = iu.get_hist_match();
+			//去雾
+			//res_frame = iu.deHaze_chai();
+			Sleep(10);
+			break;
+		case DUST_REMOVAL:
+			res_frame = iu.brighten();
+			//iu.set_src(res_frame);
+			//res_frame = iu.get_hist_match();
 			Sleep(10);
 			break;
 		case SMOKING:
@@ -984,5 +1000,20 @@ void CVideoDemoDlg::OnBnClickedFaceDetectButton()
 	m_threadVideoDect->ResumeThread();
 	g_iDectType = FACE_DETECT;
 	m_detect_type = "人脸检测";
+	UpdateData(FALSE);
+}
+
+
+void CVideoDemoDlg::OnBnClickedHumanTrackButton()
+{
+	
+}
+
+
+void CVideoDemoDlg::OnBnClickedDustButton()
+{
+	m_threadVideoDect->ResumeThread();
+	g_iDectType = DUST_REMOVAL;
+	m_detect_type = "去灰尘";
 	UpdateData(FALSE);
 }

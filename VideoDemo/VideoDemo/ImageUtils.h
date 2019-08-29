@@ -31,12 +31,17 @@ public:
 	cv::Mat main_msr();
 	cv::Mat main_msrcr_ex();
 	cv::Mat deHaze();
+	cv::Mat deHaze_chai(int r = 81, float eps = 0.001, float w = 0.95, float maxV1 = 0.80);
+	cv::Mat brighten();
+
 	cv::Mat video_blur_detect();
 	cv::Mat insect_detect();
 	cv::Mat face_detect();
 	void set_src(cv::Mat& src);
 	void face_dr();
 	void otk_dr();
+	void hist_match_test();
+	cv::Mat get_hist_match();
 protected:
 	cv::Mat src;
 	cv::Mat dst;
@@ -52,5 +57,9 @@ protected:
 	int frame_count;
 	cv::Ptr<cv::SimpleBlobDetector> detector;
 	cv::Ptr<cv::BackgroundSubtractorMOG2> bgSubtractor;
+
+	void fastHazeRemoval(const cv::Mat& src, cv::Mat& dst);
+	void fastHazeRemoval_1Channel(const cv::Mat& src, cv::Mat& dst);
+	void fastHazeRemoval_3Channel(const cv::Mat& src, cv::Mat& dst);
 };
 

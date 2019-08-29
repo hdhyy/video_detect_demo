@@ -21,19 +21,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_84D7271E7119486FBAC9062BAEACA494"
+        "MsmKey" = "8:_138B449FBF67422492C81D58D1D660E2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3C665448BF494C76AF0075A9915DF9E8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_592EB393BFDD4463894DB7F391093454"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D46BCDDB40CB49A28A7FE47B9FEE7C05"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D6D8976CFD4E49D09DEF83F185EC6190"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -74,6 +80,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -148,10 +162,50 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_84D7271E7119486FBAC9062BAEACA494"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_138B449FBF67422492C81D58D1D660E2"
             {
-            "SourcePath" = "8:..\\..\\..\\opencv346\\build\\install\\x64\\vc15\\bin\\opencv_ffmpeg346_64.dll"
+            "SourcePath" = "8:E:\\opencv-3.4.6\\build\\install\\x64\\vc16\\bin\\opencv_ffmpeg346_64.dll"
             "TargetName" = "8:opencv_ffmpeg346_64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B7D4D46B7BEC4EA38E47EAB430CA0FDA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C665448BF494C76AF0075A9915DF9E8"
+            {
+            "SourcePath" = "8:E:\\opencv-3.4.6\\build\\install\\x64\\vc16\\bin\\opencv_world346.dll"
+            "TargetName" = "8:opencv_world346.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B7D4D46B7BEC4EA38E47EAB430CA0FDA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_592EB393BFDD4463894DB7F391093454"
+            {
+            "SourcePath" = "8:E:\\opencv-3.4.6\\build\\install\\x64\\vc16\\bin\\opencv_img_hash346.dll"
+            "TargetName" = "8:opencv_img_hash346.dll"
             "Tag" = "8:"
             "Folder" = "8:_B7D4D46B7BEC4EA38E47EAB430CA0FDA"
             "Condition" = "8:"
@@ -174,26 +228,6 @@
             "TargetName" = "8:deploy_inference.prototxt"
             "Tag" = "8:"
             "Folder" = "8:_DD1CBBC5386D46CF87E951073A21D0EE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D6D8976CFD4E49D09DEF83F185EC6190"
-            {
-            "SourcePath" = "8:..\\..\\..\\opencv346\\build\\install\\x64\\vc15\\bin\\opencv_world346.dll"
-            "TargetName" = "8:opencv_world346.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B7D4D46B7BEC4EA38E47EAB430CA0FDA"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

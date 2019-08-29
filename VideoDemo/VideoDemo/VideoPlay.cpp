@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(VideoPlay, CDialogEx)
 	ON_BN_CLICKED(IDC_BLUR_BUTTON, &VideoPlay::OnBnClickedBlurButton)
 	ON_BN_CLICKED(IDC_SETTA_BUTTON, &VideoPlay::OnBnClickedSettaButton)
 	ON_BN_CLICKED(IDC_OTK_BUTTON, &VideoPlay::OnBnClickedOtkButton)
+	ON_BN_CLICKED(IDC_HISTMATCH_BUTTON, &VideoPlay::OnBnClickedHistmatchButton)
 END_MESSAGE_MAP()
 
 
@@ -421,7 +422,7 @@ void VideoPlay::OnBnClickedDehazeButton()
 	Mat image = cv::imread(picpath);
 
 	ImageUtils iu(&image);
-	frame = iu.deHaze();
+	frame = iu.deHaze_chai();
 	showImage();
 }
 
@@ -452,4 +453,13 @@ void VideoPlay::OnBnClickedOtkButton()
 	Mat image = cv::imread("1.jpg");
 	ImageUtils iu(&image);
 	iu.otk_dr();
+}
+
+
+void VideoPlay::OnBnClickedHistmatchButton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Mat image = cv::imread("1.jpg");
+	ImageUtils iu(&image);
+	iu.hist_match_test();
 }

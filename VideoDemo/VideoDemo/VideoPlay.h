@@ -48,4 +48,5 @@ public:
 	afx_msg void OnBnClickedBlurButton();
 	afx_msg void OnBnClickedSettaButton();
 	afx_msg void OnBnClickedOtkButton();
+	afx_msg void OnBnClickedHistmatchButton();
 };
