@@ -27,6 +27,7 @@ public:
 	std::vector<int64_t> *GalleryIndex;
 
 public:
+	void create_seeta();
 	void play_demo();
 	cv::Mat get_detect_result(int detect_type, cv::Mat* src);
 protected:

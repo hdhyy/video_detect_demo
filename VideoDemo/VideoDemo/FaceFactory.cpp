@@ -3,6 +3,11 @@
 
 FaceFactory::FaceFactory()
 {
+
+}
+
+void FaceFactory::create_seeta()
+{
 	FD_model = new seeta::ModelSetting("models/seetaface/fd_2_00.dat", device, id);
 	PD_model = new seeta::ModelSetting("models/seetaface/pd_2_00_pts5.dat", device, id);
 	FR_model = new seeta::ModelSetting("models/seetaface/fr_2_10.dat", device, id);

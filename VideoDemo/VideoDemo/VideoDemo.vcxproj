@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\settaface2\include;E:\install\include\opencv;E:\install\include\opencv2;E:\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\settaface2\lib;E:\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\settaface2\include;E:\opencv-3.4.6\build\install\include;E:\opencv-3.4.6\build\install\include\opencv2;E:\opencv-3.4.6\build\install\include\opencv;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\settaface2\lib;E:\opencv-3.4.6\build\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

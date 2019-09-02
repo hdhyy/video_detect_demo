@@ -128,6 +128,10 @@ void CVideoDemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SMOKING_DETECT_BUTTON, SmokingButton);
 	DDX_Control(pDX, IDC_SET_ROI_BUTTON, ROISetButton);
 	DDX_Control(pDX, IDC_SHOW_ROI_BUTTON, ShowROIButton);
+	DDX_Control(pDX, IDC_INSECT_BUTTON, InsectDetButton);
+	DDX_Control(pDX, IDC_BLUR_DETECT_BUTTON, BlurDetButton);
+	DDX_Control(pDX, IDC_FACE_DETECT_BUTTON, FaceDetButton);
+	DDX_Control(pDX, IDC_DUST_BUTTON, DeDustButton);
 }
 
 BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
@@ -358,6 +362,10 @@ void CVideoDemoDlg::DisableAllDetectButton(bool b)
 	SmokingButton.EnableWindow(b);
 	ROISetButton.EnableWindow(b);
 	ShowROIButton.EnableWindow(b);
+	FaceDetButton.EnableWindow(b);
+	InsectDetButton.EnableWindow(b);
+	BlurDetButton.EnableWindow(b);
+	DeDustButton.EnableWindow(b);
 }
 
 void CVideoDemoDlg::OnVideoChange(int n)
@@ -496,9 +504,9 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case DUST_REMOVAL:
-			res_frame = iu.brighten();
-			//iu.set_src(res_frame);
-			//res_frame = iu.get_hist_match();
+			res_frame = iu.fast_deHaze();
+			iu.set_src(res_frame);
+			res_frame = iu.get_hist_match();
 			Sleep(10);
 			break;
 		case SMOKING:
@@ -744,7 +752,10 @@ void CVideoDemoDlg::OnBnClickedVideoStartButton()
 
 	//挂起检测线程
 	m_threadVideoDect = AfxBeginThread(ThreadDect, this, 0, 0, CREATE_SUSPENDED, NULL);
-	CloseHandle(hThreadSend);
+	if (hThreadSend != (void*)0)
+	{
+		CloseHandle(hThreadSend);
+	}
 }
 
 

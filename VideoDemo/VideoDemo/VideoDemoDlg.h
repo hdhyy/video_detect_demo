@@ -118,4 +118,8 @@ public:
 	afx_msg void OnBnClickedFaceDetectButton();
 	afx_msg void OnBnClickedHumanTrackButton();
 	afx_msg void OnBnClickedDustButton();
+	CButton InsectDetButton;
+	CButton BlurDetButton;
+	CButton FaceDetButton;
+	CButton DeDustButton;
 };

@@ -31,6 +31,7 @@ public:
 	cv::Mat main_msr();
 	cv::Mat main_msrcr_ex();
 	cv::Mat deHaze();
+	cv::Mat fast_deHaze();
 	cv::Mat deHaze_chai(int r = 81, float eps = 0.001, float w = 0.95, float maxV1 = 0.80);
 	cv::Mat brighten();
 
@@ -54,7 +55,7 @@ protected:
 	int m_spatialRad = 10;
 	int m_colorRad = 20;
 	int m_maxPryLevel = 1;
-	int frame_count;
+	int frame_count = 0;
 	cv::Ptr<cv::SimpleBlobDetector> detector;
 	cv::Ptr<cv::BackgroundSubtractorMOG2> bgSubtractor;
 

@@ -12,6 +12,7 @@ ImageUtils::ImageUtils()
 }
 ImageUtils::ImageUtils(Mat *src_p)
 {
+	fft.create_seeta();
 	for (int i = 0; i < 3; i++)
 		weight.push_back(1. / 3);
 	// 由于MSRCR.h中定义了宏USE_EXTRA_SIGMA，所以此处的vector<double> sigema并没有什么意义
@@ -1566,5 +1567,301 @@ void ImageUtils::fastHazeRemoval_3Channel(const cv::Mat& src, cv::Mat& dst)
 	}
 
 	dst = F;
+}
+
+#define my_min(x, y) ((x) < (y) ? (x) : (y))
+#define my_max(x, y) ((x) > (y) ? (x) : (y))
+
+int getM(Mat& M, Mat& M_max, const Mat& src, double& m_av, double& eps)
+{
+	double sum = 0;
+	for (int i = 0; i < src.rows; i++)
+	{
+		for (int j = 0; j < src.cols; j++)
+		{
+			uchar r, g, b;
+			uchar temp1, temp2;
+			r = src.at<Vec3b>(i, j)[0];
+			g = src.at<Vec3b>(i, j)[1];
+			b = src.at<Vec3b>(i, j)[2];
+			temp1 = my_min(my_min(r, g), b);
+			temp2 = my_max(my_max(r, g), b);
+			M.at<uchar>(i, j) = temp1;
+			M_max.at<uchar>(i, j) = temp2;
+			sum += temp1;
+		}
+	}
+	m_av = sum / (src.rows * src.cols * 255);
+	eps = 0.85 / (m_av);
+	return 0;
+}
+
+int getAveM(Mat& M_ave, Mat& M, int r)
+{
+	boxFilter(M, M_ave, CV_8UC1, Size(r, r));
+
+	return 0;
+}
+
+int getL(Mat& L, Mat& M, Mat& M_ave, double eps, double m_av)
+{
+	double delta = my_min(0.9, eps * m_av);
+	for (int i = 0; i < M.rows; i++)
+	{
+		for (int j = 0; j < M.cols; j++)
+		{
+			L.at<uchar>(i, j) = (int)my_min(delta * M_ave.at<uchar>(i, j), M.at<uchar>(i, j));
+		}
+	}
+
+	return 0;
+}
+
+int MaxMatrix(Mat& src)
+{
+	int temp = 0;
+	for (int i = 0; i < src.rows; i++)
+	{
+		for (int j = 0; j < src.cols; j++)
+			temp = my_max(src.at<uchar>(i, j), temp);
+		if (temp == 255)
+			return temp;
+	}
+	return temp;
+}
+
+double GetA(Mat& M_max, Mat& M_ave)
+{
+	return (MaxMatrix(M_max) + MaxMatrix(M_ave)) * 0.5;
+}
+
+int dehaze(Mat& dst, const Mat& src, Mat& L, double A)
+{
+	int temp, value;
+	for (int i = 0; i < src.rows; i++)
+	{
+		for (int j = 0; j < src.cols; j++)
+		{
+			temp = L.at<uchar>(i, j);
+			for (int k = 0; k < 3; k++)
+			{
+				value = A * (src.at<Vec3b>(i, j)[k] - temp) / (A - temp);
+				if (value > 255) value = 255;
+				if (value < 0) value = 0;
+				dst.at<Vec3b>(i, j)[k] = value;
+			}
+		}
+	}
+	return 0;
+}
+
+Mat autocontrost(Mat& matface, int cut_limit)
+{
+
+	double HistRed[256] = { 0 };
+	double HistGreen[256] = { 0 };
+	double HistBlue[256] = { 0 };
+	int bluemap[256] = { 0 };
+	int redmap[256] = { 0 };
+	int greenmap[256] = { 0 };
+
+
+	for (int i = 0; i < matface.rows; i++)
+	{
+		for (int j = 0; j < matface.cols; j++)
+		{
+			int iblue = matface.at<Vec3b>(i, j)[0];
+			int igreen = matface.at<Vec3b>(i, j)[1];
+			int ired = matface.at<Vec3b>(i, j)[2];
+			HistBlue[iblue]++;
+			HistGreen[igreen]++;
+			HistRed[ired]++;
+		}
+	}
+	int PixelAmount = matface.rows * matface.cols;
+	int isum = 0;
+	// blue
+	int iminblue = 0; int imaxblue = 0;
+	for (int y = 0; y < 256; y++)
+	{
+		isum = isum + HistBlue[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			iminblue = y;
+			break;
+		}
+	}
+	isum = 0;
+	for (int y = 255; y >= 0; y--)
+	{
+		isum = isum + HistBlue[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			imaxblue = y;
+			break;
+		}
+	}
+	//red
+	isum = 0;
+	int iminred = 0; int imaxred = 0;
+	for (int y = 0; y < 256; y++)
+	{
+		isum = isum + HistRed[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			iminred = y;
+			break;
+		}
+	}
+	isum = 0;
+	for (int y = 255; y >= 0; y--)
+	{
+		isum = isum + HistRed[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			imaxred = y;
+			break;
+		}
+	}
+	//green
+	isum = 0;
+	int imingreen = 0; int imaxgreen = 0;
+	for (int y = 0; y < 256; y++)
+	{
+		isum = isum + HistGreen[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			imingreen = y;
+			break;
+		}
+	}
+	isum = 0;
+	for (int y = 255; y >= 0; y--)
+	{
+		isum = isum + HistGreen[y];
+		if (isum >= PixelAmount * cut_limit * 0.01)
+		{
+			imaxgreen = y;
+			break;
+		}
+	}
+
+	int imin = 255; int imax = 0;
+
+	imin = my_min(iminblue, my_min(imingreen, iminblue));
+	imax = my_max(imaxblue, my_max(imaxgreen, imaxred));
+	if (imin < 0) imin = 0;
+	if (imax > 255) imax = 255;
+
+	iminblue = imin;
+	imingreen = imin;
+	iminred = imin;
+
+	imaxred = imax;
+	imaxgreen = imax;
+	imaxblue = imax;
+
+	/////////////////
+	//blue
+	if (iminblue != imaxblue)
+	{
+		for (int y = 0; y < 256; y++)
+		{
+			if (y <= iminblue)
+				bluemap[y] = 0;
+			else if (y > imaxblue)
+				bluemap[y] = 255;
+			else
+			{
+				float ftmp = (float)(y - iminblue) / (imaxblue - iminblue);
+				bluemap[y] = (int)(ftmp * 255);
+			}
+
+		}
+	}
+	else
+	{
+		for (int y = 0; y < 256; y++)
+			bluemap[y] = imaxblue;
+	}
+
+	//red
+	if (iminred != imaxred)
+	{
+		for (int y = 0; y < 256; y++)
+		{
+			if (y <= iminred)
+				redmap[y] = 0;
+			else if (y > imaxred)
+				redmap[y] = 255;
+			else
+			{
+				float ftmp = (float)(y - iminred) / (imaxred - iminred);
+				redmap[y] = (int)(ftmp * 255);
+			}
+		}
+	}
+	else
+	{
+		for (int y = 0; y < 256; y++)
+			redmap[y] = imaxred;
+	}
+
+	//green
+	if (imingreen != imaxgreen)
+	{
+		for (int y = 0; y < 256; y++)
+		{
+			if (y <= imingreen)
+				greenmap[y] = 0;
+			else if (y > imaxgreen)
+				greenmap[y] = 255;
+			else
+			{
+				float ftmp = (float)(y - imingreen) / (imaxgreen - imingreen);
+				greenmap[y] = (int)(ftmp * 255);
+			}
+
+		}
+	}
+	else
+	{
+		for (int y = 0; y < 256; y++)
+			greenmap[y] = imaxgreen;
+	}
+
+	for (int i = 0; i < matface.rows; i++)
+	{
+		for (int j = 0; j < matface.cols; j++)
+		{
+			matface.at<Vec3b>(i, j)[0] = bluemap[matface.at<Vec3b>(i, j)[0]];
+			matface.at<Vec3b>(i, j)[1] = greenmap[matface.at<Vec3b>(i, j)[1]];
+			matface.at<Vec3b>(i, j)[2] = redmap[matface.at<Vec3b>(i, j)[2]];
+		}
+	}
+	return matface;
+}
+
+Mat ImageUtils::fast_deHaze()
+{
+	double eps;
+	Mat M = Mat::zeros(src.size(), CV_8UC1);
+	Mat M_max = Mat::zeros(src.size(), CV_8UC1);
+	Mat M_ave = Mat::zeros(src.size(), CV_8UC1);
+	Mat L = Mat::zeros(src.size(), CV_8UC1);
+	dst = Mat::zeros(src.size(), src.type());
+	double m_av, A;
+	clock_t start;
+	start = clock();
+	getM(M, M_max, src, m_av, eps);
+	getAveM(M_ave, M, 61);
+	getL(L, M, M_ave, eps, m_av);
+	A = GetA(M_max, M_ave);
+
+	dehaze(dst, src, L, A);
+
+	double duration = (double)(clock() - start);
+	cout << "Time Cost: " << duration << "ms" << endl;
+	return dst;
 }
 

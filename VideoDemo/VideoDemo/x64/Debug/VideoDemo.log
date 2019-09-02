@@ -1,6 +1,27 @@
-﻿  ImageUtils.cpp
-D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(41,29): warning C4305:  “=”: 从“double”到“float”截断
-D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(44,27): warning C4305:  “=”: 从“double”到“float”截断
-D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(599,88): warning C4129:  “%”: 不可识别的字符转义序列
-D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(730,78): warning C4129:  “%”: 不可识别的字符转义序列
+﻿  FaceFactory.cpp
+  ImageUtils.cpp
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(42,29): warning C4305:  “=”: 从“double”到“float”截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(45,27): warning C4305:  “=”: 从“double”到“float”截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(600,88): warning C4129:  “%”: 不可识别的字符转义序列
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(731,57): warning C4129:  “%”: 不可识别的字符转义序列
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(743,62): warning C4311:  “类型强制转换”: 从“HANDLE”到“long”的指针截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(743,62): warning C4302:  “类型强制转换”: 从“HANDLE”到“long”截断
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1648,49): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1687,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1697,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1709,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1719,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1731,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1741,15): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1273,9): warning C4244:  “初始化”: 从“__int64”转换到“int”，可能丢失数据
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :  查看对正在编译的函数 模板 实例化“int find_nearest_above<int>(std::vector<int,std::allocator<_Ty>>,T)”的引用
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :         with
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :         [
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :             _Ty=int,
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :             T=int
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1335): message :         ]
+  VideoDemoDlg.cpp
+  VideoPlay.cpp
+  正在生成代码...
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ImageUtils.cpp(1281,8): warning C4244:  “初始化”: 从“__int64”转换到“int”，可能丢失数据
   VideoDemo.vcxproj -> D:\github\video_detect_demo\VideoDemo\x64\Debug\VideoDemo.exe
