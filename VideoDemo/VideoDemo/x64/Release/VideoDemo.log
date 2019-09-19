@@ -1,8 +1,7 @@
-﻿  VideoDemo.cpp
-  VideoDemoDlg.cpp
+﻿  VideoDemoDlg.cpp
   正在生成代码
-  9 of 3046 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  0 of 3044 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   VideoDemo.vcxproj -> D:\github\video_detect_demo\VideoDemo\x64\Release\VideoDemo.exe

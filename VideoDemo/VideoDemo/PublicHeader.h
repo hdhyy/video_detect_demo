@@ -36,8 +36,8 @@ extern bool trainComplete;
 #endif
 
 constexpr auto IMAGE_HEIGHT = 600;
-constexpr auto  IMAGE_WIDTH = 900;
-constexpr auto  IMAGE_CHANNELS = 3;
+constexpr auto IMAGE_WIDTH = 900;
+constexpr auto IMAGE_CHANNELS = 3;
 
 extern Mat g_matSourceFrame;
 extern CString g_cstrROIFile;

@@ -444,7 +444,7 @@ void VideoPlay::OnBnClickedSettaButton()
 {
 	Mat image = cv::imread("1.jpg");
 	ImageUtils iu(&image);
-	iu.face_dr();
+	imshow("result", iu.face_detect());
 }
 
 
