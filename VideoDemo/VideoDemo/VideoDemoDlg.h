@@ -4,6 +4,7 @@
 #include "ROIThread.h"
 #include "PublicHeader.h"
 #include "Detection.h"
+#include "URLInputDialog.h"
 #include "afxcmn.h"
 
 // CVideoDemoDlg 对话框
@@ -67,6 +68,7 @@ public:
 	int frames;
 	bool scrolling = false;
 	CString video_times;
+	URLInputDialog urlin;
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
@@ -122,4 +124,5 @@ public:
 	CButton BlurDetButton;
 	CButton FaceDetButton;
 	CButton DeDustButton;
+	afx_msg void OnBnClickedOpenurlButton();
 };

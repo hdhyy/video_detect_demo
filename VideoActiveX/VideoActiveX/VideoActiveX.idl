@@ -1,0 +1,51 @@
+﻿// VideoActiveX.idl: ActiveX 控件项目的类型库源。
+
+// 此文件将由 MIDL 编译器工具处理以
+// 生成类型库(VideoActiveX.tlb)，该类型库将成为
+// VideoActiveX.ocx。
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(150b4ea9-2752-4c00-8cdd-96c18946d2a8), version(1.0),
+  control ]
+library VideoActiveXLib
+{
+	importlib(STDOLE_TLB);
+
+	//  CVideoActiveXCtrl 的主调度接口
+	[ 
+		uuid(7f39cbcf-b1c8-48c3-a6a5-f6813be88898)
+	]
+	dispinterface _DVideoActiveX
+	{
+		properties:
+		methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  CVideoActiveXCtrl 的事件调度接口
+
+	[ 
+		uuid(a6295121-0a3a-485a-a4f5-25b44fe5eef2)
+	]
+	dispinterface _DVideoActiveXEvents
+	{
+		properties:
+			//  事件接口没有任何属性
+
+		methods:
+	};
+
+	//  CVideoActiveXCtrl 的类信息
+	[
+		uuid(84ede05c-c758-4ef4-a277-0ee994fbba21)
+	]
+	coclass VideoActiveX
+	{
+		[default] dispinterface _DVideoActiveX;
+		[default, source] dispinterface _DVideoActiveXEvents;
+	};
+
+};

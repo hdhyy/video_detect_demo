@@ -34,6 +34,11 @@
 # vs
 VideoDemo/.vs/
 VideoDemo/VideoDemo/models/
+VideoActiveX/.vs
+VideoActiveX/Debug
+VideoActiveX/VideoActiveX/Debug
+VideoActiveX/VideoActiveX/x64
+
 
 # vs
 *.db

@@ -73,11 +73,10 @@ void VideoPlay::OnBnClickedCamButton()
 void VideoPlay::OnBnClickedPlayVideoButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CvCapture* pCapture = cvCreateFileCapture("video/demo.mp4");
+	//CvCapture* pCapture = cvCreateFileCapture("video/demo.mp4");
 	cv::Mat pFrame;
-	cv::VideoCapture vcp;
-	vcp.open("video/demo.mp4");
-	bool f = pCapture == NULL;
+	cv::VideoCapture vcp("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
+	//bool f = pCapture == NULL;
 	bool f2 = !vcp.isOpened();
 	double fps = vcp.get(CV_CAP_PROP_FPS);
 	int nFrames = (int)(vcp.get(CV_CAP_PROP_FRAME_COUNT));

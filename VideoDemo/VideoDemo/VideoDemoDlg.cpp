@@ -168,6 +168,7 @@ BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_FACE_DETECT_BUTTON, &CVideoDemoDlg::OnBnClickedFaceDetectButton)
 	ON_BN_CLICKED(IDC_HUMAN_TRACK_BUTTON, &CVideoDemoDlg::OnBnClickedHumanTrackButton)
 	ON_BN_CLICKED(IDC_DUST_BUTTON, &CVideoDemoDlg::OnBnClickedDustButton)
+	ON_BN_CLICKED(IDC_OPENURL_BUTTON, &CVideoDemoDlg::OnBnClickedOpenurlButton)
 END_MESSAGE_MAP()
 
 
@@ -1027,4 +1028,55 @@ void CVideoDemoDlg::OnBnClickedDustButton()
 	g_iDectType = DUST_REMOVAL;
 	m_detect_type = "去灰尘";
 	UpdateData(FALSE);
+}
+
+
+void CVideoDemoDlg::OnBnClickedOpenurlButton()
+{
+	//输入视频所在URL
+	if (urlin.DoModal() == IDOK)
+	{
+		TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
+		strFilePath = urlin.getInputUrl();
+
+		current_pos = 0;
+		USES_CONVERSION;
+		const char *videoPath = T2A(strFilePath);
+		vCap = new VideoCapture(videoPath);
+		if (!vCap->isOpened())
+		{
+			return;
+		}
+		fps = (int)vCap->get(CV_CAP_PROP_FPS);
+		frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
+
+		if (frames < 0)
+		{
+			//处理文件头没有帧数的情况，但还是不能实现进度条。
+			//frames = GetAbnormalFrames(pThis->vCap);
+		}
+
+		if (frames > 0)
+		{
+			m_video_slider.SetRange(1, frames);
+			m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
+			CTimeSpan cts((__time64_t)frames / fps);
+			video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
+		}
+		Mat pMat;
+		(*vCap) >> pMat;
+		IplImage* pFrame = &IplImage(pMat);
+		real_width = pFrame->width;
+		real_height = pFrame->height;
+		g_matSourceFrame = pMat;
+		ResizeImage(pFrame);
+		ShowImage(TheImage, IDC_VIDEOSHOW);
+		//recover the program path
+		SetCurrentDirectory(path);
+		ButtomControl(true, true, false, false);
+
+		DisableAllDetectButton(true);
+		InitializeCriticalSection(&g_critPlayer);
+		InitializeCriticalSection(&g_critSourceFrame);
+	}
 }

@@ -18,6 +18,8 @@
 #define IDD_ROI_DIALOG                  134
 #define IDI_ICON1                       138
 #define IDI_LOGO_ICON                   138
+#define IDD_DIALOG1                     139
+#define IDD_INPUT_URL                   139
 #define IDC_BUTTON1                     1002
 #define IDC_SNAT_BUTTON                 1002
 #define IDC_SAVE_ROI_BUTTON             1002
@@ -33,6 +35,7 @@
 #define IDC_FLAME_TEST_BUTTON           1009
 #define IDC_EDIT1                       1010
 #define IDC_DETECT_TYPE_EDIT            1010
+#define IDC_URLINPUT                    1010
 #define IDC_VIDEOSHOW                   1011
 #define IDC_IMAGESHOW                   1012
 #define IDC_VIDEO_START_BUTTON          1013
@@ -72,6 +75,8 @@
 #define IDC_OTK_BUTTON                  1048
 #define IDC_HISTMATCH_BUTTON            1049
 #define IDC_DUST_BUTTON                 1050
+#define IDC_OPENURL_BUTTON              1051
+#define IDC_OPENTYPE                    1052
 #define ID_32771                        32771
 #define ID_Menu                         32772
 #define ID_32773                        32773
@@ -81,9 +86,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
