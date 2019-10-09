@@ -477,7 +477,7 @@ cv::Mat ImageUtils::insect_detect()
  调用时可在外部设定一个阀值，具体阈值根据实际情况决定，返回值超过阀值当作是模糊图片。
  算法所耗时间在1毫秒内
 */
-Mat ImageUtils::video_blur_detect()
+Mat ImageUtils::video_blur_detect(float thres)
 {
 	cv::Mat img;
 	cv::cvtColor(src, img, CV_BGR2GRAY); // 将输入的图片转为灰度图，使用灰度图检测模糊度
@@ -585,12 +585,12 @@ Mat ImageUtils::video_blur_detect()
 
 	CvxText text("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体
 
-	string temp = "Status: " + to_string(result) + "\%" + (result < 4.0 ? "Yes" : "No");
+	string temp = "Status: " + to_string(result) + "\%" + (result < thres ? "Yes" : "No");
 	cv::Scalar size1{ 100, 0.5, 0.1, 0 }, size2{ 50, 0, 0.1, 0 }, size3{ 50, 0, 1, 0 }, size4{ 50, 0, 0.1, 0 }; // (字体大小, 无效的, 字符间距, 无效的 }
 
-	//putText(src, temp, cvPoint(30, 30),
-	//	FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
-	if (result < 4.0)
+	putText(src, temp, cvPoint(30, 30),
+		FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
+	if (result < thres)
 	{
 		text_bling++;
 		if (text_bling % 2 == 0)

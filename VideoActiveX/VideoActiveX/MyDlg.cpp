@@ -77,6 +77,7 @@ CEvent start_event;
 int terminate_flag;
 
 //全局变量
+static float blur_thres = 4.0;
 static bool g_bPlay = false;
 static bool g_bPause = false;
 static bool g_bSelectROI = false;
@@ -498,7 +499,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case BLUR_DETECT:
-			res_frame = iu.video_blur_detect();
+			res_frame = iu.video_blur_detect(blur_thres);
 			Sleep(10);
 			break;
 		case FACE_DETECT:
@@ -626,10 +627,14 @@ void MyDlg::OnBnClickedInsectButton()
 
 void MyDlg::OnBnClickedBulrButton()
 {
-	m_threadVideoDect->ResumeThread();
-	g_iDectType = BLUR_DETECT;
-	m_detect_type = "套袋检测";
-	UpdateData(FALSE);
+	if (thresdlg.DoModal() == IDOK)
+	{
+		blur_thres = thresdlg.threshold;
+		m_threadVideoDect->ResumeThread();
+		g_iDectType = BLUR_DETECT;
+		m_detect_type = "套袋检测";
+		UpdateData(FALSE);
+	}
 }
 
 

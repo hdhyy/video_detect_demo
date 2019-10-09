@@ -15,6 +15,11 @@ URLInputDialog::URLInputDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_URLINPUT_DIALOG, pParent)
 	, m_input_url(_T(""))
 	, m_c_url_v(FALSE)
+	, m_text_ip(_T(""))
+	, m_text_port(_T(""))
+	, m_text_username(_T(""))
+	, m_text_password(_T(""))
+	, m_text_channel(_T(""))
 {
 
 }
@@ -33,6 +38,11 @@ void URLInputDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CODEC, m_cb_codec);
 	DDX_Control(pDX, IDC_RADIO1, m_c_url);
 	DDX_Radio(pDX, IDC_RADIO1, m_c_url_v);
+	DDX_Text(pDX, IDC_URL_IP, m_text_ip);
+	DDX_Text(pDX, IDC_URL_PORT, m_text_port);
+	DDX_Text(pDX, IDC_USERNAME, m_text_username);
+	DDX_Text(pDX, IDC_PASSWORD, m_text_password);
+	DDX_Text(pDX, IDC_CHANNALS, m_text_channel);
 }
 
 
@@ -46,20 +56,46 @@ END_MESSAGE_MAP()
 // URLInputDialog 消息处理程序
 CString URLInputDialog::getInputUrl()
 {
-	if (!m_c_url_v)
+	return m_final_url;
+}
+
+void URLInputDialog::GenURL()
+{
+	UpdateData(true);
+	if (m_c_url_v == 0)
 	{
 		m_final_url = m_input_url;
 	}
 	else
 	{
-
+		int index1 = m_cb_brand.GetCurSel();
+		int index2 = m_cb_urltype.GetCurSel();
+		//0360 1大华 2海康 3其他
+		//大华格式：rtsp://username:password@ip:port/cam/realmonitor?channel=1&subtype=0
+		switch (index1)
+		{
+		case 1:
+			if (index2 == 1)
+			{
+				m_final_url = _T("rtmp://");
+			}
+			else if (index2 == 2)
+			{
+				m_final_url = _T("rtsp://");
+			}
+			m_final_url += m_text_username + ':' + m_text_password + '@' + m_text_ip + ':' + m_text_port + _T("/cam/realmonitor?channel=") + m_text_channel + _T("&subtype=") + (m_cb_streamtype.GetCurSel() == 1 ? '0' : '1');
+			break;
+		case 2:
+			break;
+		default:
+			break;
+		}
 	}
-	return m_final_url;
 }
 
 void URLInputDialog::OnBnClickedOk()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	GenURL();
 	CDialogEx::OnOK();
 }
 
@@ -86,12 +122,19 @@ BOOL URLInputDialog::OnInitDialog()
 	m_cb_streamtype.AddString(_T("辅码流"));
 
 
-	m_cb_brand.SetCurSel(0);   //默认选择第一个
+	m_cb_brand.SetCurSel(1);   //默认选择第一个
 	m_cb_urltype.SetCurSel(0);
 	m_cb_codec.SetCurSel(0);
 	m_cb_streamtype.SetCurSel(0);
 
-	Control_gen_url(false);
+	if (m_c_url_v == 0)
+	{
+		OnBnClickedRadio1();
+	}
+	else
+	{
+		OnBnClickedRadio2();
+	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -99,6 +142,7 @@ BOOL URLInputDialog::OnInitDialog()
 
 void URLInputDialog::OnBnClickedRadio1()
 {
+	UpdateData(true);
 	GetDlgItem(IDC_URL_INPUT)->EnableWindow(true);
 	Control_gen_url(false);
 }
@@ -106,6 +150,7 @@ void URLInputDialog::OnBnClickedRadio1()
 
 void URLInputDialog::OnBnClickedRadio2()
 {
+	UpdateData(true);
 	GetDlgItem(IDC_URL_INPUT)->EnableWindow(false);
 	Control_gen_url(true);
 }

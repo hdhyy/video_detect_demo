@@ -27,7 +27,7 @@ public:
 	cv::Mat deHaze_chai(int r = 81, float eps = 0.001, float w = 0.95, float maxV1 = 0.80);
 	cv::Mat brighten();
 
-	cv::Mat video_blur_detect();
+	cv::Mat video_blur_detect(float thres);
 	cv::Mat insect_detect();
 	//cv::Mat face_detect();
 	void set_src(cv::Mat& src);

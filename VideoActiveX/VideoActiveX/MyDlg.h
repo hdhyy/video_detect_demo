@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "PublicHeader.h"
 #include "URLInputDialog.h"
+#include "BlurThresDialog.h"
 
 // MyDlg 对话框
 
@@ -50,6 +51,7 @@ public:
 	CWinThread* m_threadVideoDect;
 	//其他窗体
 	URLInputDialog urlin;
+	BlurThresDialog thresdlg;
 public:
 	void InitialPic();
 	void ShowImage(IplImage* image, UINT ID);

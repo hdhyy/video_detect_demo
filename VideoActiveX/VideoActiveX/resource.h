@@ -19,6 +19,7 @@
 #define IDC_INSECT_BUTTON               206
 #define IDC_BULR_BUTTON                 207
 #define IDC_DEDUST_BUTTON               208
+#define IDD_BLUR_THRESHOLD_DIALOG       208
 #define IDC_VIDEO_SLIDER                210
 #define IDC_DECT_EDIT                   211
 #define IDC_STATIC_IMGSHOW              212
@@ -43,14 +44,15 @@
 #define IDC_STREAM_TYPE                 232
 #define IDC_CHANNALS                    233
 #define IDC_CODEC                       234
+#define IDC_COMBO1                      235
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        206
+#define _APS_NEXT_RESOURCE_VALUE        210
 #define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         235
+#define _APS_NEXT_CONTROL_VALUE         236
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

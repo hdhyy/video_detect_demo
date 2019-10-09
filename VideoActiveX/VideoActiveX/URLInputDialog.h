@@ -25,6 +25,7 @@ public:
 
 	CString m_final_url;
 	CString getInputUrl();
+	void GenURL();
 
 	afx_msg void OnBnClickedOk();
 	CComboBox m_cb_brand;
@@ -37,4 +38,9 @@ public:
 	afx_msg void OnBnClickedRadio1();
 	afx_msg void OnBnClickedRadio2();
 	void Control_gen_url(bool enable);
+	CString m_text_ip;
+	CString m_text_port;
+	CString m_text_username;
+	CString m_text_password;
+	CString m_text_channel;
 };

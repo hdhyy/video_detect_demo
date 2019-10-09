@@ -217,6 +217,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlurThresDialog.cpp" />
     <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="CvxText.cpp" />
     <ClCompile Include="ImageUtils.cpp" />
@@ -235,6 +236,7 @@
     <ClCompile Include="VideoActiveXPropPage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlurThresDialog.h" />
     <ClInclude Include="CvvImage.h" />
     <ClInclude Include="CvxText.hpp" />
     <ClInclude Include="framework.h" />
