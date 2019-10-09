@@ -13,4 +13,5 @@ regsvr32 /s "%current_path%\VideoActiveX.ocx"
 
 xcopy "%current_path%\install_files\*.*" "%topa%" /e /h /d /y
 xcopy "%current_path%\opencv*.*" "%towin32%\" /e /h /d /y
+xcopy "%current_path%\freetype*.*" "%towin32%\" /e /h /d /y
 pause

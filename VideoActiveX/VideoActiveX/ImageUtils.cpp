@@ -1,6 +1,7 @@
 
 #include "pch.h"
 #include "ImageUtils.h"
+#include "CvxText.hpp"
 
 using namespace std;
 using namespace cv;
@@ -451,7 +452,7 @@ cv::Mat ImageUtils::insect_detect()
 	detector->detect(mask_tmp, keypoints);
 	if (frame_count < 400)
 	{
-		string temp = "Modeling Progress: " + to_string(frame_count / 4) + "\%";
+		string temp = "Modeling" + to_string(frame_count / 4) + "\%";
 		putText(frame, temp, cvPoint(30, 30),
 			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
 	}
@@ -582,10 +583,33 @@ Mat ImageUtils::video_blur_detect()
 	delete[] sobelTable;
 	sobelTable = NULL;
 
-	string temp = "Status: " + to_string(result) + "\%" + (result < 3.5 ? "Yes" : "No");
-	putText(src, temp, cvPoint(30, 30),
-		FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
+	CvxText text("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体
 
+	string temp = "Status: " + to_string(result) + "\%" + (result < 4.0 ? "Yes" : "No");
+	cv::Scalar size1{ 100, 0.5, 0.1, 0 }, size2{ 50, 0, 0.1, 0 }, size3{ 50, 0, 1, 0 }, size4{ 50, 0, 0.1, 0 }; // (字体大小, 无效的, 字符间距, 无效的 }
+
+	//putText(src, temp, cvPoint(30, 30),
+	//	FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
+	if (result < 4.0)
+	{
+		text_bling++;
+		if (text_bling % 2 == 0)
+		{
+			text.setFont(nullptr, &size1, nullptr, 0);
+			text.putText(src, "警告：该摄像机套袋！", cv::Point(src.cols / 3, src.rows / 2), cv::Scalar(0, 0, 255));
+		}
+	}
+	else
+	{
+		text.setFont(nullptr, &size2, nullptr, 0);
+		text.putText(src, "未发现套袋情况", cv::Point(src.cols / 2.5, src.rows / 2), cv::Scalar(255, 0, 0));
+	}
+
+	//text.setFont(nullptr, &size3, nullptr, 0);
+	//text.putText(src, "China", cv::Point(50, 250), cv::Scalar(0, 255, 0));
+
+	//text.setFont(nullptr, &size4, nullptr, 0);
+	//text.putText(src, "BeiJing", cv::Point(50, 300), cv::Scalar(0, 0, 255));
 	return src;
 }
 

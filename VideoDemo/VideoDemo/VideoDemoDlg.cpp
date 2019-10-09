@@ -511,7 +511,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case SMOKING:
-			res_frame = g_dectDector.GetSmokeImg(dect_frame);
+			res_frame = g_dectDector.GetSmokeImg_v2(dect_frame);
 			Sleep(10);
 			break;
 		case INSECT_DETECT:
@@ -721,6 +721,7 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		}
 		Mat pMat;
 		(*vCap) >> pMat;
+		
 		IplImage* pFrame = &IplImage(pMat);
 		real_width = pFrame->width;
 		real_height = pFrame->height;
@@ -729,6 +730,8 @@ void CVideoDemoDlg::OnBnClickedOpenButton()
 		ShowImage(TheImage, IDC_VIDEOSHOW);
 		//recover the program path
 		SetCurrentDirectory(path);
+		g_dectDector.update_smoke_bk(pMat);
+		imwrite("smoke_bk.jpg", pMat);
 		ButtomControl(true, true, false, false);
 
 		DisableAllDetectButton(true);
@@ -1065,6 +1068,7 @@ void CVideoDemoDlg::OnBnClickedOpenurlButton()
 		}
 		Mat pMat;
 		(*vCap) >> pMat;
+		
 		IplImage* pFrame = &IplImage(pMat);
 		real_width = pFrame->width;
 		real_height = pFrame->height;
@@ -1073,6 +1077,8 @@ void CVideoDemoDlg::OnBnClickedOpenurlButton()
 		ShowImage(TheImage, IDC_VIDEOSHOW);
 		//recover the program path
 		SetCurrentDirectory(path);
+		g_dectDector.update_smoke_bk(pMat);
+		imwrite("smoke_bk.jpg", pMat);
 		ButtomControl(true, true, false, false);
 
 		DisableAllDetectButton(true);

@@ -91,7 +91,6 @@ BOOL CVideoActiveXCtrl::CVideoActiveXCtrlFactory::UpdateRegistry(BOOL bRegister)
 		return AfxOleUnregisterClass(m_clsid, m_lpszProgID);
 }
 
-
 // CVideoActiveXCtrl::CVideoActiveXCtrl - 构造函数
 
 CVideoActiveXCtrl::CVideoActiveXCtrl()
@@ -148,6 +147,106 @@ void CVideoActiveXCtrl::AboutBox()
 {
 	CDialogEx dlgAbout(IDD_ABOUTBOX_VIDEOACTIVEX);
 	dlgAbout.DoModal();
+}
+
+// IObjectSafety的接口映射 
+BEGIN_INTERFACE_MAP(CVideoActiveXCtrl, COleControl)
+	INTERFACE_PART(CVideoActiveXCtrl, IID_IObjectSafety, ObjSafe)
+END_INTERFACE_MAP()
+
+
+//////////////////////////////////// ///////////////////////////////////////// 
+// IObjectSafety 成员函数 
+// AddRef, Release, QueryInterface 
+ULONG FAR EXPORT CVideoActiveXCtrl::XObjSafe::AddRef()
+{
+	METHOD_PROLOGUE(CVideoActiveXCtrl, ObjSafe)
+		return pThis->ExternalAddRef();
+}
+
+ULONG FAR EXPORT CVideoActiveXCtrl::XObjSafe::Release()
+{
+	METHOD_PROLOGUE(CVideoActiveXCtrl, ObjSafe)
+		return pThis->ExternalRelease();
+}
+
+HRESULT FAR EXPORT CVideoActiveXCtrl::XObjSafe::QueryInterface(
+	REFIID iid, void FAR* FAR* ppvObj)
+{
+	METHOD_PROLOGUE(CVideoActiveXCtrl, ObjSafe)
+		return (HRESULT)pThis->ExternalQueryInterface(&iid, ppvObj);
+}
+
+const DWORD dwSupportedBits =
+INTERFACESAFE_FOR_UNTRUSTED_CALLER |
+INTERFACESAFE_FOR_UNTRUSTED_DATA;
+const DWORD dwNotSupportedBits = ~dwSupportedBits;
+
+/////////////////////////////////////////////////////// ////////////////////// 
+// CXXXCtrl::XObjSafe::GetInterfaceSafetyOptions 
+HRESULT STDMETHODCALLTYPE
+CVideoActiveXCtrl::XObjSafe::GetInterfaceSafetyOptions(
+	REFIID riid,
+	DWORD __RPC_FAR* pdwSupportedOptions,
+	DWORD __RPC_FAR* pdwEnabledOptions
+)
+{
+	METHOD_PROLOGUE(CVideoActiveXCtrl, ObjSafe)
+
+		HRESULT retval = ResultFromScode(S_OK);
+
+	// 接口是否存在 
+	IUnknown FAR* punkInterface;
+	retval = pThis->ExternalQueryInterface(&riid, (void**)& punkInterface);
+	if (retval != E_NOINTERFACE) // 接口存在 
+	{
+		punkInterface->Release(); // 释放引用 
+	}
+
+	// We support both kinds of safety and have always both set, 
+	// regardless of interface. 
+	*pdwSupportedOptions = *pdwEnabledOptions = dwSupportedBits;
+	return retval; // E_NOINTERFACE if QI failed 
+}
+
+//////////////////////////////////////////////////////////// ///////////////// 
+// CXXXCtrl::XObjSafe::SetInterfaceSafetyOptions 
+HRESULT STDMETHODCALLTYPE
+CVideoActiveXCtrl::XObjSafe::SetInterfaceSafetyOptions(
+	REFIID riid,
+	DWORD dwOptionSetMask,
+	DWORD dwEnabledOptions
+)
+{
+	METHOD_PROLOGUE(CVideoActiveXCtrl, ObjSafe)
+
+		// 接口是否存在 
+		IUnknown FAR* punkInterface;
+	pThis->ExternalQueryInterface(&riid, (void**)& punkInterface);
+	if (punkInterface) // 接口存在 
+	{
+		punkInterface->Release(); // 释放引用 
+	}
+	else // 接口不存在 
+	{
+		return ResultFromScode(E_NOINTERFACE);
+	}
+	// Can't set bits we don't support. 
+	if (dwOptionSetMask & dwNotSupportedBits)
+	{
+		return ResultFromScode(E_FAIL);
+	}
+
+	// Can't set bits we do support to zero 
+	dwEnabledOptions &= dwSupportedBits;
+	// (We already know there are no extra bits in mask. ) 
+	if ((dwOptionSetMask & dwEnabledOptions) != dwOptionSetMask)
+	{
+		return ResultFromScode(E_FAIL);
+	}
+
+	// Don't need to change anything since we're always safe. 
+	return ResultFromScode(S_OK);
 }
 
 

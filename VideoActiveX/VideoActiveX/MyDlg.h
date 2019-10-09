@@ -88,4 +88,7 @@ public:
 	afx_msg void OnBnClickedSmokeDetect();
 	CStatic m_video_time_static;
 	afx_msg void OnBnClickedOpenurlButton();
+	CButton btn_url_open;
+	CButton btn_hat_detect;
+	CButton btn_smoke_detect;
 };

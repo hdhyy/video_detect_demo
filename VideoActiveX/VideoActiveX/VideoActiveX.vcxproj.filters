@@ -45,6 +45,9 @@
     <ClCompile Include="PretrainDetector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CvxText.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VideoActiveX.h">
@@ -87,6 +90,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PretrainDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CvxText.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

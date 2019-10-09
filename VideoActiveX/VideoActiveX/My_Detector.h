@@ -18,8 +18,10 @@ public:
 	Mat GetHelmetImg(Mat img);
 
 	Mat GetSmokeImg(Mat img);
+	Mat GetSmokeImg_v2(Mat img);
 
 	void smoke_detect();
+	Mat smoke_v2(Mat pFrame);
 	void video_terminate();
 
 public:

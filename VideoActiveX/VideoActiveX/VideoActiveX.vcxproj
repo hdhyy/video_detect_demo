@@ -81,8 +81,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.ocx</TargetExt>
-    <IncludePath>E:\opencv-3.4.6\build\install\include\opencv2;E:\opencv-3.4.6\build\install\include\opencv;E:\opencv-3.4.6\build\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\opencv-3.4.6\build\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\freetype-2.9\include;E:\opencv-3.4.6\build\install\include\opencv2;E:\opencv-3.4.6\build\install\include\opencv;E:\opencv-3.4.6\build\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\freetype-2.9\objs;E:\opencv-3.4.6\build\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -91,8 +91,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.ocx</TargetExt>
-    <IncludePath>E:\opencv-3.4.6\build\install\include\opencv2;E:\opencv-3.4.6\build\install\include\opencv;E:\opencv-3.4.6\build\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\opencv-3.4.6\build\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\freetype-2.9\include;E:\opencv-3.4.6\build\install\include\opencv2;E:\opencv-3.4.6\build\install\include\opencv;E:\opencv-3.4.6\build\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\freetype-2.9\objs;E:\opencv-3.4.6\build\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,7 +136,7 @@
       <ModuleDefinitionFile>.\VideoActiveX.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalDependencies>opencv_world346d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;opencv_world346d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -201,7 +201,7 @@
       <ModuleDefinitionFile>.\VideoActiveX.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalDependencies>opencv_world346.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;opencv_world346.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -218,6 +218,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CvvImage.cpp" />
+    <ClCompile Include="CvxText.cpp" />
     <ClCompile Include="ImageUtils.cpp" />
     <ClCompile Include="MyDlg.cpp" />
     <ClCompile Include="My_Detector.cpp" />
@@ -235,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CvvImage.h" />
+    <ClInclude Include="CvxText.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageUtils.h" />
     <ClInclude Include="MyDlg.h" />

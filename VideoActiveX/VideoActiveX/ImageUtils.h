@@ -48,6 +48,7 @@ protected:
 	int m_colorRad = 20;
 	int m_maxPryLevel = 1;
 	int frame_count = 0;
+	int text_bling = 0;
 	cv::Ptr<cv::SimpleBlobDetector> detector;
 	cv::Ptr<cv::BackgroundSubtractorMOG2> bgSubtractor;
 

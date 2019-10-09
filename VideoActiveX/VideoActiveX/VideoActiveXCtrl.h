@@ -2,7 +2,7 @@
 #include "MyDlg.h"
 
 // VideoActiveXCtrl.h : CVideoActiveXCtrl ActiveX 控件类的声明。
-
+#include <objsafe.h> 
 
 // CVideoActiveXCtrl : 请参阅 VideoActiveXCtrl.cpp 了解实现。
 
@@ -45,5 +45,21 @@ public:
 	enum {
 	};
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	// 接口映射 
+	DECLARE_INTERFACE_MAP()
+	BEGIN_INTERFACE_PART(ObjSafe, IObjectSafety)
+		STDMETHOD_(HRESULT, GetInterfaceSafetyOptions) (
+			REFIID riid,
+			DWORD __RPC_FAR* pdwSupportedOptions,
+			DWORD __RPC_FAR* pdwEnabledOptions
+			);
+
+	STDMETHOD_(HRESULT, SetInterfaceSafetyOptions) (
+		REFIID riid,
+		DWORD dwOptionSetMask,
+		DWORD dwEnabledOptions
+		);
+	END_INTERFACE_PART(ObjSafe);
 };
 

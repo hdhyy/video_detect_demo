@@ -30,14 +30,27 @@
 #define IDC_OPENURL_BUTTON              218
 #define IDC_URL_INPUT                   219
 #define IDC_OPENTYPE                    220
+#define IDC_URL_GRUOP                   221
+#define IDC_RADIO1                      222
+#define IDC_RADIO2                      223
+#define IDC_SELECT_URL_TYPE             224
+#define IDC_URL_TYPE                    225
+#define IDC_URL_IP                      226
+#define IDC_URL_PORT                    227
+#define IDC_USERNAME                    228
+#define IDC_PASSWORD                    229
+#define IDC_BRAND                       231
+#define IDC_STREAM_TYPE                 232
+#define IDC_CHANNALS                    233
+#define IDC_CODEC                       234
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        205
+#define _APS_NEXT_RESOURCE_VALUE        206
 #define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         221
+#define _APS_NEXT_CONTROL_VALUE         235
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

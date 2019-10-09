@@ -287,7 +287,9 @@ void VideoPlay::OnBnClickedSmokeTestButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	My_Detector *detector = new My_Detector();
-	detector->smoke_detect();
+	//detector->smoke_detect();
+	auto img = imread("smoke.jpg");
+	detector->GetSmokeImg_v2(img);
 }
 
 #define TRAIN_MODE

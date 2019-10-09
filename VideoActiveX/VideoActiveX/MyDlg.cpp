@@ -41,7 +41,7 @@ ntp7.aliyun.com
 #define NTP_PORT_STR "123"        
 #define JAN_1970 0x83aa7e80
 
-constexpr DWORD max_time_sub = 3786825600;
+constexpr DWORD max_time_sub = 3784147200;//12-31:3786825600;
 
 struct NTPPacket
 {
@@ -122,6 +122,8 @@ void MyDlg::ControlAllBtn(bool enable)
 	btn_insect_detect.EnableWindow(enable);
 	btn_blur_detect.EnableWindow(enable);
 	btn_dust_removal.EnableWindow(enable);
+	btn_hat_detect.EnableWindow(enable);
+	btn_smoke_detect.EnableWindow(enable);
 }
 
 void MyDlg::DoDataExchange(CDataExchange* pDX)
@@ -137,6 +139,9 @@ void MyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BULR_BUTTON, btn_blur_detect);
 	DDX_Control(pDX, IDC_DEDUST_BUTTON, btn_dust_removal);
 	DDX_Control(pDX, IDC_VIDEO_TIME_STATIC, m_video_time_static);
+	DDX_Control(pDX, IDC_OPENURL_BUTTON, btn_url_open);
+	DDX_Control(pDX, IDC_HELMAT_DETECT, btn_hat_detect);
+	DDX_Control(pDX, IDC_SMOKE_DETECT, btn_smoke_detect);
 }
 
 
@@ -547,6 +552,7 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 		{
 			terminate_flag = 0;
 			_endthreadex(0);//关闭创建的线程
+			break;
 		};
 		pThis->RealImage = pFrame;
 		pThis->ResizeImage(pFrame);
@@ -576,9 +582,13 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 			*pFrame = IplImage(pMat);
 		}
 	}
-	pThis->CloseVideo();
-	pMat.release();
-	pThis->MessageBox(_T("播放完毕!"), _T("播放"));
+	if (terminate_flag != -1)
+	{
+		pThis->CloseVideo();
+		pMat.release();
+		pThis->MessageBox(_T("播放完毕!"), _T("播放"));
+	}
+
 	return 0;
 }
 
@@ -666,13 +676,12 @@ void MyDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	CDialogEx::OnShowWindow(bShow, nStatus);
 
-	ButtomControl(true, false, false, false);
-	DetectButtomControl(false);
+	ControlAllBtn(false);
 	//控制时间
 	auto now = GetTimeFromServer(nullptr);
 	//now = max_time_sub + 1;
-	if (now > max_time_sub)
-		ControlAllBtn(false);
+	if (now < max_time_sub)
+		ButtomControl(true, false, false, false);
 	auto resu = GetProgramDir();
 	g_dectDector.SetPath(resu);
 }
@@ -738,8 +747,8 @@ void MyDlg::OnBnClickedStopButton()
 {
 	// TODO: 结束播放视频代码
 	terminate_flag = -1;
-	btn_pause.SetWindowText(_T("暂停"));
 	CloseVideo();
+	btn_pause.SetWindowText(_T("暂停"));
 }
 
 void MyDlg::CloseVideo()
@@ -779,6 +788,7 @@ void MyDlg::CloseVideo()
 void MyDlg::ButtomControl(bool open, bool start, bool stop, bool terminate)
 {
 	btn_open.EnableWindow(open);
+	btn_url_open.EnableWindow(open);
 	btn_begin.EnableWindow(start);
 	btn_pause.EnableWindow(stop);
 	btn_terminate.EnableWindow(terminate);
@@ -789,6 +799,8 @@ void MyDlg::DetectButtomControl(bool enable)
 	btn_insect_detect.EnableWindow(enable);
 	btn_dust_removal.EnableWindow(enable);
 	btn_blur_detect.EnableWindow(enable);
+	btn_hat_detect.EnableWindow(enable);
+	btn_smoke_detect.EnableWindow(enable);
 }
 
 
@@ -804,7 +816,7 @@ void MyDlg::OnBnClickedHelmatDetect()
 void MyDlg::OnBnClickedSmokeDetect()
 {
 	m_threadVideoDect->ResumeThread();
-	g_iDectType = FLAME;
+	g_iDectType = SMOKING;
 	m_detect_type = "抽烟检测";
 	UpdateData(FALSE);
 }
