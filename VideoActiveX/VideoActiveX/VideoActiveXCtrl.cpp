@@ -25,6 +25,9 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CVideoActiveXCtrl, COleControl)
 	DISP_FUNCTION_ID(CVideoActiveXCtrl, "AboutBox", DISPID_ABOUTBOX, AboutBox, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CVideoActiveXCtrl, "JsUseTest", dispidJsUseTest, JsUseTest, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CVideoActiveXCtrl, "OpenByWholeURL", dispidOPENURL, OpenByWholeURL, VT_EMPTY, VTS_BSTR)
+	DISP_FUNCTION_ID(CVideoActiveXCtrl, "OpenByNecessaryText", dispidOpenByNecessaryText, OpenByNecessaryText, VT_EMPTY, VTS_I4 VTS_I4 VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_I4 VTS_I4 VTS_I4)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -262,3 +265,24 @@ int CVideoActiveXCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_MyDlg.Create(IDD_DIALOG1, this);  //初始化对话框
 	return 0;
 }
+
+STDMETHODIMP CVideoActiveXCtrl::OpenByWholeURL(BSTR url)
+{
+	CString str(url);
+	m_MyDlg.OpenByJSWholeURL(str);
+	return S_OK;
+}
+
+STDMETHODIMP CVideoActiveXCtrl::OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long codec)
+{
+	CString ip(url_ip);
+	CString username_c(username);
+	CString password_c(password);
+	m_MyDlg.OpenByJSNecessaryText(brand,protocol,ip, url_port, username_c, password_c, channel, subtype);
+	return S_OK;
+}
+STDMETHODIMP CVideoActiveXCtrl::JsUseTest()
+{
+	return S_OK;
+}
+

@@ -63,6 +63,6 @@ void BlurThresDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	int thresindex = m_cb_blur_thres.GetCurSel();
-	threshold = (thresindex + 2) * 0.5;
+	threshold = static_cast<float>((thresindex + 2) * 0.5);
 	CDialogEx::OnOK();
 }

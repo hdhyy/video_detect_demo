@@ -13,7 +13,23 @@ class CVideoActiveXCtrl : public COleControl
 // 构造函数
 public:
 	CVideoActiveXCtrl();
+
+//自定义
 	MyDlg m_MyDlg;
+protected:
+	afx_msg STDMETHODIMP JsUseTest();
+	afx_msg STDMETHODIMP OpenByWholeURL(BSTR url);
+	//brand: 0:360 1:大华 2:海康 3：其他
+	//protocol: 0:http 1:rtmp 2:rtsp
+	//url_ip:IP地址
+	//url_port:端口号
+	//username：用户名
+	//password：密码
+	//channel：通道号
+	//subtype：主码流为0，辅码流为1
+	//codec：海康需要传，0:h264 1:MPEG-4 2:mpeg4 (默认传0)
+	afx_msg STDMETHODIMP OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long codec = 0);
+
 // 重写
 public:
 	virtual void OnDraw(CDC* pdc, const CRect& rcBounds, const CRect& rcInvalid);
@@ -43,6 +59,9 @@ protected:
 // 调度和事件 ID
 public:
 	enum {
+		dispidOPENURL = 1L,
+		dispidJsUseTest = 2L,
+		dispidOpenByNecessaryText = 3L
 	};
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 

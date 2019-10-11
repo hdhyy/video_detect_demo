@@ -123,9 +123,9 @@ BOOL URLInputDialog::OnInitDialog()
 
 
 	m_cb_brand.SetCurSel(1);   //默认选择第一个
-	m_cb_urltype.SetCurSel(0);
+	m_cb_urltype.SetCurSel(2);
 	m_cb_codec.SetCurSel(0);
-	m_cb_streamtype.SetCurSel(0);
+	m_cb_streamtype.SetCurSel(1);
 
 	if (m_c_url_v == 0)
 	{

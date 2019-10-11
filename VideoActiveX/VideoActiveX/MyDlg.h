@@ -93,4 +93,7 @@ public:
 	CButton btn_url_open;
 	CButton btn_hat_detect;
 	CButton btn_smoke_detect;
+
+	void OpenByJSWholeURL(CString url);
+	void OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype);
 };

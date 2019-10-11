@@ -125,6 +125,7 @@ void MyDlg::ControlAllBtn(bool enable)
 	btn_dust_removal.EnableWindow(enable);
 	btn_hat_detect.EnableWindow(enable);
 	btn_smoke_detect.EnableWindow(enable);
+	GetDlgItem(IDC_VIDEO_SLIDER)->EnableWindow(enable);
 }
 
 void MyDlg::DoDataExchange(CDataExchange* pDX)
@@ -672,7 +673,7 @@ string GetProgramDir()
 	GetModuleFileName(nullptr, ptr, MAX_PATH);
 	USES_CONVERSION;
 	strPath = W2A(ptr);
-	int pos = strPath.find_last_of('\\', strPath.length());
+	size_t pos = strPath.find_last_of('\\', strPath.length());
 	return strPath.substr(0, pos);
 
 }
@@ -787,7 +788,7 @@ void MyDlg::CloseVideo()
 
 	g_dectDector.video_terminate();
 	//Sleep(200);
-	vCap->release();
+	//vCap->release();
 }
 
 void MyDlg::ButtomControl(bool open, bool start, bool stop, bool terminate)
@@ -806,6 +807,7 @@ void MyDlg::DetectButtomControl(bool enable)
 	btn_blur_detect.EnableWindow(enable);
 	btn_hat_detect.EnableWindow(enable);
 	btn_smoke_detect.EnableWindow(enable);
+	GetDlgItem(IDC_VIDEO_SLIDER)->EnableWindow(enable);
 }
 
 
@@ -875,4 +877,126 @@ void MyDlg::OnBnClickedOpenurlButton()
 		InitializeCriticalSection(&g_critPlayer);
 		InitializeCriticalSection(&g_critSourceFrame);
 	}
+}
+
+void MyDlg::OpenByJSWholeURL(CString url)
+{
+	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
+	strFilePath = url;
+
+	current_pos = 0;
+	USES_CONVERSION;
+	const char* videoPath = T2A(strFilePath);
+	vCap = new VideoCapture(videoPath);
+	if (!vCap->isOpened())
+	{
+		return;
+	}
+	fps = (int)vCap->get(CV_CAP_PROP_FPS);
+	frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
+
+	if (frames < 0)
+	{
+		//处理文件头没有帧数的情况，但还是不能实现进度条。
+		//frames = GetAbnormalFrames(pThis->vCap);
+	}
+
+	if (frames > 0)
+	{
+		m_video_slider.SetRange(1, frames);
+		m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
+		CTimeSpan cts((__time64_t)frames / fps);
+		video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
+	}
+	Mat pMat;
+	(*vCap) >> pMat;
+	IplImage* pFrame = &IplImage(pMat);
+	real_width = pFrame->width;
+	real_height = pFrame->height;
+	g_matSourceFrame = pMat;
+	ResizeImage(pFrame);
+	ShowImage(TheImage, IDC_VIDEOSHOW);
+	//recover the program path
+	//SetCurrentDirectory(path);
+	ButtomControl(true, true, false, false);
+
+	DetectButtomControl(false);
+	InitializeCriticalSection(&g_critPlayer);
+	InitializeCriticalSection(&g_critSourceFrame);
+}
+void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype)
+{
+	//MessageBox(NULL, TEXT("坏蛋可以去死啦!"), 0);
+	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
+
+	CString final_url, port, streamtype, channel_c;
+	port.Format(_T("%d"), url_port);
+	streamtype.Format(_T("%d"), subtype);
+	channel_c.Format(_T("%d"), channel);
+	//0360 1大华 2海康 3其他
+	//大华格式：rtsp://username:password@ip:port/cam/realmonitor?channel=1&subtype=0
+	switch (brand)
+	{
+	case 1:
+		if (protocol == 1)
+		{
+			final_url = _T("rtmp://");
+		}
+		else if (protocol == 2)
+		{
+			final_url = _T("rtsp://");
+		}
+		final_url += username + ':' + password + '@' + url_ip + ':' + port + _T("/cam/realmonitor?channel=") + channel_c + _T("&subtype=") + streamtype;
+		break;
+	case 2:
+		break;
+	default:
+		break;
+	}
+	//MessageBox(NULL, final_url, 0);
+
+	strFilePath = final_url;
+
+	current_pos = 0;
+	USES_CONVERSION;
+	const char* videoPath = T2A(strFilePath);
+	try {
+		vCap = new VideoCapture(videoPath);
+	}
+	catch (Exception e) { return; }
+	if (!vCap->isOpened())
+	{
+		return;
+	}
+	fps = (int)vCap->get(CV_CAP_PROP_FPS);
+	frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
+
+	if (frames < 0)
+	{
+		//处理文件头没有帧数的情况，但还是不能实现进度条。
+		//frames = GetAbnormalFrames(pThis->vCap);
+	}
+
+	if (frames > 0)
+	{
+		m_video_slider.SetRange(1, frames);
+		m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
+		CTimeSpan cts((__time64_t)frames / fps);
+		video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
+	}
+	Mat pMat;
+	(*vCap) >> pMat;
+	IplImage* pFrame = &IplImage(pMat);
+	real_width = pFrame->width;
+	real_height = pFrame->height;
+	g_matSourceFrame = pMat;
+	ResizeImage(pFrame);
+	ShowImage(TheImage, IDC_VIDEOSHOW);
+	//recover the program path
+	//SetCurrentDirectory(path);
+	ButtomControl(true, true, false, false);
+
+	DetectButtomControl(false);
+	InitializeCriticalSection(&g_critPlayer);
+	InitializeCriticalSection(&g_critSourceFrame);
 }

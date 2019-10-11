@@ -252,16 +252,16 @@ Mat My_Detector::smoke_v2(Mat foreground1)
 		{
 			string value;
 			getline(ifile, value, '\t');
-			float type = atof(value.c_str());
+			double type = atof(value.c_str());
 			//P1[j][i] = type;
-			P.at<float>(j, i) = type;
+			P.at<float>(j, i) = static_cast<float>(type);
 		}
 		int i = 79;
 		string value1;
 		getline(ifile, value1, '\n');
-		float type = atof(value1.c_str());
+		double type = atof(value1.c_str());
 		//P1[j][i] = type;
-		P.at<float>(j, i) = type;
+		P.at<float>(j, i) = static_cast<float>(type);
 	}
 	ifile.close();
 	

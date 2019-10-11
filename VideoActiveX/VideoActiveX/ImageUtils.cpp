@@ -1,7 +1,6 @@
 
 #include "pch.h"
 #include "ImageUtils.h"
-#include "CvxText.hpp"
 
 using namespace std;
 using namespace cv;
@@ -9,6 +8,7 @@ using namespace cv;
 
 ImageUtils::ImageUtils()
 {
+	text_ptr = new CvxText("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体;
 }
 ImageUtils::ImageUtils(Mat* src_p)
 {
@@ -39,21 +39,24 @@ ImageUtils::ImageUtils(Mat* src_p)
 	params.maxArea = 400;
 	//形状（凸）
 	params.filterByCircularity = false;
-	params.minCircularity = 0.7;
+	params.minCircularity = static_cast<float>(0.7);
 	//形状（凹）
 	params.filterByConvexity = false;
-	params.minConvexity = 0.9;
+	params.minConvexity = static_cast<float>(0.9);
 	//形状（圆）
 	params.filterByInertia = false;
 	params.minInertiaRatio = 0.5;
 	params.filterByColor = true;
 	params.blobColor = 255;
 	detector = cv::SimpleBlobDetector::create(params);
+
+	text_ptr = new CvxText("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体;
 }
 
 
 ImageUtils::~ImageUtils()
 {
+	delete text_ptr;
 }
 
 
@@ -452,7 +455,7 @@ cv::Mat ImageUtils::insect_detect()
 	detector->detect(mask_tmp, keypoints);
 	if (frame_count < 400)
 	{
-		string temp = "Modeling" + to_string(frame_count / 4) + "\%";
+		string temp = "Modeling" + to_string(frame_count / 4) + "%";
 		putText(frame, temp, cvPoint(30, 30),
 			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
 	}
@@ -583,9 +586,9 @@ Mat ImageUtils::video_blur_detect(float thres)
 	delete[] sobelTable;
 	sobelTable = NULL;
 
-	CvxText text("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体
+	CvxText text("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体;
 
-	string temp = "Status: " + to_string(result) + "\%" + (result < thres ? "Yes" : "No");
+	string temp = "Status: " + to_string(result) + "%" + (result < thres ? "Yes" : "No");
 	cv::Scalar size1{ 100, 0.5, 0.1, 0 }, size2{ 50, 0, 0.1, 0 }, size3{ 50, 0, 1, 0 }, size4{ 50, 0, 0.1, 0 }; // (字体大小, 无效的, 字符间距, 无效的 }
 
 	putText(src, temp, cvPoint(30, 30),
@@ -595,14 +598,14 @@ Mat ImageUtils::video_blur_detect(float thres)
 		text_bling++;
 		if (text_bling % 2 == 0)
 		{
-			text.setFont(nullptr, &size1, nullptr, 0);
-			text.putText(src, "警告：该摄像机套袋！", cv::Point(src.cols / 3, src.rows / 2), cv::Scalar(0, 0, 255));
+			text_ptr->setFont(nullptr, &size1, nullptr, 0);
+			text_ptr->putText(src, "警告：该摄像机套袋！", cv::Point(src.cols / 3, src.rows / 2), cv::Scalar(0, 0, 255));
 		}
 	}
 	else
 	{
-		text.setFont(nullptr, &size2, nullptr, 0);
-		text.putText(src, "未发现套袋情况", cv::Point(src.cols / 2.5, src.rows / 2), cv::Scalar(255, 0, 0));
+		text_ptr->setFont(nullptr, &size2, nullptr, 0);
+		text_ptr->putText(src, "未发现套袋情况", cv::Point(static_cast<int>(src.cols / 2.5), static_cast<int>(src.rows / 2)), cv::Scalar(255, 0, 0));
 	}
 
 	//text.setFont(nullptr, &size3, nullptr, 0);
@@ -618,7 +621,7 @@ void InitConsole()
 	int nRet = 0;
 	FILE* fp;
 	AllocConsole();
-	nRet = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+	nRet = _open_osfhandle(intptr_t(GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT);
 	fp = _fdopen(nRet, "w");
 	*stdout = *fp;
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -1142,7 +1145,7 @@ int find_nearest_above(vector<T> my_array, T target)
 	{
 		vector<T> abs_diff = abs(diff);
 		vector<T>::iterator iter = min_element(abs_diff.begin(), abs_diff.end());
-		int c = iter - abs_diff.begin();
+		int c = static_cast<int>(iter - abs_diff.begin());
 		return c;
 	}
 
@@ -1150,7 +1153,7 @@ int find_nearest_above(vector<T> my_array, T target)
 
 
 	vector<T>::iterator iter = min_element(masked_diff.begin(), masked_diff.end());
-	int c = iter - masked_diff.begin();
+	int c = static_cast<int>(iter - masked_diff.begin());
 	return c;
 }
 Mat hist_match(Mat original, Mat specified)
@@ -1204,7 +1207,7 @@ Mat hist_match(Mat original, Mat specified)
 	vector<int> b;
 	for (int i = 0; i < sour.size(); i++)
 	{
-		b.push_back(find_nearest_above(temp, sour[i]));
+		b.push_back(find_nearest_above<int>(temp, sour[i]));
 	}
 	/*cout << "b[i]" << endl;
 	for (int i = 0; i < b.size(); i++)
@@ -1517,7 +1520,7 @@ int dehaze(Mat& dst, const Mat& src, Mat& L, double A)
 			temp = L.at<uchar>(i, j);
 			for (int k = 0; k < 3; k++)
 			{
-				value = A * (src.at<Vec3b>(i, j)[k] - temp) / (A - temp);
+				value = static_cast<int>(A * (src.at<Vec3b>(i, j)[k] - temp) / (A - temp));
 				if (value > 255) value = 255;
 				if (value < 0) value = 0;
 				dst.at<Vec3b>(i, j)[k] = value;
@@ -1556,7 +1559,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	int iminblue = 0; int imaxblue = 0;
 	for (int y = 0; y < 256; y++)
 	{
-		isum = isum + HistBlue[y];
+		isum = static_cast<int>(isum + HistBlue[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			iminblue = y;
@@ -1566,7 +1569,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	isum = 0;
 	for (int y = 255; y >= 0; y--)
 	{
-		isum = isum + HistBlue[y];
+		isum = static_cast<int>(isum + HistBlue[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			imaxblue = y;
@@ -1578,7 +1581,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	int iminred = 0; int imaxred = 0;
 	for (int y = 0; y < 256; y++)
 	{
-		isum = isum + HistRed[y];
+		isum = static_cast<int>(isum + HistRed[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			iminred = y;
@@ -1588,7 +1591,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	isum = 0;
 	for (int y = 255; y >= 0; y--)
 	{
-		isum = isum + HistRed[y];
+		isum = static_cast<int>(isum + HistRed[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			imaxred = y;
@@ -1600,7 +1603,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	int imingreen = 0; int imaxgreen = 0;
 	for (int y = 0; y < 256; y++)
 	{
-		isum = isum + HistGreen[y];
+		isum = static_cast<int>(isum + HistGreen[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			imingreen = y;
@@ -1610,7 +1613,7 @@ Mat autocontrost(Mat& matface, int cut_limit)
 	isum = 0;
 	for (int y = 255; y >= 0; y--)
 	{
-		isum = isum + HistGreen[y];
+		isum = isum + static_cast<int>(HistGreen[y]);
 		if (isum >= PixelAmount * cut_limit * 0.01)
 		{
 			imaxgreen = y;

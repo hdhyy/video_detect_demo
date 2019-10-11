@@ -23,6 +23,8 @@ win10下，首先通过组策略修改ie运行方式为单进程方式，然后�
 可测试的http直播流：http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8
 可测试的rtsp直播流：rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov
 
+内网测试地址:  rtsp://admin:hagongda19@192.168.1.200:554/cam/realmonitor?channel=1&subtype=0
+
 
 ------------------------------------------------------- 安装说明-------------------------------------------------------------------
 以下皆为右键使用管理员权限运行
@@ -43,5 +45,4 @@ IE提示“Internet Explorer已限制此网页运行脚本或ActiveX控件”
 直接设置IE浏览器
 工具=>Internet选项=>高级=>设置=>勾选“允许活动内容在‘我的电脑’的文件中运行*”
 按照以上设置完成后，快捷键（Ctrl+Shift+Delete）清除IE浏览器的缓存，然后刷新即可
-
 

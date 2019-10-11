@@ -1,11 +1,45 @@
 <HTML>
 <HEAD>
 <TITLE>Test ActiveX</TITLE>
+
 </HEAD>
-<OBJECT ID="VideoDemoActiveX" WIDTH=1900 HEIGHT=900 classid="CLSID:84ede05c-c758-4ef4-a277-0ee994fbba21">
-    <PARAM NAME="_Version" VALUE="65536">
-    <PARAM NAME="_ExtentX" VALUE="12806">
-    <PARAM NAME="_ExtentY" VALUE="1747">
-    <PARAM NAME="_StockProps" VALUE="0">
-</OBJECT>
+<body>
+  <p>
+    <OBJECT ID="VideoDemoActiveX" WIDTH=1900 HEIGHT=900 classid="CLSID:84ede05c-c758-4ef4-a277-0ee994fbba21">
+      <PARAM NAME="_Version" VALUE="65536">
+      <PARAM NAME="_ExtentX" VALUE="12806">
+      <PARAM NAME="_ExtentY" VALUE="1747">
+      <PARAM NAME="_StockProps" VALUE="0">
+    </OBJECT>
+  </p>
+  <script type="text/javascript">
+  /*
+  afx_msg STDMETHODIMP JsUseTest();
+	afx_msg STDMETHODIMP OpenByWholeURL(BSTR url);
+	//brand: 0:360 1:大华 2:海康 3：其他
+	//protocol: 0:http 1:rtmp 2:rtsp
+	//url_ip:IP地址
+	//url_port:端口号
+	//username：用户名
+	//password：密码
+	//channel：通道号
+	//subtype：主码流为0，辅码流为1
+	//codec：海康需要传，0:h264 1:MPEG-4 2:mpeg4 (默认传0)
+	afx_msg STDMETHODIMP OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long codec = 0);
+  */
+    var ocx = document.getElementById("VideoDemoActiveX");
+    var x = "http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8";
+    function js_init(){
+      ocx.OpenByWholeURL(x);
+      //alert("login successed");
+    }
+    function js_call(){
+      ocx.OpenByNecessaryText(1,2,"192.168.1.200",554,"admin","hagongda19",1,0,0);
+    }
+  </script>
+  <p>
+    <input id = "Button1" type = "button" value = "initialize" onclick="js_init()" />
+    <input id = "Button2" type = "button" value = "on self" onclick="js_call()" />
+  </p>
+</body>
 </HTML>

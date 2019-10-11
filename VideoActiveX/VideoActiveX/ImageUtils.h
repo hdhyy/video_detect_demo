@@ -3,6 +3,7 @@
 #include <io.h>  
 #include <fcntl.h>
 #include "PublicHeader.h"
+#include "CvxText.hpp"
 
 class ImageUtils
 {
@@ -38,10 +39,11 @@ public:
 protected:
 	cv::Mat src;
 	cv::Mat dst;
+	CvxText* text_ptr;
 	//FaceFactory fft;
 	//ObjectTracking otk;
-	IplImage* src_m;  //source image
-	IplImage* dst_m;  //the dst image after meanshift
+	IplImage* src_m = nullptr;  //source image
+	IplImage* dst_m = nullptr;  //the dst image after meanshift
 	std::vector<double> sigema;
 	std::vector<double> weight;
 	int m_spatialRad = 10;
