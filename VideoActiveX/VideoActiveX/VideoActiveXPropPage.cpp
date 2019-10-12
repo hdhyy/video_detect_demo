@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(CVideoActiveXPropPage, COlePropertyPage)
 // 消息映射
 
 BEGIN_MESSAGE_MAP(CVideoActiveXPropPage, COlePropertyPage)
+	ON_WM_MOUSEHWHEEL()
 END_MESSAGE_MAP()
 
 // 初始化类工厂和 guid
@@ -48,3 +49,13 @@ void CVideoActiveXPropPage::DoDataExchange(CDataExchange* pDX)
 }
 
 // CVideoActiveXPropPage 消息处理程序
+
+
+void CVideoActiveXPropPage::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// 此功能要求 Windows Vista 或更高版本。
+	// _WIN32_WINNT 符号必须 >= 0x0600。
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	COlePropertyPage::OnMouseHWheel(nFlags, zDelta, pt);
+}

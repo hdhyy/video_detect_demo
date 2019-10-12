@@ -95,5 +95,6 @@ public:
 	CButton btn_smoke_detect;
 
 	void OpenByJSWholeURL(CString url);
-	void OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype);
+	void OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype, int old_version, int codec);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };

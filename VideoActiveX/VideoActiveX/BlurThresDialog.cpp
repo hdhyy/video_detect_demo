@@ -30,6 +30,7 @@ void BlurThresDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(BlurThresDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &BlurThresDialog::OnBnClickedOk)
+	ON_WM_SHOWWINDOW()
 END_MESSAGE_MAP()
 
 
@@ -53,7 +54,6 @@ BOOL BlurThresDialog::OnInitDialog()
 	m_cb_blur_thres.AddString(_T("5.5"));
 	m_cb_blur_thres.AddString(_T("6.0"));
 
-	m_cb_blur_thres.SetCurSel(6);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -65,4 +65,13 @@ void BlurThresDialog::OnBnClickedOk()
 	int thresindex = m_cb_blur_thres.GetCurSel();
 	threshold = static_cast<float>((thresindex + 2) * 0.5);
 	CDialogEx::OnOK();
+}
+
+
+void BlurThresDialog::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+	CDialogEx::OnShowWindow(bShow, nStatus);
+
+	// TODO: 在此处添加消息处理程序代码
+	m_cb_blur_thres.SetCurSel(thres_index);
 }

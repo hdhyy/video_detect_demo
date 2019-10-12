@@ -19,6 +19,8 @@ BEGIN_MESSAGE_MAP(CVideoActiveXCtrl, COleControl)
 	ON_OLEVERB(AFX_IDS_VERB_EDIT, OnEdit)
 	ON_OLEVERB(AFX_IDS_VERB_PROPERTIES, OnProperties)
 	ON_WM_CREATE()
+	ON_WM_MOUSEHWHEEL()
+	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
 // 调度映射
@@ -27,7 +29,7 @@ BEGIN_DISPATCH_MAP(CVideoActiveXCtrl, COleControl)
 	DISP_FUNCTION_ID(CVideoActiveXCtrl, "AboutBox", DISPID_ABOUTBOX, AboutBox, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CVideoActiveXCtrl, "JsUseTest", dispidJsUseTest, JsUseTest, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CVideoActiveXCtrl, "OpenByWholeURL", dispidOPENURL, OpenByWholeURL, VT_EMPTY, VTS_BSTR)
-	DISP_FUNCTION_ID(CVideoActiveXCtrl, "OpenByNecessaryText", dispidOpenByNecessaryText, OpenByNecessaryText, VT_EMPTY, VTS_I4 VTS_I4 VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_I4 VTS_I4 VTS_I4)
+	DISP_FUNCTION_ID(CVideoActiveXCtrl, "OpenByNecessaryText", dispidOpenByNecessaryText, OpenByNecessaryText, VT_EMPTY, VTS_I4 VTS_I4 VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_I4 VTS_I4 VTS_I4 VTS_I4)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -273,12 +275,12 @@ STDMETHODIMP CVideoActiveXCtrl::OpenByWholeURL(BSTR url)
 	return S_OK;
 }
 
-STDMETHODIMP CVideoActiveXCtrl::OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long codec)
+STDMETHODIMP CVideoActiveXCtrl::OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long old_verison, long codec)
 {
 	CString ip(url_ip);
 	CString username_c(username);
 	CString password_c(password);
-	m_MyDlg.OpenByJSNecessaryText(brand,protocol,ip, url_port, username_c, password_c, channel, subtype);
+	m_MyDlg.OpenByJSNecessaryText(brand,protocol,ip, url_port, username_c, password_c, channel, subtype, old_verison, codec);
 	return S_OK;
 }
 STDMETHODIMP CVideoActiveXCtrl::JsUseTest()
@@ -286,3 +288,108 @@ STDMETHODIMP CVideoActiveXCtrl::JsUseTest()
 	return S_OK;
 }
 
+
+
+void CVideoActiveXCtrl::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// 此功能要求 Windows Vista 或更高版本。
+	// _WIN32_WINNT 符号必须 >= 0x0600。
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	COleControl::OnMouseHWheel(nFlags, zDelta, pt);
+}
+
+
+void CVideoActiveXCtrl::OnWindowPosChanging(WINDOWPOS* lpwndpos)
+{
+	COleControl::OnWindowPosChanging(lpwndpos);
+
+	// TODO: 在此处添加消息处理程序代码
+	CWnd* pWnd = GetParent();
+	while (pWnd->GetParent() != NULL)
+	{
+		pWnd->Invalidate();
+		pWnd = pWnd->GetParent();
+	}
+}
+
+void MyGetClippingCoordinates(LPCRECT pPosRect, LPCRECT pClipRect,
+	LPRECT pIntersectRect, LPPOINT pOffsetPoint)
+{
+	int clipLeft = 0;
+	int clipTop = 0;
+
+	if ((pClipRect == NULL) || IsRectEmpty(pClipRect))
+	{
+		CopyRect(pIntersectRect, pPosRect);
+	}
+	else
+	{
+		IntersectRect(pIntersectRect, pPosRect, pClipRect);
+		clipLeft = pClipRect->left;
+		clipTop = pClipRect->top;
+	}
+
+	//pOffsetPoint->x = min(0, pPosRect->left - clipLeft);
+	//pOffsetPoint->y = min(0, pPosRect->top - clipTop);
+	//我改的
+	pOffsetPoint->x = 0;//min(0, pPosRect->left - clipLeft);
+	pOffsetPoint->y = 0;//min(0, pPosRect->top - clipTop);
+}
+
+BOOL CVideoActiveXCtrl::OnSetObjectRects(LPCRECT lpRectPos, LPCRECT lpRectClip)
+{
+	// return COleControl::OnSetObjectRects(lprcPosRect, lprcClipRect);
+	ASSERT(lprcPosRect != NULL);
+
+	// Remember the position rectangle.
+	m_rcPos = *lpRectPos;
+
+	// Calculate complete rectangle, include the tracker if it is present.
+	CRect rectPos = m_rcPos;
+	if (m_bUIActive && m_pRectTracker != NULL)
+	{
+		// Save new clipping rectangle (for DestroyTracker).
+		if (lpRectClip != NULL)
+			m_pRectTracker->m_rectClip = *lpRectClip;
+
+		// Adjust tracker rectangle to new dimensions.
+		CRect rectTmp = rectPos;
+		rectTmp.OffsetRect(-rectTmp.left, -rectTmp.top);
+		m_pRectTracker->m_rect = rectTmp;
+
+		// Adjust the "true" rectangle to include handles/hatching.
+		UINT nHandleSize = m_pRectTracker->m_nHandleSize - 1;
+		rectPos.InflateRect(nHandleSize, nHandleSize);
+	}
+
+	// Now clip the rectangle as appropriate.
+	CRect rectClip;
+	MyGetClippingCoordinates(rectPos, lpRectClip, rectClip, &m_ptOffset);
+
+	// Move the outer window first, and then move the inner window.
+
+	if (!m_bInPlaceSiteWndless)
+	{
+		CWnd* pWndOuter = GetOuterWindow();
+
+		//BEGIN CHANGE.
+		if (pWndOuter != NULL)
+		{
+			static CRect oldClipRect(0, 0, 0, 0);
+			if (oldClipRect != rectClip)
+				::MoveWindow(pWndOuter->m_hWnd,
+					rectClip.left, rectClip.top,
+					rectClip.Width(), rectClip.Height(),
+					TRUE);
+			oldClipRect = rectClip;
+		}
+		//END CHANGE.
+		if (pWndOuter != this)
+			MoveWindow(m_ptOffset.x, m_ptOffset.y,
+				rectPos.Width(), rectPos.Height());
+	}
+
+	return TRUE;
+	//return COleControl::OnSetObjectRects(lpRectPos, lpRectClip);
+}

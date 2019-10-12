@@ -164,6 +164,7 @@ ON_BN_CLICKED(IDC_STOP_BUTTON, &MyDlg::OnBnClickedStopButton)
 ON_BN_CLICKED(IDC_HELMAT_DETECT, &MyDlg::OnBnClickedHelmatDetect)
 ON_BN_CLICKED(IDC_SMOKE_DETECT, &MyDlg::OnBnClickedSmokeDetect)
 ON_BN_CLICKED(IDC_OPENURL_BUTTON, &MyDlg::OnBnClickedOpenurlButton)
+ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 //成员函数实现
@@ -628,6 +629,7 @@ void MyDlg::OnBnClickedInsectButton()
 
 void MyDlg::OnBnClickedBulrButton()
 {
+	thresdlg.thres_index = static_cast<int>(blur_thres*2 - 2);
 	if (thresdlg.DoModal() == IDOK)
 	{
 		blur_thres = thresdlg.threshold;
@@ -713,8 +715,8 @@ void MyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void MyDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-					   // TODO: 在此处添加消息处理程序代码
-					   // 不为绘图消息调用 CDialogEx::OnPaint()
+	// TODO: 在此处添加消息处理程序代码
+	// 不为绘图消息调用 CDialogEx::OnPaint()
 }
 
 
@@ -924,7 +926,7 @@ void MyDlg::OpenByJSWholeURL(CString url)
 	InitializeCriticalSection(&g_critPlayer);
 	InitializeCriticalSection(&g_critSourceFrame);
 }
-void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype)
+void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype, int old_version, int codec)
 {
 	//MessageBox(NULL, TEXT("坏蛋可以去死啦!"), 0);
 	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
@@ -935,20 +937,60 @@ void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int u
 	channel_c.Format(_T("%d"), channel);
 	//0360 1大华 2海康 3其他
 	//大华格式：rtsp://username:password@ip:port/cam/realmonitor?channel=1&subtype=0
+	if (protocol == 1)
+	{
+		final_url = _T("rtmp://");
+	}
+	else if (protocol == 2)
+	{
+		final_url = _T("rtsp://");
+	}
+	else
+	{
+		final_url = _T("http://");
+	}
 	switch (brand)
 	{
 	case 1:
-		if (protocol == 1)
-		{
-			final_url = _T("rtmp://");
-		}
-		else if (protocol == 2)
-		{
-			final_url = _T("rtsp://");
-		}
 		final_url += username + ':' + password + '@' + url_ip + ':' + port + _T("/cam/realmonitor?channel=") + channel_c + _T("&subtype=") + streamtype;
 		break;
 	case 2:
+		final_url += username + ':' + password + '@' + url_ip + ':' + port;
+		if (old_version == 0)
+		{
+			if (codec == 0)
+			{
+				final_url += _T("/h264/");
+			}
+			else
+			{
+				final_url += _T("/mpeg4/");
+			}
+			final_url += _T("ch") + channel_c;
+			if (subtype == 0)
+			{
+				final_url += _T("/main/");
+			}
+			else if (subtype == 1)
+			{
+				final_url += _T("/sub/");
+			}
+			else
+			{
+				final_url += _T("/stream") + streamtype + '/';
+			}
+			final_url += _T("av_stream");
+		}
+		else
+		{
+			CString sb;
+			if (subtype == 0 || subtype == 1)
+				sb.Format(_T("%d"), subtype + 1);
+			else
+				sb = streamtype;
+			final_url += _T("/Streaming/Channels/") + channel_c + '0' + sb + _T("?transportmode=unicast");
+		}
+
 		break;
 	default:
 		break;
@@ -999,4 +1041,12 @@ void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int u
 	DetectButtomControl(false);
 	InitializeCriticalSection(&g_critPlayer);
 	InitializeCriticalSection(&g_critSourceFrame);
+}
+
+
+BOOL MyDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }

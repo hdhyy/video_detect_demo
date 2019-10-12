@@ -589,7 +589,9 @@ Mat ImageUtils::video_blur_detect(float thres)
 	CvxText text("C:\\Program Files\\Internet Explorer\\simhei.ttf"); //指定字体;
 
 	string temp = "Status: " + to_string(result) + "%" + (result < thres ? "Yes" : "No");
-	cv::Scalar size1{ 100, 0.5, 0.1, 0 }, size2{ 50, 0, 0.1, 0 }, size3{ 50, 0, 1, 0 }, size4{ 50, 0, 0.1, 0 }; // (字体大小, 无效的, 字符间距, 无效的 }
+	double s1 = 150 / (1920 / src.cols), s2 = 100 / (1920 / src.cols);
+
+	cv::Scalar size1{ s1, 0.5, 0.1, 0 }, size2{ s2, 0, 0.1, 0 }, size3{ 50, 0, 1, 0 }, size4{ 50, 0, 0.1, 0 }; // (字体大小, 无效的, 字符间距, 无效的 }
 
 	putText(src, temp, cvPoint(30, 30),
 		FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 1, CV_AA);
@@ -599,13 +601,13 @@ Mat ImageUtils::video_blur_detect(float thres)
 		if (text_bling % 2 == 0)
 		{
 			text_ptr->setFont(nullptr, &size1, nullptr, 0);
-			text_ptr->putText(src, "警告：该摄像机套袋！", cv::Point(src.cols / 3, src.rows / 2), cv::Scalar(0, 0, 255));
+			text_ptr->putText(src, "警告：该摄像机套袋！", cv::Point(src.cols / 4, src.rows / 2), cv::Scalar(0, 0, 255));
 		}
 	}
 	else
 	{
 		text_ptr->setFont(nullptr, &size2, nullptr, 0);
-		text_ptr->putText(src, "未发现套袋情况", cv::Point(static_cast<int>(src.cols / 2.5), static_cast<int>(src.rows / 2)), cv::Scalar(255, 0, 0));
+		text_ptr->putText(src, "未发现套袋情况", cv::Point(static_cast<int>(src.cols / 3), static_cast<int>(src.rows / 2)), cv::Scalar(255, 0, 0));
 	}
 
 	//text.setFont(nullptr, &size3, nullptr, 0);

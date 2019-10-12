@@ -22,7 +22,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CComboBox m_cb_blur_thres;
+	int thres_index = 6;
 	float threshold;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 };

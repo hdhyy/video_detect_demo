@@ -26,9 +26,10 @@ protected:
 	//username：用户名
 	//password：密码
 	//channel：通道号
-	//subtype：主码流为0，辅码流为1
+	//subtype：主码流为0，辅码流为1(ps:海康的第三码流则传3，以此类推)
+	//old_version:海康需要传，默认为老版本
 	//codec：海康需要传，0:h264 1:MPEG-4 2:mpeg4 (默认传0)
-	afx_msg STDMETHODIMP OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long codec = 0);
+	afx_msg STDMETHODIMP OpenByNecessaryText(long brand, long protocol, BSTR url_ip, long url_port, BSTR username, BSTR password, long channel, long subtype, long old_verison=0, long codec = 0);
 
 // 重写
 public:
@@ -80,5 +81,8 @@ public:
 		DWORD dwEnabledOptions
 		);
 	END_INTERFACE_PART(ObjSafe);
+	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
+	virtual BOOL OnSetObjectRects(LPCRECT lpRectPos, LPCRECT lpRectClip);
 };
 
