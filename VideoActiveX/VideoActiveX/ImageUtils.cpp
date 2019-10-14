@@ -453,6 +453,8 @@ cv::Mat ImageUtils::insect_detect()
 	findContours(mask_tmp, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);*/
 	vector<KeyPoint> keypoints;
 	detector->detect(mask_tmp, keypoints);
+	double s1 = 150 / (1920 / src.cols);
+	cv::Scalar size1{ s1, 0.5, 0.1, 0 };
 	if (frame_count < 400)
 	{
 		string temp = "Modeling" + to_string(frame_count / 4) + "%";
@@ -463,9 +465,11 @@ cv::Mat ImageUtils::insect_detect()
 	{
 		putText(frame, "insect number: " + to_string(keypoints.size()), cvPoint(30, 30),
 			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
-
+		text_ptr->setFont(nullptr, &size1, nullptr, 0);
+		char err_str[10];
+		_itoa_s(keypoints.size(), err_str, 10); //
+		text_ptr->putText(src, err_str, cv::Point(src.cols *7/ 8, src.rows / 10), cv::Scalar(255, 0, 0));
 		drawKeypoints(frame, keypoints, frame, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
 	}
 
 	//count = filter_contour_area(contours, 5);

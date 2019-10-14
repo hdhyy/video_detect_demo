@@ -340,7 +340,7 @@ void MyGetClippingCoordinates(LPCRECT pPosRect, LPCRECT pClipRect,
 BOOL CVideoActiveXCtrl::OnSetObjectRects(LPCRECT lpRectPos, LPCRECT lpRectClip)
 {
 	// return COleControl::OnSetObjectRects(lprcPosRect, lprcClipRect);
-	ASSERT(lprcPosRect != NULL);
+	ASSERT(lpRectPos != NULL);
 
 	// Remember the position rectangle.
 	m_rcPos = *lpRectPos;

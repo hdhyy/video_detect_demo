@@ -165,6 +165,10 @@ ON_BN_CLICKED(IDC_HELMAT_DETECT, &MyDlg::OnBnClickedHelmatDetect)
 ON_BN_CLICKED(IDC_SMOKE_DETECT, &MyDlg::OnBnClickedSmokeDetect)
 ON_BN_CLICKED(IDC_OPENURL_BUTTON, &MyDlg::OnBnClickedOpenurlButton)
 ON_WM_MOUSEWHEEL()
+ON_WM_DRAWITEM()
+ON_WM_ERASEBKGND()
+ON_WM_SIZE()
+ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
 //成员函数实现
@@ -715,8 +719,10 @@ void MyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void MyDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
+	CDialogEx::OnPaint();
 	// TODO: 在此处添加消息处理程序代码
-	// 不为绘图消息调用 CDialogEx::OnPaint()
+	//ShowImage(TheImage, IDC_VIDEOSHOW);
+	//ShowImage(StopImage, IDC_STATIC_IMGSHOW);
 }
 
 
@@ -1049,4 +1055,57 @@ BOOL MyDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+void MyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CDialogEx::OnDrawItem(nIDCtl, lpDrawItemStruct);
+}
+
+
+BOOL MyDlg::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	//return true;
+	return CDialogEx::OnEraseBkgnd(pDC);
+}
+
+
+void MyDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: 在此处添加消息处理程序代码
+}
+
+
+void MyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
+{
+	CDialogEx::OnWindowPosChanging(lpwndpos);
+
+	// TODO: 在此处添加消息处理程序代码
+	//CWnd* pWnd = GetParent();
+	//if (!init)
+	//{
+	//	while (pWnd->GetParent() != NULL)
+	//	{
+	//		pWnd->Invalidate();
+	//		pWnd = pWnd->GetParent();
+	//	}
+	//}
+	//init_c++;
+	//if(init_c > 10)
+	//	init = !init;
+}
+
+
+BOOL MyDlg::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  在此添加额外的初始化
+	ModifyStyle(WS_CLIPCHILDREN, 0);
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 异常: OCX 属性页应返回 FALSE
 }

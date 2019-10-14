@@ -43,6 +43,8 @@ public:
 	int frames;
 	bool scrolling = false;
 	CString video_times;
+	bool init = true;
+	int init_c = 0;
 	// CSliderCtrl m_video_slider;
 	CSliderCtrl m_video_slider;
 
@@ -97,4 +99,9 @@ public:
 	void OpenByJSWholeURL(CString url);
 	void OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype, int old_version, int codec);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
+	virtual BOOL OnInitDialog();
 };
