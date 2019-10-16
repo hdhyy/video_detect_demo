@@ -393,3 +393,14 @@ BOOL CVideoActiveXCtrl::OnSetObjectRects(LPCRECT lpRectPos, LPCRECT lpRectClip)
 	return TRUE;
 	//return COleControl::OnSetObjectRects(lpRectPos, lpRectClip);
 }
+
+
+void CVideoActiveXCtrl::OnSetClientSite()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	if (!m_pClientSite)
+	{
+		m_MyDlg.refresh = true;
+	}
+	COleControl::OnSetClientSite();
+}

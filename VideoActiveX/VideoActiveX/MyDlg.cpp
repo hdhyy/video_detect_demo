@@ -522,7 +522,15 @@ UINT ThreadDect(LPVOID pParm) {
 		g_queueResultFrame.push(res_frame);
 		LeaveCriticalSection(&g_critResultFrame);
 		Sleep(10);
-		pThis->PostMessage(WM_UPDATE_MESSAGE, 0, 0);//显示结果画面
+		try {
+			if (pThis->refresh)
+				break;
+			pThis->PostMessage(WM_UPDATE_MESSAGE, 0, 0);//显示结果画面
+		}
+		catch(Exception e)
+		{}
+		catch(exception e)
+		{}
 		Sleep(30);
 	}
 	return 0;
@@ -539,6 +547,10 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 	CString video_ctimes;
 	while (!pMat.empty())
 	{
+		if (pThis->refresh)
+		{
+			return 0;
+		}
 		//设置slider位置
 		++pThis->current_pos;
 		pThis->m_video_slider.SetPos(pThis->current_pos);
@@ -603,8 +615,8 @@ void MyDlg::OnBnClickedBeginButton()
 {
 	g_bPlay = true;
 	//开始播放视频代码
-	SetTimer(1, 10, NULL);
-	HANDLE hThreadSend;         //创建独立线程发送数据  
+	SetTimer(1, 10, NULL);         
+	//创建独立线程发送数据  
 	DWORD ThreadSendID;
 
 	start_event.SetEvent();

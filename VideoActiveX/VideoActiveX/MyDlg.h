@@ -45,12 +45,14 @@ public:
 	CString video_times;
 	bool init = true;
 	int init_c = 0;
+	bool refresh = false;
 	// CSliderCtrl m_video_slider;
 	CSliderCtrl m_video_slider;
 
 	//工作线程
 	CWinThread* m_threadVideoCap;
 	CWinThread* m_threadVideoDect;
+	HANDLE hThreadSend;
 	//其他窗体
 	URLInputDialog urlin;
 	BlurThresDialog thresdlg;
