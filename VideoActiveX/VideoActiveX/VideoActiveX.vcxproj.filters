@@ -42,13 +42,16 @@
     <ClCompile Include="My_Detector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PretrainDetector.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CvxText.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BlurThresDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HelmatDetector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PretrainedDet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,13 +95,16 @@
     <ClInclude Include="My_Detector.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PretrainDetector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CvxText.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BlurThresDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HelmatDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PretrainedDet.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,7 @@
 #include "afxdialogex.h"
 #include "CvvImage.h"
 #include "DealWithTensorFlow.h"
-#include "PretrainDetector.h"
+#include "HelmatDetector.h"
 #include "ImageUtils.h"
 
 using namespace cv;
@@ -492,7 +492,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case HELMAT://安全帽检测
-			res_frame = g_dectDector.GetHelmetImg(dect_frame);
+			res_frame = g_dectDector.GetHumanTrackImg(dect_frame);
 			Sleep(10);
 			break;
 		case NIGHTENHANCE:

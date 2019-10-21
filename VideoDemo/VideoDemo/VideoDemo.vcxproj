@@ -205,7 +205,8 @@
     <ClInclude Include="ImageUtils.h" />
     <ClInclude Include="MSRCR.h" />
     <ClInclude Include="ObjectTracking.h" />
-    <ClInclude Include="PretrainDetector.h" />
+    <ClInclude Include="HelmatDetector.h" />
+    <ClInclude Include="PretrainedDet.h" />
     <ClInclude Include="PublicHeader.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROIDialog.h" />
@@ -234,7 +235,8 @@
     <ClCompile Include="ImageUtils.cpp" />
     <ClCompile Include="MSRCR.cpp" />
     <ClCompile Include="ObjectTracking.cpp" />
-    <ClCompile Include="PretrainDetector.cpp" />
+    <ClCompile Include="HelmatDetector.cpp" />
+    <ClCompile Include="PretrainedDet.cpp" />
     <ClCompile Include="ROIDialog.cpp" />
     <ClCompile Include="ROIThread.cpp" />
     <ClCompile Include="stdafx.cpp">

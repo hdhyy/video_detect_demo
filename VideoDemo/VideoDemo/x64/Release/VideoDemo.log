@@ -1,9 +1,7 @@
-﻿  Detection.cpp
-D:\github\video_detect_demo\VideoDemo\VideoDemo\Detection.cpp(16,15): warning C4244:  “初始化”: 从“double”转换到“float”，可能丢失数据
-D:\github\video_detect_demo\VideoDemo\VideoDemo\Detection.cpp(23,14): warning C4244:  “初始化”: 从“double”转换到“float”，可能丢失数据
+﻿  HelmatDetector.cpp
   正在生成代码
-  1 of 3144 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 3182 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   VideoDemo.vcxproj -> D:\github\video_detect_demo\VideoDemo\x64\Release\VideoDemo.exe

@@ -1,6 +1,6 @@
 #pragma once
 #include "PublicHeader.h"
-#include "PretrainDetector.h"
+#include "HelmatDetector.h"
 
 using namespace cv;
 
@@ -14,9 +14,7 @@ public:
 	Mat GetCannyImg(Mat img);
 	Mat GetCannyImg(IplImage* img);
 	Mat GetCornerImg(Mat img);
-
 	Mat GetHelmetImg(Mat img);
-
 	Mat GetSmokeImg(Mat img);
 	Mat GetSmokeImg_v2(Mat img);
 
@@ -29,5 +27,6 @@ public:
 private:
 	int m_iCornerThresh = 30;
 	string curPath;
+	HelmatDetector* pd;
 };
 

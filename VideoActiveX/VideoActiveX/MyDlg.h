@@ -63,6 +63,7 @@ public:
 	void ResizeImage(IplImage* img);
 	DWORD GetTimeFromServer(char* ip_addr);
 	void ControlAllBtn(bool enable);
+	void ProcessLoadVideo(CString path);
 public:
 	afx_msg void OnBnClickedBeginButton();
 	afx_msg void OnBnClickedInsectButton();

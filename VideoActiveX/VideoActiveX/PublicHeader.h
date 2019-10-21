@@ -36,6 +36,9 @@ using namespace cv::ml;
 extern bool trainComplete;
 #endif
 
+
+constexpr auto pixel_wirth = 1600;
+constexpr auto pixel_height = 700;
 constexpr auto IMAGE_HEIGHT = 500;
 constexpr auto  IMAGE_WIDTH = 750;
 constexpr auto  IMAGE_CHANNELS = 3;

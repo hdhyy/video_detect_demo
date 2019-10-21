@@ -48,9 +48,6 @@
     <ClInclude Include="ImageUtils.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PretrainDetector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Detection.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -99,6 +96,12 @@
     <ClInclude Include="URLInputDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PretrainedDet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HelmatDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VideoDemo.cpp">
@@ -123,9 +126,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ImageUtils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PretrainDetector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Detection.cpp">
@@ -171,6 +171,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="URLInputDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PretrainedDet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HelmatDetector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

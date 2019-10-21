@@ -4,11 +4,16 @@
 
 My_Detector::My_Detector()
 {
+	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
+	string prototxt = curPath + "/models/pelee/deploy_inference.prototxt";
+	string weight = curPath + "/models/pelee/pelee_SSD_304x304_map78.caffemodel";
+	pd =new HelmatDetector(labelNames, prototxt, weight);
 }
 
 
 My_Detector::~My_Detector()
 {
+	delete pd;
 }
 
 void My_Detector::SetPath(string path)
@@ -76,11 +81,7 @@ Mat My_Detector::GetCornerImg(Mat img) {
 
 Mat My_Detector::GetHelmetImg(Mat img)
 {
-	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
-	string prototxt = curPath + "/models/pelee/deploy_inference.prototxt";
-	string weight = curPath + "/models/pelee/pelee_SSD_304x304_map78.caffemodel";
-	PretrainDetector pd(labelNames, prototxt, weight, img);
-	Mat result = pd.getProcessedImage();
+	Mat result = pd->getProcessedImage(img);
 	return result;
 }
 

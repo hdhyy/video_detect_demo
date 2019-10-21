@@ -1,20 +1,8 @@
 #include "stdafx.h"
-#include "PretrainDetector.h"
+#include "HelmatDetector.h"
 
-void PretrainDetector::loadImage(void) {
-	this->image = cv::imread(this->img);
-}
 
-void  PretrainDetector::loadModel() {
-	this->peleeDetection = cv::dnn::readNetFromCaffe(this->prototxt, this->weights);
-}
-
-void PretrainDetector::showImage() {
-	cv::imshow("results", this->image);
-	cv::waitKey();
-}
-
-void PretrainDetector::processImage() {
+void HelmatDetector::processImage() {
 	preprocess();
 	this->inputBlob = cv::dnn::blobFromImage(this->preprocessed, 1.0, this->caffeInputSize, cv::Scalar::all(0), false, false);
 	this->peleeDetection.setInput(this->inputBlob);
@@ -22,12 +10,7 @@ void PretrainDetector::processImage() {
 	postprocess();
 }
 
-cv::Mat PretrainDetector::getProcessedImage() {
-	processImage();
-	return this->image;
-}
-
-PretrainDetector::PretrainDetector(string labelNames[5], string prototxt, string weights, string img) {
+HelmatDetector::HelmatDetector(string labelNames[5], string prototxt, string weights, string img) {
 	for (int i = 0; i < 5; i++) {
 		this->labelNames[i] = labelNames[i];
 	}
@@ -45,7 +28,7 @@ PretrainDetector::PretrainDetector(string labelNames[5], string prototxt, string
 	loadImage();
 }
 
-PretrainDetector::PretrainDetector(string labelNames[5], string prototxt, string weights, cv::Mat image) {
+HelmatDetector::HelmatDetector(string labelNames[5], string prototxt, string weights) {
 	for (int i = 0; i < 5; i++) {
 		this->labelNames[i] = labelNames[i];
 	}
@@ -58,12 +41,12 @@ PretrainDetector::PretrainDetector(string labelNames[5], string prototxt, string
 	this->inputscale = 0.017f;
 	this->prototxt = prototxt;
 	this->weights = weights;
-	this->image = image;
+	//this->image = image;
 	loadModel();
 	//loadImage();
 }
 
-vector<cv::String> PretrainDetector::getOutpusNames()
+vector<cv::String> HelmatDetector::getOutpusNames()
 {
 	static vector<cv::String> names;
 	if (names.empty())
@@ -77,9 +60,8 @@ vector<cv::String> PretrainDetector::getOutpusNames()
 	return names;
 }
 
-void PretrainDetector::preprocess()
+void HelmatDetector::preprocess()
 {
-
 	this->image.convertTo(this->preprocessed, CV_32F, 1.0 / 255.0, 0.0);
 	resizeImage(this->preprocessed, this->preprocessed, this->caffeInputSize);
 	this->preprocessed.convertTo(this->preprocessed, CV_32F, 255.0, 0);
@@ -87,7 +69,7 @@ void PretrainDetector::preprocess()
 	this->preprocessed = this->preprocessed * this->inputscale;
 }
 
-void PretrainDetector::postprocess()
+void HelmatDetector::postprocess()
 {
 	static vector<int> outLayers = this->peleeDetection.getUnconnectedOutLayers();
 	static string outLayerType = this->peleeDetection.getLayer(outLayers[0])->type;
@@ -120,7 +102,7 @@ void PretrainDetector::postprocess()
 
 }
 
-void PretrainDetector::drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame)
+void HelmatDetector::drawPred(int classId, float conf, int left, int top, int right, int bottom, cv::Mat& frame)
 {
 
 	cv::rectangle(frame, cv::Point(left, top), cv::Point(right, bottom), this->showColor[classId]);
@@ -133,7 +115,7 @@ void PretrainDetector::drawPred(int classId, float conf, int left, int top, int 
 	cv::putText(frame, label, cv::Point(left, top), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar());
 }
 
-void PretrainDetector::resizeImage(cv::Mat& frame, cv::Mat& dst, cv::Size dims)
+void HelmatDetector::resizeImage(cv::Mat& frame, cv::Mat& dst, cv::Size dims)
 {
 	double max, min;
 	int idx_min[2] = { 255, 255 }, idx_max[2] = { 255, 255 };
@@ -161,8 +143,8 @@ int main(int argc, char *argv[]) {
 		string prototxt = argv[1];
 		string weights = argv[2];
 		string img = argv[3];
-		PretrainDetector d = PretrainDetector(labelNames, prototxt, weights, img);
-		cv::Mat postImage = d.getProcessedImage();
+		HelmatDetector d = HelmatDetector(labelNames, prototxt, weights, img);
+		cv::Mat postImage = d.getProcessedImage(d.image);
 		d.showImage();
 	}
 	return 0;

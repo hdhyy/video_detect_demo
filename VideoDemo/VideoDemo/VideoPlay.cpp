@@ -184,7 +184,7 @@ void VideoPlay::showImage()
 void VideoPlay::OnBnClickedResultButton()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	DealWithTensorFlow dwtl(_T("img/1.jpg"));
+	DealWithTensorFlow dwtl(_T("img/002.jpg"));
 	IplImage* f = dwtl.execute();
 	frame = cv::cvarrToMat(f);
 	showImage();

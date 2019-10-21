@@ -25,11 +25,23 @@ My_Detector::My_Detector()
 		P.at<float>(j, i) = type;
 	}
 	ifile.close();
+
+	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
+	string prototxt = "models/pelee/deploy_inference.prototxt";
+	string weight = "models/pelee/pelee_SSD_304x304_map78.caffemodel";
+	pd = new HelmatDetector(labelNames, prototxt, weight);
+
+	// Give the configuration and weight files for the model
+	String modelConfiguration = "models/yolo3/yolov3.cfg";
+	String modelWeights = "models/yolo3/yolov3.weights";
+	ojt = new ObjectTracking(modelConfiguration, modelWeights);
 }
 
 
 My_Detector::~My_Detector()
 {
+	delete pd;
+	delete ojt;
 }
 
 Mat My_Detector::GetCannyImg(Mat img) {
@@ -92,11 +104,7 @@ Mat My_Detector::GetCornerImg(Mat img) {
 
 Mat My_Detector::GetHelmetImg(Mat img)
 {
-	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
-	string prototxt = "models/pelee/deploy_inference.prototxt";
-	string weight = "models/pelee/pelee_SSD_304x304_map78.caffemodel";
-	PretrainDetector pd(labelNames, prototxt, weight, img);
-	Mat result = pd.getProcessedImage();
+	Mat result = pd->getProcessedImage(img);
 	return result;
 }
 
@@ -602,4 +610,9 @@ void My_Detector::smoke_detect()
 	cvReleaseMat(&pBkMat);
 	cvReleaseMat(&dsttMat);
 	vcap->release();
+}
+
+Mat My_Detector::GetHumanTrackImg(Mat img)
+{
+	return ojt->getProcessedImage(img);
 }

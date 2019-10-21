@@ -108,6 +108,7 @@ MyDlg::MyDlg(CWnd* pParent /*=nullptr*/)
 {
 	//picture 背景
 	InitialPic();
+
 }
 
 MyDlg::~MyDlg()
@@ -282,54 +283,58 @@ DWORD MyDlg::GetTimeFromServer(char* ip_addr)
 }
 
 // MyDlg 消息处理程序
+void MyDlg::ProcessLoadVideo(CString path)
+{
+	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
+	strFilePath = path;
 
+	current_pos = 0;
+	USES_CONVERSION;
+	const char* videoPath = T2A(strFilePath);
+	vCap = new VideoCapture(videoPath);
+	if (!vCap->isOpened())
+	{
+		return;
+	}
+	fps = (int)vCap->get(CV_CAP_PROP_FPS);
+	frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
+
+	if (frames < 0)
+	{
+		//处理文件头没有帧数的情况，但还是不能实现进度条。
+		//frames = GetAbnormalFrames(pThis->vCap);
+	}
+
+	if (frames > 0)
+	{
+		m_video_slider.SetRange(1, frames);
+		m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
+		CTimeSpan cts((__time64_t)frames / fps);
+		video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
+	}
+	Mat pMat;
+	(*vCap) >> pMat;
+	IplImage* pFrame = &IplImage(pMat);
+	real_width = pFrame->width;
+	real_height = pFrame->height;
+	g_matSourceFrame = pMat;
+	ResizeImage(pFrame);
+	ShowImage(TheImage, IDC_VIDEOSHOW);
+	//recover the program path
+	//SetCurrentDirectory(path);
+	ButtomControl(true, true, false, false);
+
+	DetectButtomControl(false);
+	InitializeCriticalSection(&g_critPlayer);
+	InitializeCriticalSection(&g_critSourceFrame);
+}
 void MyDlg::OnBnClickedOpenButton()
 {
 	CString filter = _T("video files(*.mp4; *.avi; *.h264; *.dav)|*.mp4; *.avi; *.h264; *.dav|ALL Files (*.*) |*.*||");
 	CFileDialog dlg(TRUE/*这个参数为TRUE就是“打开”对话框，为FALSE就是“保存”对话框*/, NULL/*默认文件类型*/, NULL/*默认文件名*/, OFN_HIDEREADONLY/*样式，这里设置为“隐藏只读”*/, filter/*文件类型列表*/, NULL, NULL, FALSE/*指定文件打开对话框是否为Vista样式*/);
 	if (dlg.DoModal() == IDOK)
 	{
-		TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
-		strFilePath = dlg.GetPathName();
-
-		current_pos = 0;
-		USES_CONVERSION;
-		const char* videoPath = T2A(strFilePath);
-		vCap = new VideoCapture(videoPath);
-		if (!vCap->isOpened())
-		{
-			return;
-		}
-		fps = (int)vCap->get(CV_CAP_PROP_FPS);
-		frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
-
-		if (frames < 0)
-		{
-			//处理文件头没有帧数的情况，但还是不能实现进度条。
-			//frames = GetAbnormalFrames(pThis->vCap);
-		}
-
-		if (frames != 0)
-		{
-			m_video_slider.SetRange(1, frames);
-			m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-			CTimeSpan cts((__time64_t)frames / fps);
-			video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
-		}
-		Mat pMat;
-		(*vCap) >> pMat;
-		IplImage* pFrame = &IplImage(pMat);
-		real_width = pFrame->width;
-		real_height = pFrame->height;
-		g_matSourceFrame = pMat;
-		ResizeImage(pFrame);
-		ShowImage(TheImage, IDC_VIDEOSHOW);
-		//recover the program path
-		//SetCurrentDirectory(path);//ocx（ActiveX）无法使用
-		ButtomControl(true, true, false, false);
-
-		InitializeCriticalSection(&g_critPlayer);
-		InitializeCriticalSection(&g_critSourceFrame);
+		ProcessLoadVideo(dlg.GetPathName());
 	}
 }
 
@@ -854,101 +859,16 @@ void MyDlg::OnBnClickedOpenurlButton()
 	//输入视频所在URL
 	if (urlin.DoModal() == IDOK)
 	{
-		TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
-		strFilePath = urlin.getInputUrl();
-
-		current_pos = 0;
-		USES_CONVERSION;
-		const char* videoPath = T2A(strFilePath);
-		vCap = new VideoCapture(videoPath);
-		if (!vCap->isOpened())
-		{
-			return;
-		}
-		fps = (int)vCap->get(CV_CAP_PROP_FPS);
-		frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
-
-		if (frames < 0)
-		{
-			//处理文件头没有帧数的情况，但还是不能实现进度条。
-			//frames = GetAbnormalFrames(pThis->vCap);
-		}
-
-		if (frames > 0)
-		{
-			m_video_slider.SetRange(1, frames);
-			m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-			CTimeSpan cts((__time64_t)frames / fps);
-			video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
-		}
-		Mat pMat;
-		(*vCap) >> pMat;
-		IplImage* pFrame = &IplImage(pMat);
-		real_width = pFrame->width;
-		real_height = pFrame->height;
-		g_matSourceFrame = pMat;
-		ResizeImage(pFrame);
-		ShowImage(TheImage, IDC_VIDEOSHOW);
-		//recover the program path
-		//SetCurrentDirectory(path);
-		ButtomControl(true, true, false, false);
-
-		DetectButtomControl(false);
-		InitializeCriticalSection(&g_critPlayer);
-		InitializeCriticalSection(&g_critSourceFrame);
+		ProcessLoadVideo(urlin.getInputUrl());
 	}
 }
 
 void MyDlg::OpenByJSWholeURL(CString url)
 {
-	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
-	strFilePath = url;
-
-	current_pos = 0;
-	USES_CONVERSION;
-	const char* videoPath = T2A(strFilePath);
-	vCap = new VideoCapture(videoPath);
-	if (!vCap->isOpened())
-	{
-		return;
-	}
-	fps = (int)vCap->get(CV_CAP_PROP_FPS);
-	frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
-
-	if (frames < 0)
-	{
-		//处理文件头没有帧数的情况，但还是不能实现进度条。
-		//frames = GetAbnormalFrames(pThis->vCap);
-	}
-
-	if (frames > 0)
-	{
-		m_video_slider.SetRange(1, frames);
-		m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-		CTimeSpan cts((__time64_t)frames / fps);
-		video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
-	}
-	Mat pMat;
-	(*vCap) >> pMat;
-	IplImage* pFrame = &IplImage(pMat);
-	real_width = pFrame->width;
-	real_height = pFrame->height;
-	g_matSourceFrame = pMat;
-	ResizeImage(pFrame);
-	ShowImage(TheImage, IDC_VIDEOSHOW);
-	//recover the program path
-	//SetCurrentDirectory(path);
-	ButtomControl(true, true, false, false);
-
-	DetectButtomControl(false);
-	InitializeCriticalSection(&g_critPlayer);
-	InitializeCriticalSection(&g_critSourceFrame);
+	ProcessLoadVideo(url);
 }
 void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int url_port, CString username, CString password, int channel, int subtype, int old_version, int codec)
 {
-	//MessageBox(NULL, TEXT("坏蛋可以去死啦!"), 0);
-	TheImage = cvCreateImage(CvSize(IMAGE_WIDTH, IMAGE_HEIGHT), IPL_DEPTH_8U, IMAGE_CHANNELS);
-
 	CString final_url, port, streamtype, channel_c;
 	port.Format(_T("%d"), url_port);
 	streamtype.Format(_T("%d"), subtype);
@@ -1014,51 +934,7 @@ void MyDlg::OpenByJSNecessaryText(int brand, int protocol, CString url_ip, int u
 		break;
 	}
 	//MessageBox(NULL, final_url, 0);
-
-	strFilePath = final_url;
-
-	current_pos = 0;
-	USES_CONVERSION;
-	const char* videoPath = T2A(strFilePath);
-	try {
-		vCap = new VideoCapture(videoPath);
-	}
-	catch (Exception e) { return; }
-	if (!vCap->isOpened())
-	{
-		return;
-	}
-	fps = (int)vCap->get(CV_CAP_PROP_FPS);
-	frames = (int)vCap->get(CV_CAP_PROP_FRAME_COUNT);
-
-	if (frames < 0)
-	{
-		//处理文件头没有帧数的情况，但还是不能实现进度条。
-		//frames = GetAbnormalFrames(pThis->vCap);
-	}
-
-	if (frames > 0)
-	{
-		m_video_slider.SetRange(1, frames);
-		m_video_slider.SetTicFreq(10);//设置显示刻度的间隔
-		CTimeSpan cts((__time64_t)frames / fps);
-		video_times.Format(_T("%d:%d:%d"), cts.GetHours(), cts.GetMinutes(), cts.GetSeconds());
-	}
-	Mat pMat;
-	(*vCap) >> pMat;
-	IplImage* pFrame = &IplImage(pMat);
-	real_width = pFrame->width;
-	real_height = pFrame->height;
-	g_matSourceFrame = pMat;
-	ResizeImage(pFrame);
-	ShowImage(TheImage, IDC_VIDEOSHOW);
-	//recover the program path
-	//SetCurrentDirectory(path);
-	ButtomControl(true, true, false, false);
-
-	DetectButtomControl(false);
-	InitializeCriticalSection(&g_critPlayer);
-	InitializeCriticalSection(&g_critSourceFrame);
+	ProcessLoadVideo(final_url);
 }
 
 
@@ -1088,7 +964,16 @@ void MyDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType, cx, cy);
 
-	// TODO: 在此处添加消息处理程序代码
+	//if (nType != SIZE_MINIMIZED)
+	//{
+	//	if (me) // 判断是否为空，因为对话框创建时会调用此函数，而当时控件还未创建 
+	//	{
+	//		CRect rt;
+	//		me.GetWindowRect(&rt);
+	//		ScreenToClient(&rt);
+	//		me.MoveWindow(rt.left, rt.top, cx - rt.left * 2, cy - rt.top - rt.left);
+	//	}
+	//}
 }
 
 

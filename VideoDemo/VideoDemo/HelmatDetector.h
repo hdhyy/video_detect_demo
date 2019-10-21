@@ -3,34 +3,30 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include "PretrainedDet.h"
 using namespace std;
 
 #define CONFTHRESHOLD 0.1
-class PretrainDetector
+class HelmatDetector : public PretrainedDet
 {
 public:
 	string labelNames[5];
 	vector<string> classes;
 	vector<cv::Scalar> showColor;
-	cv::dnn::Net peleeDetection;
+
 	float inputscale;
 	cv::Scalar mean;
 	cv::Size caffeInputSize;
 	cv::Mat preprocessed;
-	cv::Mat image;
-	string prototxt;
-	string weights;
-	string img;
+
 	vector<cv::Mat> detections;
 	cv::Mat inputBlob;
 
-	PretrainDetector(string labelNames[5], string prototxt, string weights, cv::Mat image);
-	PretrainDetector(string labelNames[5], string prototxt, string weights, string img);
-	cv::Mat getProcessedImage();
+	HelmatDetector(string labelNames[5], string prototxt, string weights);
+	HelmatDetector(string labelNames[5], string prototxt, string weights, string img);
 	void processImage();
-	void showImage();
-	void loadModel();
-	void loadImage();
+
 	void preprocess();
 	void postprocess();
 
