@@ -16,7 +16,6 @@ ntp7.aliyun.com
 #include "MyDlg.h"
 #include "afxdialogex.h"
 #include "ImageUtils.h"
-#include "My_Detector.h"
 
 #include "winsock2.h"
 #include "WS2tcpip.h"
@@ -90,8 +89,7 @@ static vector<vector<Point>>g_vecROIlPoints;
 static Mat g_matROIMask;
 static UINT32 g_iTotalFrameNum;
 static UINT32 g_iCurFrameIdx;
-//检测器
-static My_Detector *g_dectDector;
+
 //线程锁和缓冲队列
 static CRITICAL_SECTION g_critSourceFrame;
 static queue<Mat> g_queueSourceFrame;
@@ -113,12 +111,17 @@ MyDlg::MyDlg(CWnd* pParent /*=nullptr*/)
 
 MyDlg::~MyDlg()
 {
-	//delete g_dectDector;
+	delete g_dectDector;
+	g_dectDector = nullptr;
+
+	delete vCap;
+	vCap = nullptr;
 }
 
 void MyDlg::ControlAllBtn(bool enable) 
 {
 	btn_open.EnableWindow(enable);
+	btn_url_open.EnableWindow(enable);
 	btn_begin.EnableWindow(enable);
 	btn_pause.EnableWindow(enable);
 	btn_terminate.EnableWindow(enable);
@@ -484,7 +487,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case HELMAT://安全帽检测
-			res_frame = g_dectDector->GetHelmetImg(dect_frame);
+			res_frame = pThis->g_dectDector->GetHelmetImg(dect_frame);
 			Sleep(10);
 			break;
 		case NIGHTENHANCE:
@@ -503,7 +506,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case SMOKING:
-			res_frame = g_dectDector->GetSmokeImg(dect_frame);
+			res_frame = pThis->g_dectDector->GetSmokeImg(dect_frame);
 			Sleep(10);
 			break;
 		case INSECT_DETECT:
@@ -543,7 +546,7 @@ UINT ThreadDect(LPVOID pParm) {
 }
 
 //读取视频帧线程
-DWORD WINAPI PlayVideo(LPVOID lpParam) {
+UINT PlayVideo(LPVOID lpParam) {
 
 	MyDlg* pThis = (MyDlg*)lpParam;//指针指向对话框
 
@@ -587,7 +590,8 @@ DWORD WINAPI PlayVideo(LPVOID lpParam) {
 		{
 			try
 			{
-				(*pThis->vCap) >> pMat;
+				if(pThis->vCap != nullptr)
+					(*pThis->vCap) >> pMat;
 			}
 			catch (Exception e) {}
 			if (g_bSelectROI) {//画出ROI区域
@@ -627,16 +631,19 @@ void MyDlg::OnBnClickedBeginButton()
 
 	start_event.SetEvent();
 
-	hThreadSend = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PlayVideo, (LPVOID)this, 0, &ThreadSendID);
+	//hThreadSend = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PlayVideo, (LPVOID)this, 0, &ThreadSendID);
 	ButtomControl(false, false, true, true);
 	DetectButtomControl(true);
-
+	
 	//挂起检测线程
+	m_threadVideoCap = AfxBeginThread(PlayVideo, this, 0, 0, CREATE_SUSPENDED, NULL);
 	m_threadVideoDect = AfxBeginThread(ThreadDect, this, 0, 0, CREATE_SUSPENDED, NULL);
-	if (hThreadSend != (void*)0)
-	{
-		CloseHandle(hThreadSend);
-	}
+
+	m_threadVideoCap->ResumeThread();
+	//if (hThreadSend != (void*)0)
+	//{
+		//CloseHandle(hThreadSend);
+	//}
 }
 
 
@@ -710,7 +717,7 @@ void MyDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	//控制时间
 	auto now = GetTimeFromServer(nullptr);
 	//now = max_time_sub + 1;
-	if (now < max_time_sub)
+	if (now != 0 && now < max_time_sub)
 		ButtomControl(true, false, false, false);
 	auto resu = GetProgramDir();
 	g_dectDector = new My_Detector(resu);

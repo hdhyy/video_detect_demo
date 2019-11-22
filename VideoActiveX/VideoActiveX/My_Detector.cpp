@@ -95,7 +95,6 @@ Mat My_Detector::GetHelmetImg(Mat img)
 	return result;
 }
 
-int nFrmNum = 0;
 IplImage* pFrImg = NULL;
 IplImage* pBkImg = NULL;
 IplImage* smokeimg = NULL;
@@ -126,7 +125,7 @@ void My_Detector::video_terminate()
 	cvReleaseMat(&pBkMat);
 	cvReleaseMat(&dsttMat);
 }
-Mat smoke_process(IplImage* pFrame)
+Mat My_Detector::smoke_process(IplImage* pFrame)
 {
 	nFrmNum++;
 	const auto T1 = 40;  //15-55   
@@ -160,7 +159,7 @@ Mat smoke_process(IplImage* pFrame)
 		}
 	cvCopy(pFrame, dst, dstt);
 
-	if (nFrmNum == 1)
+	if (nFrmNum < 25)
 	{
 		pBkImg = cvCreateImage(cvSize(pFrame->width, pFrame->height), IPL_DEPTH_8U, 1);
 		pFrImg = cvCreateImage(cvSize(pFrame->width, pFrame->height), IPL_DEPTH_8U, 1);

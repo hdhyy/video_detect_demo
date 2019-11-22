@@ -400,6 +400,10 @@ void CVideoActiveXCtrl::OnSetClientSite()
 	// TODO: 在此添加专用代码和/或调用基类
 	if (!m_pClientSite)
 	{
+		if(m_MyDlg.m_threadVideoDect != nullptr)
+			m_MyDlg.m_threadVideoDect->SuspendThread();
+		if (m_MyDlg.m_threadVideoCap != nullptr)
+			m_MyDlg.m_threadVideoCap->SuspendThread();
 		m_MyDlg.refresh = true;
 	}
 	COleControl::OnSetClientSite();

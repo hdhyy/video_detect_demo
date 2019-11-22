@@ -2,6 +2,7 @@
 #include "PublicHeader.h"
 #include "URLInputDialog.h"
 #include "BlurThresDialog.h"
+#include "My_Detector.h"
 
 // MyDlg 对话框
 
@@ -38,6 +39,8 @@ public:
 	CString strFileName;
 	CvCapture* pCapture;//录制、拍摄
 	cv::VideoCapture* vCap;
+	//检测器
+	My_Detector* g_dectDector;
 	int fps;
 	int current_pos;
 	int frames;

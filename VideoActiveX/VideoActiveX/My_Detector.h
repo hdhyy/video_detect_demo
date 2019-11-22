@@ -29,5 +29,8 @@ private:
 	int m_iCornerThresh = 30;
 	string curPath;
 	HelmatDetector* pd;
+	int nFrmNum = 0;
+
+	Mat smoke_process(IplImage* pFrame);
 };
 

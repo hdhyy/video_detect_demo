@@ -193,6 +193,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

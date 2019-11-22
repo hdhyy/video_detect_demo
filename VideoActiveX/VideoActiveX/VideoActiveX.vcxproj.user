@@ -8,4 +8,9 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommandArguments>$(ProjectDir)demo.html</LocalDebuggerCommandArguments>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>$(ProjectDir)demo.html</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>C:\Program Files\Internet Explorer\IEXPLORE.EXE</LocalDebuggerCommand>
+  </PropertyGroup>
 </Project>
