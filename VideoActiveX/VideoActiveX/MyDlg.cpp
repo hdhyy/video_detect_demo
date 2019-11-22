@@ -91,7 +91,7 @@ static Mat g_matROIMask;
 static UINT32 g_iTotalFrameNum;
 static UINT32 g_iCurFrameIdx;
 //检测器
-static My_Detector g_dectDector;
+static My_Detector *g_dectDector;
 //线程锁和缓冲队列
 static CRITICAL_SECTION g_critSourceFrame;
 static queue<Mat> g_queueSourceFrame;
@@ -113,6 +113,7 @@ MyDlg::MyDlg(CWnd* pParent /*=nullptr*/)
 
 MyDlg::~MyDlg()
 {
+	//delete g_dectDector;
 }
 
 void MyDlg::ControlAllBtn(bool enable) 
@@ -483,7 +484,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case HELMAT://安全帽检测
-			res_frame = g_dectDector.GetHelmetImg(dect_frame);
+			res_frame = g_dectDector->GetHelmetImg(dect_frame);
 			Sleep(10);
 			break;
 		case NIGHTENHANCE:
@@ -502,7 +503,7 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case SMOKING:
-			res_frame = g_dectDector.GetSmokeImg(dect_frame);
+			res_frame = g_dectDector->GetSmokeImg(dect_frame);
 			Sleep(10);
 			break;
 		case INSECT_DETECT:
@@ -712,7 +713,8 @@ void MyDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	if (now < max_time_sub)
 		ButtomControl(true, false, false, false);
 	auto resu = GetProgramDir();
-	g_dectDector.SetPath(resu);
+	g_dectDector = new My_Detector(resu);
+	g_dectDector->SetPath(resu);
 }
 
 void MyDlg::OnVideoChange(int n)
@@ -811,7 +813,7 @@ void MyDlg::CloseVideo()
 	DetectButtomControl(false);
 	//cvReleaseCapture(&pCapture);//释放CvCapture结构
 
-	g_dectDector.video_terminate();
+	g_dectDector->video_terminate();
 	//Sleep(200);
 	//vCap->release();
 }

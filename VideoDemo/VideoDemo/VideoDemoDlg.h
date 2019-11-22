@@ -125,4 +125,5 @@ public:
 	CButton FaceDetButton;
 	CButton DeDustButton;
 	afx_msg void OnBnClickedOpenurlButton();
+	afx_msg void OnDestroy();
 };

@@ -1,7 +1,8 @@
-﻿  HelmatDetector.cpp
+﻿  VideoDemoDlg.cpp
+D:\github\video_detect_demo\VideoDemo\VideoDemo\ObjectTracking.h(20,26): warning C4305:  “初始化”: 从“double”到“float”截断
   正在生成代码
-  0 of 3182 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  3 of 3185 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    4 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   VideoDemo.vcxproj -> D:\github\video_detect_demo\VideoDemo\x64\Release\VideoDemo.exe

@@ -467,7 +467,7 @@ cv::Mat ImageUtils::insect_detect()
 			FONT_HERSHEY_COMPLEX_SMALL, 2, cvScalar(0, 0, 255), 3, CV_AA);
 		text_ptr->setFont(nullptr, &size1, nullptr, 0);
 		char err_str[10];
-		_itoa_s(keypoints.size(), err_str, 10); //
+		_itoa_s(static_cast<int>(keypoints.size()), err_str, 10); //
 		text_ptr->putText(src, err_str, cv::Point(src.cols *7/ 8, src.rows / 10), cv::Scalar(255, 0, 0));
 		drawKeypoints(frame, keypoints, frame, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 	}

@@ -4,6 +4,16 @@
 
 My_Detector::My_Detector()
 {
+	string default_path = "C:/Program Files/Internet Explorer";
+	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
+	string prototxt = default_path + "/models/pelee/deploy_inference.prototxt";
+	string weight = default_path + "/models/pelee/pelee_SSD_304x304_map78.caffemodel";
+	pd = new HelmatDetector(labelNames, prototxt, weight);
+}
+
+My_Detector::My_Detector(string path)
+{
+	curPath = path;
 	string labelNames[5] = { "Y", "Y", "Y", "Y", "N" };
 	string prototxt = curPath + "/models/pelee/deploy_inference.prototxt";
 	string weight = curPath + "/models/pelee/pelee_SSD_304x304_map78.caffemodel";

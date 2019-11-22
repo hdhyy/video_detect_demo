@@ -11,6 +11,7 @@
 #include "DealWithTensorFlow.h"
 #include "HelmatDetector.h"
 #include "ImageUtils.h"
+#include "conio.h"
 
 using namespace cv;
 using namespace std;
@@ -169,6 +170,7 @@ BEGIN_MESSAGE_MAP(CVideoDemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_HUMAN_TRACK_BUTTON, &CVideoDemoDlg::OnBnClickedHumanTrackButton)
 	ON_BN_CLICKED(IDC_DUST_BUTTON, &CVideoDemoDlg::OnBnClickedDustButton)
 	ON_BN_CLICKED(IDC_OPENURL_BUTTON, &CVideoDemoDlg::OnBnClickedOpenurlButton)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -212,6 +214,7 @@ BOOL CVideoDemoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	AllocConsole();
 	scale = 1.0;
 	ButtomControl(true, false, false, false);
 	m_detect_type = "当前无检测";
@@ -458,6 +461,8 @@ UINT ThreadDect(LPVOID pParm) {
 	//int queue_size;
 	Mat dect_frame, res_frame, mask;
 	ImageUtils iu(&dect_frame);
+	clock_t start, finish;
+	double time = 0;
 	while (g_bPlay) {
 		if (g_bPause) {
 			continue;
@@ -492,7 +497,10 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case HELMAT://安全帽检测
-			res_frame = g_dectDector.GetHumanTrackImg(dect_frame);
+			start = clock();
+			res_frame = g_dectDector.GetHelmetImg(dect_frame);
+			finish = clock();
+			time = finish - start;
 			Sleep(10);
 			break;
 		case NIGHTENHANCE:
@@ -505,9 +513,12 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case DUST_REMOVAL:
+			start = clock();
 			res_frame = iu.fast_deHaze();
 			iu.set_src(res_frame);
 			res_frame = iu.get_hist_match();
+			finish = clock();
+			time = finish - start;
 			Sleep(10);
 			break;
 		case SMOKING:
@@ -515,11 +526,17 @@ UINT ThreadDect(LPVOID pParm) {
 			Sleep(10);
 			break;
 		case INSECT_DETECT:
+			start = clock();
 			res_frame = iu.insect_detect();
+			finish = clock();
+			time = finish - start;
 			Sleep(10);
 			break;
 		case BLUR_DETECT:
+			start = clock();
 			res_frame = iu.video_blur_detect();
+			finish = clock();
+			time = finish - start;
 			Sleep(10);
 			break;
 		case FACE_DETECT:
@@ -529,6 +546,7 @@ UINT ThreadDect(LPVOID pParm) {
 		default:
 			res_frame = dect_frame;
 		}
+		_cprintf("i=%f\n", time);
 		EnterCriticalSection(&g_critResultFrame);
 		while (!g_queueResultFrame.empty()) {
 			g_queueResultFrame.pop();
@@ -1085,4 +1103,13 @@ void CVideoDemoDlg::OnBnClickedOpenurlButton()
 		InitializeCriticalSection(&g_critPlayer);
 		InitializeCriticalSection(&g_critSourceFrame);
 	}
+}
+
+
+void CVideoDemoDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: 在此处添加消息处理程序代码
+	FreeConsole();
 }

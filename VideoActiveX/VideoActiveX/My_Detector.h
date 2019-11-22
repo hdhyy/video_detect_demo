@@ -8,6 +8,7 @@ class My_Detector
 {
 public:
 	My_Detector();
+	My_Detector(string path);
 	virtual ~My_Detector();
 
 public:
