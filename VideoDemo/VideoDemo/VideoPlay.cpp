@@ -172,6 +172,7 @@ void VideoPlay::OnBnClickedImshowButton()
 
 void VideoPlay::showImage()
 {
+	cv::imwrite("out.jpg", frame);
 	cv::Mat imagedst;
 	//以下操作获取图形控件尺寸并以此改变图片尺寸
 	CRect rect;

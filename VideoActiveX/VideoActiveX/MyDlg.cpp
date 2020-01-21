@@ -40,7 +40,7 @@ ntp7.aliyun.com
 #define NTP_PORT_STR "123"        
 #define JAN_1970 0x83aa7e80
 
-constexpr DWORD max_time_sub = 3784147200;//12-31:3786825600;
+constexpr DWORD max_time_sub = 3786825600;//12-31:3786825600;12-01:3784147200
 
 struct NTPPacket
 {
@@ -174,6 +174,7 @@ ON_WM_DRAWITEM()
 ON_WM_ERASEBKGND()
 ON_WM_SIZE()
 ON_WM_WINDOWPOSCHANGING()
+ON_BN_CLICKED(IDC_REGIS_BUTTON, &MyDlg::OnBnClickedRegisButton)
 END_MESSAGE_MAP()
 
 //成员函数实现
@@ -354,7 +355,10 @@ void MyDlg::InitialPic()
 
 void MyDlg::ShowImage(IplImage* image, UINT ID)
 {
-	CDC* pDC = GetDlgItem(ID)->GetDC();
+	auto item = GetDlgItem(ID);
+	if (item == nullptr)
+		return;
+	CDC* pDC = item->GetDC();
 	HDC hDC = pDC->GetSafeHdc();
 	CRect rect;
 	GetDlgItem(ID)->GetClientRect(&rect);
@@ -1014,4 +1018,11 @@ BOOL MyDlg::OnInitDialog()
 	ModifyStyle(WS_CLIPCHILDREN, 0);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void MyDlg::OnBnClickedRegisButton()
+{
+	// 显示注册界面
+	regdlg.DoModal();
 }

@@ -498,7 +498,7 @@ UINT ThreadDect(LPVOID pParm) {
 			break;
 		case HELMAT://安全帽检测
 			start = clock();
-			res_frame = g_dectDector.GetHelmetImg(dect_frame);
+			res_frame = g_dectDector.GetHumanTrackImg(dect_frame);
 			finish = clock();
 			time = finish - start;
 			Sleep(10);

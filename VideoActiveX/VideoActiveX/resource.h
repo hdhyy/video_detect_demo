@@ -21,6 +21,7 @@
 #define IDC_DEDUST_BUTTON               208
 #define IDD_BLUR_THRESHOLD_DIALOG       208
 #define IDC_VIDEO_SLIDER                210
+#define IDD_REGIS_DIALOG                210
 #define IDC_DECT_EDIT                   211
 #define IDC_STATIC_IMGSHOW              212
 #define IDC_VIDEOSHOW                   213
@@ -45,14 +46,21 @@
 #define IDC_CHANNALS                    233
 #define IDC_CODEC                       234
 #define IDC_COMBO1                      235
+#define IDC_REGIS_BUTTON                236
+#define IDC_EDIT1                       237
+#define IDC_SEVEN_RADIO                 238
+#define IDC_THIRTY_RADIO                239
+#define IDC_REG_TIME_STATIC             240
+#define IDC_RADIO3                      241
+#define IDC_CODE_STATIC                 242
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        210
+#define _APS_NEXT_RESOURCE_VALUE        212
 #define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         236
+#define _APS_NEXT_CONTROL_VALUE         243
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

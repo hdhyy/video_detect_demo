@@ -159,7 +159,7 @@ Mat My_Detector::smoke_process(IplImage* pFrame)
 		}
 	cvCopy(pFrame, dst, dstt);
 
-	if (nFrmNum < 25)
+	if (nFrmNum < 10)
 	{
 		pBkImg = cvCreateImage(cvSize(pFrame->width, pFrame->height), IPL_DEPTH_8U, 1);
 		pFrImg = cvCreateImage(cvSize(pFrame->width, pFrame->height), IPL_DEPTH_8U, 1);
@@ -211,10 +211,12 @@ Mat My_Detector::smoke_process(IplImage* pFrame)
 				max_contours = contours;
 			}
 		}
-		CvRect Rect = cvBoundingRect(max_contours, 0);
-
-		if ((Rect.width / Rect.height) < 2)
-			cvRectangle(pFrame, cvPoint(Rect.x, Rect.y), cvPoint(Rect.x + Rect.width, Rect.y + Rect.height), CV_RGB(255, 0, 0), 1, 20, 0);
+		if (max_contours != nullptr)
+		{
+			CvRect Rect = cvBoundingRect(max_contours, 0);
+			if ((Rect.width / Rect.height) < 2)
+				cvRectangle(pFrame, cvPoint(Rect.x, Rect.y), cvPoint(Rect.x + Rect.width, Rect.y + Rect.height), CV_RGB(255, 0, 0), 1, 20, 0);
+		}
 	}
 
 	return cvarrToMat(pFrame);

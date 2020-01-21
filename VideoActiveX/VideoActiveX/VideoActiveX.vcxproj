@@ -223,6 +223,7 @@
     <ClCompile Include="CvxText.cpp" />
     <ClCompile Include="HelmatDetector.cpp" />
     <ClCompile Include="ImageUtils.cpp" />
+    <ClCompile Include="md5.cpp" />
     <ClCompile Include="MyDlg.cpp" />
     <ClCompile Include="My_Detector.cpp" />
     <ClCompile Include="pch.cpp">
@@ -232,6 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PretrainedDet.cpp" />
+    <ClCompile Include="RegisDlg.cpp" />
     <ClCompile Include="URLInputDialog.cpp" />
     <ClCompile Include="VideoActiveX.cpp" />
     <ClCompile Include="VideoActiveXCtrl.cpp" />
@@ -244,11 +246,13 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="HelmatDetector.h" />
     <ClInclude Include="ImageUtils.h" />
+    <ClInclude Include="md5.h" />
     <ClInclude Include="MyDlg.h" />
     <ClInclude Include="My_Detector.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PretrainedDet.h" />
     <ClInclude Include="PublicHeader.h" />
+    <ClInclude Include="RegisDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="URLInputDialog.h" />

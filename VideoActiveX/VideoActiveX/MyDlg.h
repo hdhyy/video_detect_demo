@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "PublicHeader.h"
 #include "URLInputDialog.h"
+#include "RegisDlg.h"
 #include "BlurThresDialog.h"
 #include "My_Detector.h"
 
@@ -59,6 +60,7 @@ public:
 	//其他窗体
 	URLInputDialog urlin;
 	BlurThresDialog thresdlg;
+	RegisDlg regdlg;
 public:
 	void InitialPic();
 	void ShowImage(IplImage* image, UINT ID);
@@ -110,4 +112,5 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedRegisButton();
 };
